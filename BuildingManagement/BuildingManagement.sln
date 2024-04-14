@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34622.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingManagementApi", "BuildingManagementApi\BuildingManagementApi.csproj", "{9CE083DE-63D4-4441-9B7D-CBCF2F20E56A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildingManagementApi", "BuildingManagementApi\BuildingManagementApi.csproj", "{9CE083DE-63D4-4441-9B7D-CBCF2F20E56A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingManagementApiTest", "BuildingManagementApiTest\BuildingManagementApiTest.csproj", "{1C9CDAA5-A81C-48EE-9EC6-4F1666BBA766}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildingManagementApiTest", "BuildingManagementApiTest\BuildingManagementApiTest.csproj", "{1C9CDAA5-A81C-48EE-9EC6-4F1666BBA766}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{67F65E3D-E62F-40F1-8D8D-6EEB8D525D48}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{1C9CDAA5-A81C-48EE-9EC6-4F1666BBA766}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C9CDAA5-A81C-48EE-9EC6-4F1666BBA766}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C9CDAA5-A81C-48EE-9EC6-4F1666BBA766}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67F65E3D-E62F-40F1-8D8D-6EEB8D525D48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67F65E3D-E62F-40F1-8D8D-6EEB8D525D48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67F65E3D-E62F-40F1-8D8D-6EEB8D525D48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67F65E3D-E62F-40F1-8D8D-6EEB8D525D48}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
