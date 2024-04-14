@@ -25,6 +25,7 @@ namespace BuildingManagementApiTest
         [TestMethod]
         public void PostAdmin_ShouldReturnOkResponse_WhenAdminIsSuccessfullyCreated()
         {
+
             // Arrange
             CreateAdminRequest newAdminRequest = new CreateAdminRequest
             {
