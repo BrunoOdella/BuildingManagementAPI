@@ -1,4 +1,6 @@
 ﻿
+using Domain;
+
 namespace LogicInterface.Interfaces
 {
     public interface IAdminLogic

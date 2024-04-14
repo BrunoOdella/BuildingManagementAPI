@@ -1,4 +1,6 @@
-﻿namespace Models.Out
+﻿using Domain;
+
+namespace Models.Out
 {
     public class CreateAdminResponse
     {

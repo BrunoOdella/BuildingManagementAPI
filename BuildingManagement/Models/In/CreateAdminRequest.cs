@@ -1,4 +1,6 @@
-﻿namespace Models.In
+﻿using Domain;
+
+namespace Models.In
 {
     public class CreateAdminRequest
     {
