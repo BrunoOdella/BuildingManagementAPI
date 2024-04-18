@@ -21,11 +21,9 @@ namespace BuildingManagementApiTest
             _adminsController = new AdminsController(_adminLogicMock.Object);
         }
 
-
         [TestMethod]
-        public void PostAdmin_ShouldReturnOkResponse_WhenAdminIsSuccessfullyCreated()
+        public void PostAdmin_ShouldReturnCreatedResponse_WhenAdminIsSuccessfullyCreated()
         {
-
             // Arrange
             CreateAdminRequest newAdminRequest = new CreateAdminRequest
             {
@@ -37,28 +35,24 @@ namespace BuildingManagementApiTest
 
             Admin adminEntity = new Admin
             {
-                AdminID = 1,
+                AdminID = Guid.Parse("d8119d3a-f0f1-4451-a0c3-d4abd21e13aa"),
                 FirstName = newAdminRequest.FirstName,
                 LastName = newAdminRequest.LastName,
                 Email = newAdminRequest.Email,
             };
 
+            CreateAdminResponse response = new CreateAdminResponse(adminEntity);
             _adminLogicMock.Setup(logic => logic.CreateAdmin(It.IsAny<Admin>())).Returns(adminEntity);
-            OkObjectResult expected = new OkObjectResult(new CreateAdminResponse(adminEntity));
 
             // Act
-            OkObjectResult result = _adminsController.CreateAdmin(newAdminRequest) as OkObjectResult;
-
-            CreateAdminResponse actualResponse = result.Value as CreateAdminResponse;
+            ObjectResult result = _adminsController.CreateAdmin(newAdminRequest) as ObjectResult;
 
             // Assert
-            Assert.IsNotNull(actualResponse);
-
-            Assert.AreEqual(expected.StatusCode, result.StatusCode);
-            Assert.AreEqual(expected.Value, actualResponse);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(201, result.StatusCode);
+            Assert.AreEqual(response, result.Value);
 
             _adminLogicMock.VerifyAll();
         }
-
     }
 }

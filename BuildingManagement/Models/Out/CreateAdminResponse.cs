@@ -4,7 +4,7 @@ namespace Models.Out
 {
     public class CreateAdminResponse
     {
-        public int AdminId { get; set; }
+        public Guid AdminId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }

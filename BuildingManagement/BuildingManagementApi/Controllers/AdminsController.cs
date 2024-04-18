@@ -22,7 +22,8 @@ namespace BuildingManagementApi.Controllers
         public IActionResult CreateAdmin([FromBody] CreateAdminRequest admin)
         {
             CreateAdminResponse response = new CreateAdminResponse(_adminLogic.CreateAdmin(admin.ToEntity()));
-            return Ok(response);
+
+            return StatusCode(201, response);
         }
     }
 }
