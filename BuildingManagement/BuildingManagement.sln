@@ -17,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogic", "BusinessLo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceFactory", "ServiceFactory\ServiceFactory.csproj", "{61F53BC6-9B8C-4F0E-8781-E098A12E7AB2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exceptions", "Exceptions\Exceptions.csproj", "{63A99439-4640-4E0B-BD83-22A09FB64DD6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exceptions", "Exceptions\Exceptions.csproj", "{63A99439-4640-4E0B-BD83-22A09FB64DD6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogicTest", "BusinessLogicTest\BusinessLogicTest.csproj", "{8CFC7874-81AF-48D1-B9CA-3409EB54F945}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{63A99439-4640-4E0B-BD83-22A09FB64DD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63A99439-4640-4E0B-BD83-22A09FB64DD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63A99439-4640-4E0B-BD83-22A09FB64DD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CFC7874-81AF-48D1-B9CA-3409EB54F945}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CFC7874-81AF-48D1-B9CA-3409EB54F945}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CFC7874-81AF-48D1-B9CA-3409EB54F945}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CFC7874-81AF-48D1-B9CA-3409EB54F945}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
