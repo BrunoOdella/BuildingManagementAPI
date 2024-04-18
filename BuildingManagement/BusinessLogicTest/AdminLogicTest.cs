@@ -1,4 +1,6 @@
-﻿using Moq;
+﻿using BusinessLogic.Logics;
+using IDataAccess;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
