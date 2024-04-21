@@ -21,7 +21,9 @@ namespace BuildingManagementApi.Controllers
         [HttpPost]
         public IActionResult CreateCategory([FromBody] CreateCategoryRequest request)
         {
-            throw new NotImplementedException();
+            CreateCategoryResponse response = new CreateCategoryResponse(_logic.CreateCategory(request.ToEntity()));
+
+            return StatusCode(201, response);
         }
     }
 }
