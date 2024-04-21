@@ -12,6 +12,7 @@ namespace ServiceFactory
         {
             serviceCollection.AddScoped<IAdminLogic, AdminLogic>();
             serviceCollection.AddScoped<IAdminRepository, AdminRepository>();
+            serviceCollection.AddScoped<ICategoriesRequestsLogic, CategoriesRequestsLogic>();
         }
     }
 }
