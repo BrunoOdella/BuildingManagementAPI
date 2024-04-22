@@ -6,9 +6,9 @@ namespace BusinessLogic.Logics;
 
 public class CategoriesRequestsLogic : ICategoriesRequestsLogic
 {
-    private readonly ICategoriesRequestsLogic _logic;
+    private readonly ICategoryRepository _logic;
 
-    public CategoriesRequestsLogic(ICategoriesRequestsLogic logic)
+    public CategoriesRequestsLogic(ICategoryRepository logic)
     {
         _logic = logic;
     }
