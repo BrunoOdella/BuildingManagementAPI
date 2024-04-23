@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Logics;
+using Domain;
 using IDataAccess;
 using Moq;
 using System;
@@ -21,10 +22,28 @@ namespace BusinessLogicTest
             _adminLogic = new AdminLogic(_adminRepositoryMock.Object);
         }
 
-        //arrange
+        [TestMethod]
+        public void CreateAdmin_ValidatesData_AndCreatesAdmin()
+        {
+            // Arrange
+            Admin admin = new Admin
+            {
+                AdminID = Guid.Parse("fd6021ba-dd96-4e90-9100-c25e448315eb"),
+                FirstName = "Juan",
+                LastName = "Perez",
+                Email = "juan.perez@example.com",
+                Password = "securePassword123"
+            };
 
-        //act
+            _adminRepositoryMock.Setup(repository => repository.Add(It.IsAny<Admin>())).Returns(admin);
 
-        //assert
+            // Act
+            Admin result = _adminLogic.CreateAdmin(admin);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(Guid.Parse("fd6021ba-dd96-4e90-9100-c25e448315eb"), result.AdminID);
+            _adminRepositoryMock.VerifyAll();
+        }
     }
 }

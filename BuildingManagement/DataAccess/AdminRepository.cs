@@ -1,4 +1,5 @@
-﻿using IDataAccess;
+﻿using Domain;
+using IDataAccess;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,9 @@ namespace DataAccess
 {
     public class AdminRepository : IAdminRepository
     {
+        public Admin Add(Admin admin)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
