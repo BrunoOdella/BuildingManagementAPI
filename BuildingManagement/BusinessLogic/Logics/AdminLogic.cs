@@ -16,7 +16,7 @@ namespace BusinessLogic.Logics
 
         public Admin CreateAdmin(Admin admin)
         {
-            return _adminRepository.Add(admin);
+            return _adminRepository.CreateAdmin(admin);
         }
     }
 }

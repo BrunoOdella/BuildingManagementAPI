@@ -9,6 +9,6 @@ namespace IDataAccess
 {
     public interface IAdminRepository
     {
-        Admin Add(Admin admin);
+        Admin CreateAdmin(Admin admin);
     }
 }

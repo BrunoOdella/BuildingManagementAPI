@@ -10,7 +10,7 @@ namespace DataAccess
 {
     public class AdminRepository : IAdminRepository
     {
-        public Admin Add(Admin admin)
+        public Admin CreateAdmin(Admin admin)
         {
             throw new NotImplementedException();
         }

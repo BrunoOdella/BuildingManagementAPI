@@ -35,7 +35,7 @@ namespace BusinessLogicTest
                 Password = "securePassword123"
             };
 
-            _adminRepositoryMock.Setup(repository => repository.Add(It.IsAny<Admin>())).Returns(admin);
+            _adminRepositoryMock.Setup(repository => repository.CreateAdmin(It.IsAny<Admin>())).Returns(admin);
 
             // Act
             Admin result = _adminLogic.CreateAdmin(admin);
