@@ -10,9 +10,18 @@ namespace DataAccess
 {
     public class AdminRepository : IAdminRepository
     {
+        private readonly BuildingManagementDbContext _context;
+
+        public AdminRepository(BuildingManagementDbContext context)
+        {
+            _context = context;
+        }
+
         public Admin CreateAdmin(Admin admin)
         {
-            throw new NotImplementedException();
+            _context.Admins.Add(admin);
+            return admin;
         }
     }
+
 }

@@ -7,7 +7,7 @@ namespace DataAccessTest
     [TestClass]
     public class AdminRepositoryTest
     {
-        private DbContext CreateDbContext(string BuildingManagementDb)
+        private BuildingManagementDbContext CreateDbContext(string BuildingManagementDb)
         {
             var options = new DbContextOptionsBuilder<BuildingManagementDbContext>().UseInMemoryDatabase(BuildingManagementDb).Options;
             return new BuildingManagementDbContext(options);
@@ -17,7 +17,7 @@ namespace DataAccessTest
         [TestMethod]
         public void CreateAdminTest()
         {
-            using (var context = CreateDbContext("TestAddUser"))
+            using (var context = CreateDbContext("TestAddAdmin"))
             {
                 var repository = new AdminRepository(context);
                 Admin expected = new Admin
