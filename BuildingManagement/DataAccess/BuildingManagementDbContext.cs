@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess
 {
-    public class ApplicationDbContext : DbContext
+    public class BuildingManagementDbContext : DbContext
     {
     }
 }
