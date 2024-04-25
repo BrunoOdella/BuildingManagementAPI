@@ -20,6 +20,7 @@ namespace ServiceFactory
                 options.UseSqlServer(connectionString));
 
             services.AddScoped<IAdminRepository, AdminRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
         }
     }
 }
