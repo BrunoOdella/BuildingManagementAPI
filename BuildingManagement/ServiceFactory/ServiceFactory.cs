@@ -2,17 +2,24 @@
 using DataAccess;
 using IDataAccess;
 using LogicInterface.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ServiceFactory
 {
     public static class ServiceFactory
     {
-        public static void AddServices(this IServiceCollection serviceCollection)
+        public static void AddBusinessLogicServices(this IServiceCollection serviceCollection)
         {
             serviceCollection.AddScoped<IAdminLogic, AdminLogic>();
-            serviceCollection.AddScoped<IAdminRepository, AdminRepository>();
             serviceCollection.AddScoped<ICategoriesRequestsLogic, CategoriesRequestsLogic>();
+        }
+        public static void AddDataAccessServices(this IServiceCollection services, string connectionString)
+        {
+            services.AddDbContext<BuildingManagementDbContext>(options =>
+                options.UseSqlServer(connectionString));
+
+            services.AddScoped<IAdminRepository, AdminRepository>();
         }
     }
 }

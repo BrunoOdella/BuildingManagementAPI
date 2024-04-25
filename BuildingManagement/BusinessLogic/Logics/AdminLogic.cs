@@ -16,7 +16,7 @@ namespace BusinessLogic.Logics
 
         public Admin CreateAdmin(Admin admin)
         {
-            throw new NotImplementedException();
+            return _adminRepository.CreateAdmin(admin);
         }
     }
 }
