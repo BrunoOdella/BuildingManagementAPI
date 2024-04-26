@@ -1,4 +1,5 @@
 ﻿using Domain;
+using IDataAccess;
 using LogicInterface.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,9 +11,15 @@ namespace BusinessLogic.Logics
 {
     public class InvitationLogic : IInvitationLogic
     {
+        private readonly IInvitationRepository _invitationRepository;
+        public InvitationLogic(IInvitationRepository invitationRepository)
+        {
+            _invitationRepository = invitationRepository;
+        }
+
         public Invitation CreateInvitation(Invitation invitation)
         {
-            throw new NotImplementedException();
+            return _invitationRepository.CreateInvitation(invitation);
         }
     }
 }

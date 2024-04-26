@@ -21,7 +21,7 @@ namespace BusinessLogicTest
         public void TestSetup()
         {
             _invitationRepositoryMock = new Mock<IInvitationRepository>(MockBehavior.Strict);
-            _invitationLogic = new AdminLogic(_invitationRepositoryMock.Object);
+            _invitationLogic = new InvitationLogic(_invitationRepositoryMock.Object);
         }
 
         [TestMethod]
