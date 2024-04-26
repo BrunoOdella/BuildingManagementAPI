@@ -21,5 +21,10 @@ namespace BusinessLogic.Logics
         {
             return _invitationRepository.CreateInvitation(invitation);
         }
+
+        public IEnumerable<Invitation> GetAllInvitations()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

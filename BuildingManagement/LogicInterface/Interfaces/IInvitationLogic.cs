@@ -10,5 +10,6 @@ namespace LogicInterface.Interfaces
     public interface IInvitationLogic
     {
         Invitation CreateInvitation(Invitation invitation);
+        IEnumerable<Invitation> GetAllInvitations();
     }
 }

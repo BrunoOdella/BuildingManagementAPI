@@ -52,5 +52,40 @@ namespace BuildingManagementApiTest
 
             _invitationLogicMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void GetAllInvitations_ShouldReturnOkWithInvitations()
+        {
+            IEnumerable<Invitation> expected = new List<Invitation>()
+            {
+                new Invitation()
+                {
+                    InvitationId=Guid.NewGuid(),
+                    Email= "example@.com",
+                    Name="mateo",
+                    ExpirationDate = DateTime.UtcNow,
+                    Status="pendiente"
+                },
+                                new Invitation()
+                {
+                    InvitationId=Guid.NewGuid(),
+                    Email= "example2@.com",
+                    Name="Joaquin",
+                    ExpirationDate = DateTime.UtcNow,
+                    Status="Aceptada"
+                }
+            };
+
+            GetInvitationsResponse response = new GetInvitationsResponse(expected);
+            _invitationLogicMock.Setup(logic => logic.GetAllInvitations()).Returns(expected);
+
+            ObjectResult result = _invitationsController.GetAllInvitations() as ObjectResult;
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(200, result.StatusCode);
+            Assert.AreEqual(response, result.Value);
+
+            _invitationLogicMock.VerifyAll();
+        }
     }
 }

@@ -24,5 +24,12 @@ namespace BuildingManagementApi.Controllers
 
             return StatusCode(201, response);
         }
+
+        [HttpGet]
+        public ObjectResult GetAllInvitations()
+        {
+            GetInvitationsResponse response = new GetInvitationsResponse(_invitationLogic.GetAllInvitations());
+            return StatusCode(200, response);
+        }
     }
 }
