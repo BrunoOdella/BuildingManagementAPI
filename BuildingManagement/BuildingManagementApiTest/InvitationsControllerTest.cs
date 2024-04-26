@@ -25,7 +25,6 @@ namespace BuildingManagementApiTest
         [TestMethod]
         public void PostInvitation_ShouldReturnCreatedResponse()
         {
-            // Arrange
             CreateInvitationRequest newCreateInvitationRequest = new CreateInvitationRequest
             {
                 Email = "mairafraga@mail.com",
@@ -45,10 +44,8 @@ namespace BuildingManagementApiTest
             CreateInvitationResponse response = new CreateInvitationResponse(invitationEntity);
             _invitationLogicMock.Setup(logic => logic.CreateInvitation(It.IsAny<Invitation>())).Returns(invitationEntity);
 
-            // Act
             ObjectResult result = _invitationsController.CreateInvitation(newCreateInvitationRequest) as ObjectResult;
 
-            // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(201, result.StatusCode);
             Assert.AreEqual(response, result.Value);
