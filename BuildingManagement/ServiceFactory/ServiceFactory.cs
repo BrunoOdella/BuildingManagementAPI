@@ -13,6 +13,7 @@ namespace ServiceFactory
         {
             serviceCollection.AddScoped<IAdminLogic, AdminLogic>();
             serviceCollection.AddScoped<ICategoriesRequestsLogic, CategoriesRequestsLogic>();
+            serviceCollection.AddScoped<IInvitationLogic, InvitationLogic>();
         }
         public static void AddDataAccessServices(this IServiceCollection services, string connectionString)
         {
