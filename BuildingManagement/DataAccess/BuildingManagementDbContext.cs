@@ -15,5 +15,7 @@ namespace DataAccess
         { }
 
         public DbSet<Admin> Admins { get; set; }
+
+        public DbSet<Invitation> Invitations { get; set; }
     }
 }
