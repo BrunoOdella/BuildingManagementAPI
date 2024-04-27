@@ -31,11 +31,19 @@ namespace BuildingManagementApi.Controllers
             return Ok(_invitationLogic.GetAllInvitations().Select(invitation => new InvitationResponse(invitation)).ToList());
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{InvitationId}")]
         public IActionResult DeleteInvitation(Guid id)
         {
             _invitationLogic.DeleteInvitation(id);
             return NoContent();
         }
+
+        [HttpPut("{InvitationId}")]
+        public IActionResult AcceptInvitation(Guid id, [FromBody] AcceptInvitationRequest acceptRequest)
+        {
+            var response = _invitationLogic.AcceptInvitation(id, acceptRequest.Password);
+            return Ok(new InvitationResponse(response));
+        }
+
     }
 }

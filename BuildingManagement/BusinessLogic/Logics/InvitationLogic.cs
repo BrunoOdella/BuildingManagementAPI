@@ -12,6 +12,11 @@ namespace BusinessLogic.Logics
             _invitationRepository = invitationRepository;
         }
 
+        public Invitation AcceptInvitation(Guid invitationId, string password)
+        {
+            throw new NotImplementedException();
+        }
+
         public Invitation CreateInvitation(Invitation invitation)
         {
             return _invitationRepository.CreateInvitation(invitation);
