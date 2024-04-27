@@ -21,6 +21,11 @@ namespace DataAccess
             return invitation;
         }
 
+        public bool DeleteInvitation(int invitationId)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<Invitation> GetAllInvitations()
         {
             return _context.Invitations.ToList();

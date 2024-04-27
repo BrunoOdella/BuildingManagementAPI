@@ -19,8 +19,9 @@ namespace BusinessLogic.Logics
 
         public bool DeleteInvitation(int invitationId)
         {
-            throw new NotImplementedException();
+            return _invitationRepository.DeleteInvitation(invitationId);
         }
+
 
         public IEnumerable<Invitation> GetAllInvitations()
         {
