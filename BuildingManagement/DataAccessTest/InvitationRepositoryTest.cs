@@ -77,8 +77,9 @@ namespace DataAccessTest
             Assert.IsNotNull(result);
             Assert.AreEqual(result.Count(), 2);
         }
+
         [TestMethod]
-        public void DeleteInvitationTest()
+        public void DeleteInvitation_ExistingInvitation_ReturnsTrue()
         {
             var context = CreateDbContext("TestDeleteInvitation");
 
@@ -103,6 +104,21 @@ namespace DataAccessTest
             var deletedInvitation = context.Invitations.Find(expected.InvitationId);
             Assert.IsNull(deletedInvitation);
         }
+
+        [TestMethod]
+        public void DeleteInvitation_NonExistingInvitation_ReturnsFalse()
+        {
+            var context = CreateDbContext("TestDeleteInvitation");
+
+            Guid nonExistingId = Guid.NewGuid();
+
+            var repository = new InvitationRepository(context);
+
+            bool result = repository.DeleteInvitation(nonExistingId);
+
+            Assert.IsFalse(result);
+        }
+
 
 
     }
