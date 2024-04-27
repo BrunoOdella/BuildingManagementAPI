@@ -30,5 +30,12 @@ namespace BuildingManagementApi.Controllers
         {
             return Ok(_invitationLogic.GetAllInvitations().Select(invitation => new InvitationResponse(invitation)).ToList());
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteInvitation(int id)
+        {
+            _invitationLogic.DeleteInvitation(id);
+            return NoContent();
+        }
     }
 }

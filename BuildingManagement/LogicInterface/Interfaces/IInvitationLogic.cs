@@ -10,6 +10,7 @@ namespace LogicInterface.Interfaces
     public interface IInvitationLogic
     {
         Invitation CreateInvitation(Invitation invitation);
+        bool DeleteInvitation(int invitationId);
         IEnumerable<Invitation> GetAllInvitations();
     }
 }
