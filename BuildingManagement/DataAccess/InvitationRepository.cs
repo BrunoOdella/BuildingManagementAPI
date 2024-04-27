@@ -1,5 +1,7 @@
 ﻿using Domain;
 using IDataAccess;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DataAccess
 {
@@ -21,7 +23,7 @@ namespace DataAccess
 
         public IEnumerable<Invitation> GetAllInvitations()
         {
-            throw new NotImplementedException();
+            return _context.Invitations.ToList();
         }
     }
 }
