@@ -76,7 +76,34 @@ namespace DataAccessTest
 
             Assert.IsNotNull(result);
             Assert.AreEqual(result.Count(), 2);
-
         }
+        [TestMethod]
+        public void DeleteInvitationTest()
+        {
+            var context = CreateDbContext("TestDeleteInvitation");
+
+            Invitation expected = new Invitation
+            {
+                InvitationId = Guid.NewGuid(),
+                Email = "odella@example.com",
+                Name = "Test",
+                ExpirationDate = DateTime.Now,
+                Status = "pendiente"
+            };
+
+            context.Invitations.Add(expected);
+            context.SaveChanges();
+
+            var repository = new InvitationRepository(context);
+
+            bool result = repository.DeleteInvitation(expected.InvitationId);
+
+            Assert.IsTrue(result);
+
+            var deletedInvitation = context.Invitations.Find(expected.InvitationId);
+            Assert.IsNull(deletedInvitation);
+        }
+
+
     }
 }
