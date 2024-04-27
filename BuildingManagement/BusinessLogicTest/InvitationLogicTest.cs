@@ -63,5 +63,19 @@ namespace BusinessLogicTest
             Assert.AreEqual(expected, result);
             _invitationRepositoryMock.VerifyAll();
         }
+
+
+        [TestMethod]
+        public void DeleteInvitation_ReturnsTrueOnSuccessfulDeletion()
+        {
+            int invitationId = 1;
+            _invitationRepositoryMock.Setup(repository => repository.DeleteInvitation(invitationId)).Returns(true);
+
+            bool result = _invitationLogic.DeleteInvitation(invitationId);
+
+            Assert.IsTrue(result);
+            _invitationRepositoryMock.VerifyAll();
+        }
+
     }
 }
