@@ -88,5 +88,22 @@ namespace BuildingManagementApiTest
 
             _invitationLogicMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void DeleteInvitation_ShouldReturnNoContentOnSuccessfulDeletion()
+        {
+            int invitationId = 1;
+            _invitationLogicMock.Setup(logic => logic.DeleteInvitation(invitationId)).Returns(true);
+
+            IActionResult result = _invitationsController.DeleteInvitation(invitationId);
+
+            Assert.IsInstanceOfType(result, typeof(NoContentResult));
+            Assert.AreEqual(204, ((NoContentResult)result).StatusCode);
+
+            _invitationLogicMock.VerifyAll();
+        }
+
     }
+
+
 }
