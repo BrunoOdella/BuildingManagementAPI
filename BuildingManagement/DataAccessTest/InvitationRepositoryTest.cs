@@ -21,29 +21,62 @@ namespace DataAccessTest
         [TestMethod]
         public void CreateInvitationTest()
         {
-            using (var context = CreateDbContext("TestCreateInvitation"))
+            var context = CreateDbContext("TestCreateInvitation");
+            
+            var repository = new InvitationRepository(context);
+            Invitation expected = new Invitation
             {
-                var repository = new InvitationRepository(context);
-                Invitation expected = new Invitation
-                {
-                    InvitationId = Guid.NewGuid(),
-                    Email = "odella@example.com",
-                    Name = "Test",
-                    ExpirationDate = DateTime.Now,
-                    Status= "pendiente"
-                };
+                InvitationId = Guid.NewGuid(),
+                Email = "odella@example.com",
+                Name = "Test",
+                ExpirationDate = DateTime.Now,
+                Status= "pendiente"
+            };
 
-                var result = repository.CreateInvitation(expected);
-                context.SaveChanges();
+            var result = repository.CreateInvitation(expected);
+            context.SaveChanges();
 
-                Assert.IsNotNull(result);
-                Assert.AreEqual(expected.InvitationId, result.InvitationId);
-                Assert.AreEqual(expected.Email, result.Email);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(expected.InvitationId, result.InvitationId);
+            Assert.AreEqual(expected.Email, result.Email);
 
-                var storedInvitation = context.Invitations.FirstOrDefault(a => a.InvitationId == expected.InvitationId);
-                Assert.IsNotNull(storedInvitation);
-                Assert.AreEqual(expected.Email, storedInvitation.Email);
-            }
+            var storedInvitation = context.Invitations.FirstOrDefault(a => a.InvitationId == expected.InvitationId);
+            Assert.IsNotNull(storedInvitation);
+            Assert.AreEqual(expected.Email, storedInvitation.Email);
+            
+        }
+
+        [TestMethod]
+        public void GetAllInvtationsTest()
+        {
+            var context = CreateDbContext("TestGetInvitations");
+            Invitation expected1 = new Invitation()
+            {
+                InvitationId = Guid.NewGuid(),
+                Email = "example@.com",
+                Name = "mateo",
+                ExpirationDate = DateTime.UtcNow,
+                Status = "pendiente"
+            };
+            Invitation expected2 = new Invitation()
+            {
+                InvitationId = Guid.NewGuid(),
+                Email = "example2@.com",
+                Name = "Joaquin",
+                ExpirationDate = DateTime.UtcNow,
+                Status = "Aceptada"
+            };
+
+            context.Set<Invitation>().Add(expected1);
+            context.Set<Invitation>().Add(expected2);
+            context.SaveChanges();
+            var repository = new InvitationRepository(context);
+
+            IEnumerable<Invitation> result = repository.GetAllInvitations();
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(result.Count(), 2);
+
         }
     }
 }
