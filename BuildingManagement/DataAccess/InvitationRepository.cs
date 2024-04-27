@@ -39,5 +39,11 @@ namespace DataAccess
         {
             return _context.Invitations.ToList();
         }
+
+        public Invitation GetInvitationById(Guid invitationId)
+        {
+            return _context.Invitations.FirstOrDefault(i => i.InvitationId == invitationId);
+        }
+
     }
 }

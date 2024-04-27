@@ -119,6 +119,42 @@ namespace DataAccessTest
             Assert.IsFalse(result);
         }
 
+        [TestMethod]
+        public void GetInvitationById_ReturnsInvitationWithGivenId()
+        {
+            var context = CreateDbContext("TestGetInvitationById");
+            var repository = new InvitationRepository(context);
+
+            var expected = new Invitation
+            {
+                InvitationId = Guid.NewGuid(),
+                Email = "test@example.com",
+                Name = "Test",
+                ExpirationDate = DateTime.Now,
+                Status = "pendiente"
+            };
+
+            context.Invitations.Add(expected);
+            context.SaveChanges();
+
+            var result = repository.GetInvitationById(expected.InvitationId);
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(expected.InvitationId, result.InvitationId);
+            Assert.AreEqual(expected.Email, result.Email);
+        }
+
+        [TestMethod]
+        public void GetInvitationById_ReturnsNullForNonExistingId()
+        {
+            var context = CreateDbContext("TestGetInvitationById");
+            var repository = new InvitationRepository(context);
+
+            var result = repository.GetInvitationById(Guid.NewGuid());
+
+            Assert.IsNull(result);
+        }
+
 
 
     }

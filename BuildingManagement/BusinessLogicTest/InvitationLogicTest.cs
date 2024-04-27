@@ -66,16 +66,47 @@ namespace BusinessLogicTest
 
 
         [TestMethod]
-        public void DeleteInvitation_ReturnsTrueOnSuccessfulDeletion()
+        public void DeleteInvitation_InvitationNotAccepted_DeletesInvitation()
         {
-            Guid invitationId = new Guid();
-            _invitationRepositoryMock.Setup(repository => repository.DeleteInvitation(invitationId)).Returns(true);
+            var invitationId = Guid.NewGuid();
+            var invitation = new Invitation
+            {
+                InvitationId = invitationId,
+                Email = "test@example.com",
+                Name = "Test",
+                ExpirationDate = DateTime.Now,
+                Status = "pendiente"
+            };
 
-            bool result = _invitationLogic.DeleteInvitation(invitationId);
+            _invitationRepositoryMock.Setup(repo => repo.GetInvitationById(invitationId)).Returns(invitation);
+            _invitationRepositoryMock.Setup(repo => repo.DeleteInvitation(invitationId)).Returns(true);
+
+            var result = _invitationLogic.DeleteInvitation(invitationId);
 
             Assert.IsTrue(result);
-            _invitationRepositoryMock.VerifyAll();
+            _invitationRepositoryMock.Verify(repo => repo.GetInvitationById(invitationId), Times.Once);
+            _invitationRepositoryMock.Verify(repo => repo.DeleteInvitation(invitationId), Times.Once);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void DeleteInvitation_InvitationAccepted_ThrowsException()
+        {
+            var invitationId = Guid.NewGuid();
+            var invitation = new Invitation
+            {
+                InvitationId = invitationId,
+                Email = "test@example.com",
+                Name = "Test",
+                ExpirationDate = DateTime.Now,
+                Status = "Aceptada"
+            };
+
+            _invitationRepositoryMock.Setup(repo => repo.GetInvitationById(invitationId)).Returns(invitation);
+
+            _invitationLogic.DeleteInvitation(invitationId);
+        }
+
 
     }
 }

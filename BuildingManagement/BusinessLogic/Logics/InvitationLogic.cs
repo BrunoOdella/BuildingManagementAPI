@@ -19,8 +19,21 @@ namespace BusinessLogic.Logics
 
         public bool DeleteInvitation(Guid invitationId)
         {
-            return _invitationRepository.DeleteInvitation(invitationId);
+            var invitation = _invitationRepository.GetInvitationById(invitationId);
+            if (invitation == null)
+            {
+                return false; 
+            }
+
+            if (invitation.Status == "Aceptada")
+            {
+                throw new InvalidOperationException("No se puede eliminar una invitación aceptada.");
+            }
+
+            _invitationRepository.DeleteInvitation(invitationId);
+            return true;
         }
+
 
 
         public IEnumerable<Invitation> GetAllInvitations()
