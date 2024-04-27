@@ -108,5 +108,50 @@ namespace BusinessLogicTest
         }
 
 
+
+        [TestMethod]
+        public void AcceptInvitation_InvitationCanBeAccepted_UpdatesInvitationStatus()
+        {
+            var invitationId = Guid.NewGuid();
+            var invitation = new Invitation
+            {
+                InvitationId = invitationId,
+                Email = "test@example.com",
+                Name = "Test",
+                ExpirationDate = DateTime.Now,
+                Status = "pendiente"
+            };
+
+            _invitationRepositoryMock.Setup(repo => repo.GetInvitationById(invitationId)).Returns(invitation);
+            _invitationRepositoryMock.Setup(repo => repo.UpdateInvitation(invitation)).Verifiable("Invitation should be updated.");
+
+            Invitation result = _invitationLogic.AcceptInvitation(invitationId, "newPassword123");
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual("Aceptada", result.Status);
+            _invitationRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void AcceptInvitation_InvitationAlreadyAccepted_ThrowsException()
+        {
+            var invitationId = Guid.NewGuid();
+            var invitation = new Invitation
+            {
+                InvitationId = invitationId,
+                Email = "test@example.com",
+                Name = "Test",
+                ExpirationDate = DateTime.Now,
+                Status = "Aceptada"
+            };
+
+            _invitationRepositoryMock.Setup(repo => repo.GetInvitationById(invitationId)).Returns(invitation);
+
+            _invitationLogic.AcceptInvitation(invitationId, "newPassword123");
+        }
+
+
+
     }
 }
