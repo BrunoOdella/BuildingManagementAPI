@@ -18,5 +18,10 @@ namespace DataAccess
             _context.Invitations.Add(invitation);
             return invitation;
         }
+
+        public IEnumerable<Invitation> GetAllInvitations()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
