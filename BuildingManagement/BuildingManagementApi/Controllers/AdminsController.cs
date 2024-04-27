@@ -7,7 +7,7 @@ using Models.Out;
 
 namespace BuildingManagementApi.Controllers
 {
-    [Route("api/admins")]
+    [Route("api/v1/admins")]
     [ApiController]
     public class AdminsController : ControllerBase
     {
@@ -21,7 +21,7 @@ namespace BuildingManagementApi.Controllers
         [HttpPost]
         public IActionResult CreateAdmin([FromBody] CreateAdminRequest admin)
         {
-            CreateAdminResponse response = new CreateAdminResponse(_adminLogic.CreateAdmin(admin.ToEntity()));
+            AdminResponse response = new AdminResponse(_adminLogic.CreateAdmin(admin.ToEntity()));
 
             return StatusCode(201, response);
         }

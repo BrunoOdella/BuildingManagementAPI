@@ -2,13 +2,13 @@
 
 namespace Models.Out
 {
-    public class CreateAdminResponse
+    public class AdminResponse
     {
         public Guid AdminId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
-        public CreateAdminResponse(Admin admin)
+        public AdminResponse(Admin admin)
         {
             this.AdminId = admin.AdminID;
             this.FirstName = admin.FirstName;
@@ -18,7 +18,7 @@ namespace Models.Out
 
         public override bool Equals(object obj)
         {
-            return obj is CreateAdminResponse response &&
+            return obj is AdminResponse response &&
                    AdminId == response.AdminId &&
                    FirstName == response.FirstName &&
                    LastName == response.LastName &&

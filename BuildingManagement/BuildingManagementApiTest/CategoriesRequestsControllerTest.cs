@@ -42,7 +42,7 @@ namespace BuildingManagementApiTest
                 Description = newCategoryRequest.Description
             };
 
-            CreateCategoryResponse response = new CreateCategoryResponse(categoryEntity);
+            CategoryResponse response = new CategoryResponse(categoryEntity);
             _CRlogicMock.Setup(logic => logic.CreateCategory(It.IsAny<Category>())).Returns(categoryEntity);
 
             // Act

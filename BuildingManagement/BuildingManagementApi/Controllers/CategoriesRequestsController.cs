@@ -7,7 +7,7 @@ using Models.Out;
 
 namespace BuildingManagementApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class CategoriesRequestsController : ControllerBase
     {
@@ -21,7 +21,7 @@ namespace BuildingManagementApi.Controllers
         [HttpPost]
         public IActionResult CreateCategory([FromBody] CreateCategoryRequest request)
         {
-            CreateCategoryResponse response = new CreateCategoryResponse(_logic.CreateCategory(request.ToEntity()));
+            CategoryResponse response = new CategoryResponse(_logic.CreateCategory(request.ToEntity()));
 
             return StatusCode(201, response);
         }

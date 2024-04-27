@@ -41,7 +41,7 @@ namespace BuildingManagementApiTest
                 Status = "pendiente"
             };
 
-            CreateInvitationResponse response = new CreateInvitationResponse(invitationEntity);
+            InvitationResponse response = new InvitationResponse(invitationEntity);
             _invitationLogicMock.Setup(logic => logic.CreateInvitation(It.IsAny<Invitation>())).Returns(invitationEntity);
 
             ObjectResult result = _invitationsController.CreateInvitation(newCreateInvitationRequest) as ObjectResult;
@@ -76,7 +76,7 @@ namespace BuildingManagementApiTest
                 }
             };
 
-            GetInvitationsResponse response = new GetInvitationsResponse(expected);
+            InvitationsResponse response = new InvitationsResponse(expected);
             _invitationLogicMock.Setup(logic => logic.GetAllInvitations()).Returns(expected);
 
             ObjectResult result = _invitationsController.GetAllInvitations() as ObjectResult;

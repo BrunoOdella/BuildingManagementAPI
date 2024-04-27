@@ -41,7 +41,7 @@ namespace BuildingManagementApiTest
                 Email = newAdminRequest.Email,
             };
 
-            CreateAdminResponse response = new CreateAdminResponse(adminEntity);
+            AdminResponse response = new AdminResponse(adminEntity);
             _adminLogicMock.Setup(logic => logic.CreateAdmin(It.IsAny<Admin>())).Returns(adminEntity);
 
             // Act

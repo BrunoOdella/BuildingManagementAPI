@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Models.Out
 {
-    public class CreateInvitationResponse
+    public class InvitationResponse
     {
         public Guid InvitationId { get; set; }
         public string Email { get; set; }
@@ -15,7 +15,7 @@ namespace Models.Out
         public DateTime ExpirationDate { get; set; }
         public string Status { get; set; }
 
-        public CreateInvitationResponse(Invitation invitation)
+        public InvitationResponse(Invitation invitation)
         {
             this.InvitationId=invitation.InvitationId;
             this.Email = invitation.Email;
@@ -26,7 +26,7 @@ namespace Models.Out
 
         public override bool Equals(object obj)
         {
-            return obj is CreateInvitationResponse response &&
+            return obj is InvitationResponse response &&
                    InvitationId == response.InvitationId &&
                    Email == response.Email &&
                    Name == response.Name &&

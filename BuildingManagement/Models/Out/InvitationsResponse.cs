@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Models.Out
 {
-    public class GetInvitationsResponse
+    public class InvitationsResponse
     {
-        public IEnumerable<CreateInvitationResponse> Invitations { get; set; }
-        public GetInvitationsResponse(IEnumerable<Invitation> invitations)
+        public IEnumerable<InvitationResponse> Invitations { get; set; }
+        public InvitationsResponse(IEnumerable<Invitation> invitations)
         {
-            this.Invitations = invitations.Select(invitation => new CreateInvitationResponse(invitation)).ToList();
+            this.Invitations = invitations.Select(invitation => new InvitationResponse(invitation)).ToList();
         }
 
         public override bool Equals(object obj)
@@ -20,7 +20,7 @@ namespace Models.Out
             if (obj == null || GetType() != obj.GetType())
                 return false;
 
-            var other = (GetInvitationsResponse)obj;
+            var other = (InvitationsResponse)obj;
             return Invitations.SequenceEqual(other.Invitations);
         }
     }

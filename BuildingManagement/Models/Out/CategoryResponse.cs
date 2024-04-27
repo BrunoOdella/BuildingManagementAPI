@@ -2,12 +2,12 @@
 
 namespace Models.Out;
 
-public class CreateCategoryResponse
+public class CategoryResponse
 {
     public string Name { get; set; }
     public string Description { get; set; }
 
-    public CreateCategoryResponse(Category category)
+    public CategoryResponse(Category category)
     {
         this.Name = category.Name;
         this.Description = category.Description;
@@ -15,7 +15,7 @@ public class CreateCategoryResponse
 
     public override bool Equals(object obj)
     {
-        return obj is CreateCategoryResponse response &&
+        return obj is CategoryResponse response &&
                Name == response.Name && 
                Description == response.Description;
     }

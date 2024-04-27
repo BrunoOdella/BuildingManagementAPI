@@ -7,7 +7,7 @@ using Models.Out;
 
 namespace BuildingManagementApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class InvitationsController : ControllerBase
     {
@@ -20,7 +20,7 @@ namespace BuildingManagementApi.Controllers
         [HttpPost]
         public IActionResult CreateInvitation([FromBody] CreateInvitationRequest invitation)
         {
-            CreateInvitationResponse response = new CreateInvitationResponse(_invitationLogic.CreateInvitation(invitation.ToEntity()));
+            InvitationResponse response = new InvitationResponse(_invitationLogic.CreateInvitation(invitation.ToEntity()));
 
             return StatusCode(201, response);
         }
@@ -28,7 +28,7 @@ namespace BuildingManagementApi.Controllers
         [HttpGet]
         public ObjectResult GetAllInvitations()
         {
-            GetInvitationsResponse response = new GetInvitationsResponse(_invitationLogic.GetAllInvitations());
+            InvitationsResponse response = new InvitationsResponse(_invitationLogic.GetAllInvitations());
             return StatusCode(200, response);
         }
     }
