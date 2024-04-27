@@ -28,8 +28,7 @@ namespace BuildingManagementApi.Controllers
         [HttpGet]
         public ObjectResult GetAllInvitations()
         {
-            InvitationsResponse response = new InvitationsResponse(_invitationLogic.GetAllInvitations());
-            return StatusCode(200, response);
+            return Ok(_invitationLogic.GetAllInvitations().Select(invitation => new InvitationResponse(invitation)).ToList());
         }
     }
 }

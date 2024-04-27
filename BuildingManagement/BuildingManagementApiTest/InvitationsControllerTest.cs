@@ -2,6 +2,7 @@
 using Domain;
 using LogicInterface.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Models.In;
 using Models.Out;
 using Moq;
@@ -66,7 +67,7 @@ namespace BuildingManagementApiTest
                     ExpirationDate = DateTime.UtcNow,
                     Status="pendiente"
                 },
-                                new Invitation()
+                new Invitation()
                 {
                     InvitationId=Guid.NewGuid(),
                     Email= "example2@.com",
@@ -76,14 +77,14 @@ namespace BuildingManagementApiTest
                 }
             };
 
-            InvitationsResponse response = new InvitationsResponse(expected);
+            List<InvitationResponse> response = expected.Select(invitation => new InvitationResponse(invitation)).ToList();
             _invitationLogicMock.Setup(logic => logic.GetAllInvitations()).Returns(expected);
 
             ObjectResult result = _invitationsController.GetAllInvitations() as ObjectResult;
 
             Assert.IsNotNull(result);
             Assert.AreEqual(200, result.StatusCode);
-            Assert.AreEqual(response, result.Value);
+            CollectionAssert.AreEqual(response, (System.Collections.ICollection?)result.Value);
 
             _invitationLogicMock.VerifyAll();
         }
