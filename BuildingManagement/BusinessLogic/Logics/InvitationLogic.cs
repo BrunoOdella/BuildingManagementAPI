@@ -14,7 +14,18 @@ namespace BusinessLogic.Logics
 
         public Invitation AcceptInvitation(Guid invitationId, string password)
         {
-            throw new NotImplementedException();
+            var invitation = _invitationRepository.GetInvitationById(invitationId);
+            if (invitation == null || invitation.Status == "Aceptada")
+            {
+                throw new InvalidOperationException("Invitation cannot be accepted.");
+            }
+
+            invitation.Status = "Aceptada";
+            _invitationRepository.UpdateInvitation(invitation);
+
+            //Aca se crea el usuario nuevo 
+
+            return invitation;
         }
 
         public Invitation CreateInvitation(Invitation invitation)
