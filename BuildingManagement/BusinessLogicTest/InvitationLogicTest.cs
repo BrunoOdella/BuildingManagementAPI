@@ -1,13 +1,7 @@
 ﻿using BusinessLogic.Logics;
 using Domain;
 using IDataAccess;
-using LogicInterface.Interfaces;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLogicTest
 {
@@ -45,6 +39,28 @@ namespace BusinessLogicTest
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(invitation.Email, result.Email);
+            _invitationRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void GetAllInvitations_ReturnsAllInvitations()
+        {
+            IEnumerable<Invitation> expected = new List<Invitation>()
+            {
+                new Invitation { 
+                    InvitationId= Guid.NewGuid(),
+                    Name="bru",
+                    Email="bru@example.com",
+                    ExpirationDate= DateTime.UtcNow,
+                    Status="pendiente"                    
+                }
+            };
+            _invitationRepositoryMock.Setup(repository => repository.GetAllInvitations()).Returns(expected);
+
+            IEnumerable<Invitation> result = _invitationLogic.GetAllInvitations();
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(expected, result);
             _invitationRepositoryMock.VerifyAll();
         }
     }
