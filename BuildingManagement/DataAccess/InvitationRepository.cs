@@ -21,10 +21,19 @@ namespace DataAccess
             return invitation;
         }
 
-        public bool DeleteInvitation(int invitationId)
+        public bool DeleteInvitation(Guid invitationId)
         {
-            throw new NotImplementedException();
+            var invitation = _context.Invitations.Find(invitationId);
+            if (invitation == null)
+            {
+                return false;
+            }
+
+            _context.Invitations.Remove(invitation);
+            _context.SaveChanges();
+            return true;
         }
+
 
         public IEnumerable<Invitation> GetAllInvitations()
         {

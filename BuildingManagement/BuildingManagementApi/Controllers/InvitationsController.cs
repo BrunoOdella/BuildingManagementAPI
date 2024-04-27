@@ -32,7 +32,7 @@ namespace BuildingManagementApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteInvitation(int id)
+        public IActionResult DeleteInvitation(Guid id)
         {
             _invitationLogic.DeleteInvitation(id);
             return NoContent();

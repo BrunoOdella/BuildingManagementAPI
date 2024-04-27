@@ -68,7 +68,7 @@ namespace BusinessLogicTest
         [TestMethod]
         public void DeleteInvitation_ReturnsTrueOnSuccessfulDeletion()
         {
-            int invitationId = 1;
+            Guid invitationId = new Guid();
             _invitationRepositoryMock.Setup(repository => repository.DeleteInvitation(invitationId)).Returns(true);
 
             bool result = _invitationLogic.DeleteInvitation(invitationId);

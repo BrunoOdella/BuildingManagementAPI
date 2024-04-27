@@ -17,7 +17,7 @@ namespace BusinessLogic.Logics
             return _invitationRepository.CreateInvitation(invitation);
         }
 
-        public bool DeleteInvitation(int invitationId)
+        public bool DeleteInvitation(Guid invitationId)
         {
             return _invitationRepository.DeleteInvitation(invitationId);
         }

@@ -5,7 +5,7 @@ namespace IDataAccess
     public interface IInvitationRepository
     {
         Invitation CreateInvitation(Invitation invitation);
-        bool DeleteInvitation(int invitationId);
+        bool DeleteInvitation(Guid invitationId);
         IEnumerable<Invitation> GetAllInvitations();
     }
 }

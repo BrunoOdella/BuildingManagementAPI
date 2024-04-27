@@ -92,7 +92,7 @@ namespace BuildingManagementApiTest
         [TestMethod]
         public void DeleteInvitation_ShouldReturnNoContentOnSuccessfulDeletion()
         {
-            int invitationId = 1;
+            Guid invitationId = new Guid();
             _invitationLogicMock.Setup(logic => logic.DeleteInvitation(invitationId)).Returns(true);
 
             IActionResult result = _invitationsController.DeleteInvitation(invitationId);
