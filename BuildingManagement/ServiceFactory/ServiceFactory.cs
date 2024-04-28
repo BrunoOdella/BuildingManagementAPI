@@ -14,6 +14,7 @@ namespace ServiceFactory
             serviceCollection.AddScoped<IAdminLogic, AdminLogic>();
             serviceCollection.AddScoped<ICategoriesRequestsLogic, CategoriesRequestsLogic>();
             serviceCollection.AddScoped<IInvitationLogic, InvitationLogic>();
+            serviceCollection.AddScoped<IRequestLogic, RequestLogic>();
         }
         public static void AddDataAccessServices(this IServiceCollection services, string connectionString)
         {
