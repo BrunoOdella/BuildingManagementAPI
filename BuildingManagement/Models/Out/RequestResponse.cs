@@ -7,7 +7,7 @@ public class RequestResponse
     public Guid Id { get; set; }
     public string Description { get; set; }
     public Status Status { get; set; }
-    public int Category { get; set; }
+    public int? Category { get; set; }
     public DateTime CreationTime { get; set; }
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
