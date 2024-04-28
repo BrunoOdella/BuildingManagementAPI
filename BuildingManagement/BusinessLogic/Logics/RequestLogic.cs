@@ -6,16 +6,16 @@ namespace BusinessLogic.Logics;
 
 public class RequestLogic : IRequestLogic
 {
-    private readonly IRequestRepository _logic;
+    private readonly IRequestRepository _requestRepository;
 
-    public RequestLogic(IRequestRepository logic)
+    public RequestLogic(IRequestRepository requestRepository)
     {
-        _logic = logic;
+        _requestRepository = requestRepository;
     }
 
     public Request_ CreateRequest(Request_ request)
     {
-        throw new NotImplementedException();
+        return _requestRepository.CreateRequest(request);
     }
 
     public IEnumerable<Request_> GetAllRequest()
