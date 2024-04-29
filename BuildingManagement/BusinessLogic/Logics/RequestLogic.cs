@@ -22,27 +22,27 @@ public class RequestLogic : IRequestLogic
     
     public IEnumerable<Request_> GetAllRequest()
     {
-        throw new NotImplementedException();
+        return _requestRepository.GetAllRequest();
     }
 
     public IEnumerable<Request_> GetAllRequest(int category)
     {
-        throw new NotImplementedException();
+        return _requestRepository.GetAllRequest(category);
     }
 
     public Request_ ActivateRequest(Guid id, DateTime startTime)
     {
-        throw new NotImplementedException();
+        return _requestRepository.ActivateRequest(id, startTime);
     }
 
     public Request_ TerminateRequest(Guid id, DateTime endTime, float totalCost)
     {
-        throw new NotImplementedException();
+        return _requestRepository.TerminateRequest(id, endTime, totalCost);
     }
 
     public Request_ AsignMaintenancePerson(Guid requestGuid, Guid maintenancePersonId)
     {
-        throw new NotImplementedException();
+        return _requestRepository.AsignMaintenancePerson(requestGuid, maintenancePersonId);
     }
 
     private void ValidateIncomingRequest(Request_ request)
@@ -91,6 +91,9 @@ public class RequestLogic : IRequestLogic
             (!request.EndTime.Equals(DateTime.MinValue)))
             throw new ArgumentException("If status is Active, End Time need to be empty.");
 
+        if(request.Status == Status.Active &&
+           request.MaintenancePersonId == Guid.Empty)
+            throw new ArgumentException("If status is Active, a Maintenance Person must to be asigned.");
         //Cosas por definir: si el status es Finished, el end time lo ponemos como DateTime.Now o lo debemos recibir??
         // Status = Finished
         if (request.Status == Status.Finished &&

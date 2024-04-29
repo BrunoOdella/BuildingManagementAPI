@@ -38,7 +38,8 @@ namespace BusinessLogicTest
                 Id = Guid.NewGuid(),
                 StartTime = DateTime.Now.AddDays(-1),
                 Status = Status.Finished,
-                TotalCost = 1000
+                TotalCost = 1000,
+                MaintenancePersonId = new Guid()
             };
 
             _requestRepositoryMock.Setup(repository => repository.CreateRequest(It.IsAny<Request_>())).Returns(request);
@@ -83,7 +84,8 @@ namespace BusinessLogicTest
                 Id = Guid.NewGuid(),
                 StartTime = DateTime.Now.AddDays(-1),
                 Status = Status.Finished,
-                TotalCost = 1000
+                TotalCost = 1000, 
+                MaintenancePersonId = new Guid()
             };
 
             Exception exception = null;
@@ -115,7 +117,8 @@ namespace BusinessLogicTest
                 Id = Guid.NewGuid(),
                 StartTime = DateTime.Now.AddDays(-1),
                 Status = Status.Finished,
-                TotalCost = 1000
+                TotalCost = 1000,
+                MaintenancePersonId = new Guid()
             };
 
             Exception exception = null;
@@ -146,7 +149,8 @@ namespace BusinessLogicTest
                 Id = Guid.NewGuid(),
                 StartTime = DateTime.Now.AddDays(-1),
                 Status = Status.Finished,
-                TotalCost = 1000
+                TotalCost = 1000,
+                MaintenancePersonId = new Guid()
             };
 
             Exception exception = null;
@@ -178,7 +182,8 @@ namespace BusinessLogicTest
                 Id = Guid.NewGuid(),
                 StartTime = DateTime.Now.AddDays(-1),
                 Status = Status.Finished,
-                TotalCost = 1000
+                TotalCost = 1000,
+                MaintenancePersonId = new Guid()
             };
 
             Exception exception = null;
@@ -275,7 +280,8 @@ namespace BusinessLogicTest
                 Id = Guid.NewGuid(),
                 //StartTime = DateTime.Now.AddDays(-1),
                 Status = Status.Active,
-                TotalCost = 1000
+                TotalCost = 1000,
+                MaintenancePersonId = new Guid()
             };
 
             Exception exception = null;
@@ -307,7 +313,8 @@ namespace BusinessLogicTest
                 Id = Guid.NewGuid(),
                 StartTime = DateTime.Now.AddDays(-1),
                 Status = Status.Active,
-                TotalCost = 1000
+                TotalCost = 1000,
+                MaintenancePersonId = new Guid()
             };
 
             Exception exception = null;
@@ -329,6 +336,39 @@ namespace BusinessLogicTest
 
         [TestMethod]
         public void CreateRequest_ValidatesStatusActive_CreationTimeMustGreaterthanStartTime()
+        {
+            Request_ request = new Request_()
+            {
+                Category = 1,
+                CreationTime = DateTime.Now,
+                Description = "description A",
+                //EndTime = DateTime.Now,
+                Id = Guid.NewGuid(),
+                StartTime = DateTime.Now.AddDays(-1),
+                Status = Status.Active,
+                TotalCost = 1000,
+                MaintenancePersonId = new Guid()
+            };
+
+            Exception exception = null;
+
+            try
+            {
+                _requestLogic.CreateRequest(request);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+            Assert.IsInstanceOfType(exception, typeof(ArgumentException));
+            Assert.IsTrue(exception.Message.Equals("Start time can not be less than Creation Time."));
+
+            _requestRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void CreateRequest_ValidatesStatusActive_MaintenancePersonIdCanNotBeEmpty()
         {
             Request_ request = new Request_()
             {
@@ -371,7 +411,8 @@ namespace BusinessLogicTest
                 Id = Guid.NewGuid(),
                 StartTime = DateTime.Now.AddDays(-1),
                 Status = Status.Finished,
-                TotalCost = 1000
+                TotalCost = 1000,
+                MaintenancePersonId = new Guid()
             };
 
             Exception exception = null;
@@ -403,7 +444,8 @@ namespace BusinessLogicTest
                 Id = Guid.NewGuid(),
                 StartTime = DateTime.Now.AddDays(1),
                 Status = Status.Finished,
-                TotalCost = 1000
+                TotalCost = 1000,
+                MaintenancePersonId = new Guid()
             };
 
             Exception exception = null;
@@ -435,7 +477,8 @@ namespace BusinessLogicTest
                 Id = Guid.NewGuid(),
                 StartTime = DateTime.Now.AddDays(-1),
                 Status = Status.Finished,
-                TotalCost = 1000
+                TotalCost = 1000,
+                MaintenancePersonId = new Guid()
             };
 
             Exception exception = null;
@@ -456,5 +499,203 @@ namespace BusinessLogicTest
         }
 
         // End - CreateRequest
+
+        // Start - GetAllRequest
+
+        [TestMethod]
+        public void GetAllRequest_ShouldReturnAllRequest()
+        {
+            List<Request_> expectedRequests = new List<Request_>()
+            {
+                new Request_()
+                {
+                    Category = 1,
+                    CreationTime = DateTime.Now.AddDays(-2),
+                    Description = "description A",
+                    Id = Guid.NewGuid(),
+                    StartTime = DateTime.Now.AddDays(-1),
+                    Status = Status.Active,
+                    MaintenancePersonId = new Guid()
+                },
+                new Request_()
+                {
+                    Category = 1,
+                    CreationTime = DateTime.Now.AddDays(-2),
+                    Description = "description A",
+                    EndTime = DateTime.Now,
+                    Id = Guid.NewGuid(),
+                    StartTime = DateTime.Now.AddDays(-1),
+                    Status = Status.Finished,
+                    TotalCost = 1000,
+                    MaintenancePersonId = new Guid()
+                },
+                new Request_()
+                {
+                    Id = new Guid(),
+                    Description = "Description A",
+                    Status = Status.Pending,
+                    Category = 3,
+                    CreationTime = DateTime.Now.AddDays(-1)
+                }
+            };
+
+            _requestRepositoryMock.Setup(repository => repository.GetAllRequest()).Returns(expectedRequests);
+
+            // Act
+            IEnumerable<Request_> result = _requestLogic.GetAllRequest();
+
+            // Assert
+            Assert.IsNotNull(result);
+            CollectionAssert.AreEqual(expectedRequests, result.ToList());
+           
+            _requestRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void GetAllRequest_ByCategory_ReturnsAllRequestsOfCategory()
+        {
+            // Arrange
+            int category = 1;
+            List<Request_> expectedRequests = new List<Request_>()
+            {
+                new Request_()
+                {
+                    Category = category,
+                    CreationTime = DateTime.Now.AddDays(-2),
+                    Description = "description A",
+                    Id = Guid.NewGuid(),
+                    StartTime = DateTime.Now.AddDays(-1),
+                    Status = Status.Active,
+                    MaintenancePersonId = new Guid()
+                },
+                new Request_()
+                {
+                    Category = category,
+                    CreationTime = DateTime.Now.AddDays(-2),
+                    Description = "description A",
+                    EndTime = DateTime.Now,
+                    Id = Guid.NewGuid(),
+                    StartTime = DateTime.Now.AddDays(-1),
+                    Status = Status.Finished,
+                    TotalCost = 1000,
+                    MaintenancePersonId = new Guid()
+                }
+            };
+
+            _requestRepositoryMock.Setup(repository => repository.GetAllRequest(category)).Returns(expectedRequests);
+
+            // Act
+            IEnumerable<Request_> result = _requestLogic.GetAllRequest(category);
+
+            // Assert
+            Assert.IsNotNull(result);
+            CollectionAssert.AreEqual(expectedRequests, result.ToList());
+            _requestRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void ActivateRequest_ValidIdAndStartTime_ChangesStatusToActive()
+        {
+            // Arrange
+            Guid id = Guid.NewGuid();
+            DateTime startTime = DateTime.Now.AddDays(-1);
+
+            Request_ updatedRequest = new Request_()
+            {
+                Category = 1,
+                CreationTime = DateTime.Now.AddDays(-2),
+                Description = "description A",
+                Id = id,
+                StartTime = startTime,
+                Status = Status.Active,
+                MaintenancePersonId = new Guid()
+            };
+
+            _requestRepositoryMock.Setup(repository => repository.ActivateRequest(id, startTime)).Returns(updatedRequest);
+
+            // Act
+            Request_ result = _requestLogic.ActivateRequest(id, startTime);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(updatedRequest, result);
+            Assert.AreEqual(Status.Active, result.Status);
+            _requestRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void TerminateRequest_ValidIdEndTimeAndTotalCost_ChangesStatusToFinished()
+        {
+            // Arrange
+            Guid id = Guid.NewGuid();
+            DateTime endTime = DateTime.Now;
+            float totalCost = 1000;
+
+            Request_ finishedRequest = new Request_()
+            {
+                Category = 1,
+                CreationTime = DateTime.Now.AddDays(-2),
+                Description = "description A",
+                EndTime = endTime,
+                Id = id,
+                StartTime = DateTime.Now.AddDays(-2),
+                Status = Status.Finished,
+                TotalCost = totalCost,
+                MaintenancePersonId = new Guid()
+            };
+
+            _requestRepositoryMock.Setup(repository => repository.TerminateRequest(id, endTime, totalCost)).Returns(finishedRequest);
+
+            // Act
+            Request_ result = _requestLogic.TerminateRequest(id, endTime, totalCost);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(finishedRequest, result);
+            Assert.AreEqual(Status.Finished, result.Status);
+            Assert.AreEqual(endTime, result.EndTime);
+            Assert.AreEqual(totalCost, result.TotalCost);
+            _requestRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void AsignMaintenancePerson_ValidRequestAndPersonId_AsignsPersonToRequest()
+        {
+            // Arrange
+            Guid requestGuid = Guid.NewGuid();
+            Guid maintenancePersonId = Guid.NewGuid();
+            Request_ unassignedRequest = new Request_()
+            {
+                Category = 1,
+                CreationTime = DateTime.Now.AddDays(-2),
+                Description = "description A",
+                Id = requestGuid,
+                Status = Status.Pending
+            };
+
+            Request_ assignedRequest = new Request_()
+            {
+                Category = 1,
+                CreationTime = DateTime.Now.AddDays(-2),
+                Description = "description A",
+                Id = requestGuid,
+                StartTime = DateTime.Now,
+                Status = Status.Active,
+                MaintenancePersonId = maintenancePersonId
+            };
+
+            _requestRepositoryMock.Setup(repository => repository.AsignMaintenancePerson(requestGuid, maintenancePersonId)).Returns(assignedRequest);
+
+            // Act
+            Request_ result = _requestLogic.AsignMaintenancePerson(requestGuid, maintenancePersonId);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(assignedRequest, result);
+            Assert.AreEqual(maintenancePersonId, result.MaintenancePersonId);
+            _requestRepositoryMock.VerifyAll();
+        }
+
+
     }
 }
