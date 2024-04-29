@@ -1,5 +1,7 @@
 ﻿using Domain;
 using IDataAccess;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DataAccess
 {
@@ -18,5 +20,30 @@ namespace DataAccess
             _context.Invitations.Add(invitation);
             return invitation;
         }
+
+        public bool DeleteInvitation(Guid invitationId)
+        {
+            var invitation = _context.Invitations.Find(invitationId);
+            if (invitation == null)
+            {
+                return false;
+            }
+
+            _context.Invitations.Remove(invitation);
+            _context.SaveChanges();
+            return true;
+        }
+
+
+        public IEnumerable<Invitation> GetAllInvitations()
+        {
+            return _context.Invitations.ToList();
+        }
+
+        public Invitation GetInvitationById(Guid invitationId)
+        {
+            return _context.Invitations.FirstOrDefault(i => i.InvitationId == invitationId);
+        }
+
     }
 }

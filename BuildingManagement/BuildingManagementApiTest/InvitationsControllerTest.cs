@@ -2,6 +2,7 @@
 using Domain;
 using LogicInterface.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Models.In;
 using Models.Out;
 using Moq;
@@ -34,7 +35,7 @@ namespace BuildingManagementApiTest
 
             Invitation invitationEntity = new Invitation
             {
-                InvitationId= Guid.Parse("d8119d3a-f0f1-4451-a0c3-d4abd21e13aa"),
+                InvitationId = Guid.Parse("d8119d3a-f0f1-4451-a0c3-d4abd21e13aa"),
                 Email = "mairafraga@mail.com",
                 Name = "maira",
                 ExpirationDate = DateTime.UtcNow,
@@ -66,7 +67,7 @@ namespace BuildingManagementApiTest
                     ExpirationDate = DateTime.UtcNow,
                     Status="pendiente"
                 },
-                                new Invitation()
+                new Invitation()
                 {
                     InvitationId=Guid.NewGuid(),
                     Email= "example2@.com",
@@ -76,16 +77,62 @@ namespace BuildingManagementApiTest
                 }
             };
 
-            InvitationsResponse response = new InvitationsResponse(expected);
+            List<InvitationResponse> response = expected.Select(invitation => new InvitationResponse(invitation)).ToList();
             _invitationLogicMock.Setup(logic => logic.GetAllInvitations()).Returns(expected);
 
             ObjectResult result = _invitationsController.GetAllInvitations() as ObjectResult;
 
             Assert.IsNotNull(result);
             Assert.AreEqual(200, result.StatusCode);
-            Assert.AreEqual(response, result.Value);
+            CollectionAssert.AreEqual(response, (System.Collections.ICollection?)result.Value);
 
             _invitationLogicMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void DeleteInvitation_ShouldReturnNoContentOnSuccessfulDeletion()
+        {
+            Guid invitationId = new Guid();
+            _invitationLogicMock.Setup(logic => logic.DeleteInvitation(invitationId)).Returns(true);
+
+            IActionResult result = _invitationsController.DeleteInvitation(invitationId);
+
+            Assert.IsInstanceOfType(result, typeof(NoContentResult));
+            Assert.AreEqual(204, ((NoContentResult)result).StatusCode);
+
+            _invitationLogicMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void AcceptInvitation_ShouldReturnOkWithUpdatedInvitation()
+        {
+            Guid invitationId = Guid.NewGuid();
+            AcceptInvitationRequest request = new AcceptInvitationRequest
+            {
+                Password = "123"
+            };
+
+            Invitation updatedInvitation = new Invitation
+            {
+                InvitationId = invitationId,
+                Email = "example@example.com",
+                Name = "bruno mateo",
+                Status = "Aceptada"
+            };
+
+            _invitationLogicMock.Setup(logic => logic.AcceptInvitation(invitationId, request.Password)).Returns(updatedInvitation);
+
+            ObjectResult result = _invitationsController.AcceptInvitation(invitationId, request) as ObjectResult;
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(200, result.StatusCode);
+            Assert.AreEqual(new InvitationResponse(updatedInvitation), result.Value);
+
+            _invitationLogicMock.VerifyAll();
+        }
+
+
     }
+
+
 }
