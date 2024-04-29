@@ -6,30 +6,36 @@ namespace BusinessLogic.Logics
 {
     public class InvitationLogic : IInvitationLogic
     {
-        private readonly IInvitationRepository _invitationRepository;
-        public InvitationLogic(IInvitationRepository invitationRepository)
+
+        private IInvitationRepository _invitationRepository;
+        private IManagerRepository _managerRepository;
+
+        public InvitationLogic(IInvitationRepository invitationRepository, IManagerRepository managerRepository)
         {
             _invitationRepository = invitationRepository;
+            _managerRepository = managerRepository;
         }
 
-        //public Invitation AcceptInvitation(Guid invitationId, string password)
-        //{
-        //    var invitation = _invitationRepository.GetInvitationById(invitationId);
-        //    if (invitation == null || invitation.Status == "Aceptada")
-        //    {
-        //        throw new InvalidOperationException("Invitation cannot be accepted.");
-        //    }
 
-        //    invitation.Status = "Aceptada";
-        //    _invitationRepository.UpdateInvitation(invitation);
-
-        //    //Aca se crea el usuario nuevo 
-
-        //    return invitation;
-        //}
         public Invitation AcceptInvitation(Guid invitationId, string password)
         {
-            throw new NotImplementedException();
+            var invitation = _invitationRepository.GetInvitationById(invitationId);
+            if (invitation == null)
+                throw new InvalidOperationException("Invitation does not exist.");
+
+            if (invitation.Status == "Aceptada")
+                throw new InvalidOperationException("Invitation has already been accepted.");
+
+            if (invitation.ExpirationDate < DateTime.UtcNow)
+                throw new InvalidOperationException("Invitation has expired.");
+
+            invitation.Status = "Aceptada";
+            _invitationRepository.UpdateInvitation(invitation);
+
+            var manager = new Manager { Email = invitation.Email, Password = password };
+            _managerRepository.CreateManager(manager);
+
+            return invitation;
         }
 
         public Invitation CreateInvitation(Invitation invitation)

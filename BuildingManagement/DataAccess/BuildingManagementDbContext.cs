@@ -19,5 +19,7 @@ namespace DataAccess
         public DbSet<Invitation> Invitations { get; set; }
 
         public DbSet<Request_> Requests { get; set; }
+
+        public DbSet<Manager> Managers { get; set; }
     }
 }

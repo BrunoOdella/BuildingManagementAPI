@@ -8,5 +8,6 @@ namespace IDataAccess
         bool DeleteInvitation(Guid invitationId);
         IEnumerable<Invitation> GetAllInvitations();
         Invitation GetInvitationById(Guid invitationId);
+        void UpdateInvitation(Invitation updatedInvitation);
     }
 }

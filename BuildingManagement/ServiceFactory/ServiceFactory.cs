@@ -25,6 +25,7 @@ namespace ServiceFactory
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IInvitationRepository, InvitationRepository>();
             services.AddScoped<IRequestRepository, RequestRepository>();
+            services.AddScoped<IManagerRepository, ManagerRepository>();
 
         }
     }

@@ -45,5 +45,23 @@ namespace DataAccess
             return _context.Invitations.FirstOrDefault(i => i.InvitationId == invitationId);
         }
 
+        public void UpdateInvitation(Invitation updatedInvitation)
+        {
+            var invitation = _context.Invitations.FirstOrDefault(i => i.InvitationId == updatedInvitation.InvitationId);
+            if (invitation != null)
+            {
+                invitation.Status = updatedInvitation.Status;
+                invitation.Name = updatedInvitation.Name; 
+                invitation.ExpirationDate = updatedInvitation.ExpirationDate;
+                invitation.Email = updatedInvitation.Email;
+
+                _context.Entry(invitation).State = EntityState.Modified;
+                _context.SaveChanges();
+            }
+            else
+            {
+                throw new ArgumentException("Invitation not found.");
+            }
+        }
     }
 }

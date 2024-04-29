@@ -9,14 +9,17 @@ namespace BusinessLogicTest
     public class InvitationLogicTest
     {
         private Mock<IInvitationRepository> _invitationRepositoryMock;
+        private Mock<IManagerRepository> _managerRepositoryMock;
         private InvitationLogic _invitationLogic;
 
         [TestInitialize]
         public void TestSetup()
         {
             _invitationRepositoryMock = new Mock<IInvitationRepository>(MockBehavior.Strict);
-            _invitationLogic = new InvitationLogic(_invitationRepositoryMock.Object);
+            _managerRepositoryMock = new Mock<IManagerRepository>(MockBehavior.Strict);
+            _invitationLogic = new InvitationLogic(_invitationRepositoryMock.Object, _managerRepositoryMock.Object);
         }
+
 
         [TestMethod]
         public void CreateInvitation_ValidatesData_AndCreatesInvitation()
@@ -107,50 +110,45 @@ namespace BusinessLogicTest
             _invitationLogic.DeleteInvitation(invitationId);
         }
 
+        [TestMethod]
+        public void AcceptInvitation_InvitationExistsAndIsValid_CreatesManagerAndUpdatesStatus()
+        {
+            // Arrange
+            var invitationId = Guid.NewGuid();
+            var invitation = new Invitation
+            {
+                InvitationId = invitationId,
+                Email = "test@example.com",
+                Name = "Test",
+                ExpirationDate = DateTime.UtcNow.AddDays(1), // Valid date in the future
+                Status = "Pendiente"
+            };
+            var password = "securePassword123";
 
+            _invitationRepositoryMock.Setup(repo => repo.GetInvitationById(invitationId)).Returns(invitation);
+            _invitationRepositoryMock.Setup(repo => repo.UpdateInvitation(It.IsAny<Invitation>())).Verifiable();
+            _managerRepositoryMock.Setup(repo => repo.CreateManager(It.IsAny<Manager>())).Verifiable();
 
-        //[TestMethod]
-        //public void AcceptInvitation_InvitationCanBeAccepted_UpdatesInvitationStatus()
-        //{
-        //    var invitationId = Guid.NewGuid();
-        //    var invitation = new Invitation
-        //    {
-        //        InvitationId = invitationId,
-        //        Email = "test@example.com",
-        //        Name = "Test",
-        //        ExpirationDate = DateTime.Now,
-        //        Status = "pendiente"
-        //    };
+            // Act
+            var result = _invitationLogic.AcceptInvitation(invitationId, password);
 
-        //    _invitationRepositoryMock.Setup(repo => repo.GetInvitationById(invitationId)).Returns(invitation);
-        //    _invitationRepositoryMock.Setup(repo => repo.UpdateInvitation(invitation)).Verifiable("Invitation should be updated.");
+            // Assert
+            Assert.AreEqual("Aceptada", result.Status);
+            _invitationRepositoryMock.VerifyAll();
+            _managerRepositoryMock.VerifyAll();
+        }
 
-        //    Invitation result = _invitationLogic.AcceptInvitation(invitationId, "newPassword123");
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException), "Invitation does not exist.")]
+        public void AcceptInvitation_InvitationDoesNotExist_ThrowsException()
+        {
+            // Arrange
+            var invitationId = Guid.NewGuid();
+            _invitationRepositoryMock.Setup(repo => repo.GetInvitationById(invitationId)).Returns((Invitation)null);
 
-        //    Assert.IsNotNull(result);
-        //    Assert.AreEqual("Aceptada", result.Status);
-        //    _invitationRepositoryMock.VerifyAll();
-        //}
-
-        //[TestMethod]
-        //[ExpectedException(typeof(InvalidOperationException))]
-        //public void AcceptInvitation_InvitationAlreadyAccepted_ThrowsException()
-        //{
-        //    var invitationId = Guid.NewGuid();
-        //    var invitation = new Invitation
-        //    {
-        //        InvitationId = invitationId,
-        //        Email = "test@example.com",
-        //        Name = "Test",
-        //        ExpirationDate = DateTime.Now,
-        //        Status = "Aceptada"
-        //    };
-
-        //    _invitationRepositoryMock.Setup(repo => repo.GetInvitationById(invitationId)).Returns(invitation);
-
-        //    _invitationLogic.AcceptInvitation(invitationId, "newPassword123");
-        //}
-
+            // Act
+            _invitationLogic.AcceptInvitation(invitationId, "anyPassword");
+        }
 
 
     }
