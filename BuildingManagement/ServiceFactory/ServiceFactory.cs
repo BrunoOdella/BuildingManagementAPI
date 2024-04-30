@@ -16,6 +16,7 @@ namespace ServiceFactory
             serviceCollection.AddScoped<ICategoriesRequestsLogic, CategoriesRequestsLogic>();
             serviceCollection.AddScoped<IInvitationLogic, InvitationLogic>();
             serviceCollection.AddScoped<IRequestLogic, RequestLogic>();
+            serviceCollection.AddScoped<IBuildingLogic, BuildingLogic>();
             serviceCollection.AddScoped<IAuthenticationService, AuthenticationService>();
 
         }
@@ -29,6 +30,7 @@ namespace ServiceFactory
             services.AddScoped<IInvitationRepository, InvitationRepository>();
             services.AddScoped<IRequestRepository, RequestRepository>();
             services.AddScoped<IManagerRepository, ManagerRepository>();
+            services.AddScoped<IBuildingRepository, BuildingRepository>();
             services.AddScoped<IAuthenticationServiceRepository, AuthenticationRepository>();
 
         }
