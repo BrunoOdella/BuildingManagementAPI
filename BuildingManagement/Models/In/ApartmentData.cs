@@ -13,6 +13,18 @@ namespace Models.In
         public OwnerData Owner { get; set; } 
         public int NumberOfBathrooms { get; set; }
         public bool HasTerrace { get; set; }
+        public Apartment ToEntity()
+        {
+            return new Apartment
+            {
+                Floor = this.Floor,
+                Number = this.Number,
+                Owner = this.Owner.ToEntity(), 
+                NumberOfBathrooms = this.NumberOfBathrooms,
+                HasTerrace = this.HasTerrace
+            };
+        }
     }
+
 
 }

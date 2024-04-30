@@ -1,9 +1,4 @@
 ﻿using Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Models.Out
 {
@@ -15,6 +10,16 @@ namespace Models.Out
         public Location Location { get; set; }
         public string ConstructionCompanyName { get; set; }
         public int CommonExpenses { get; set; }
+
+        public BuildingResponse(Building building)
+        {
+            BuildingId = building.BuildingId;
+            Name = building.Name;
+            Address = building.Address;
+            Location = building.Location;
+            ConstructionCompanyName = building.ConstructionCompany.Name;
+            CommonExpenses = building.CommonExpenses;
+        }
     }
 
 }
