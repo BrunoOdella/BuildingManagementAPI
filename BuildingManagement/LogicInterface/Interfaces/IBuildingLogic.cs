@@ -9,6 +9,6 @@ namespace LogicInterface.Interfaces
 {
     public interface IBuildingLogic
     {
-        void CreateBuilding(Guid managerId, Building building);
+        Building CreateBuilding(string managerId, Building building);
     }
 }
