@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Logics;
+﻿using BuildingManagementApi.Filters;
+using BusinessLogic.Logics;
 using Domain;
 using LogicInterface.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -11,6 +12,7 @@ namespace BuildingManagementApi.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
+    //[ServiceFilter(typeof(AuthenticationFilter))]
     public class RequestsController : ControllerBase
     {
         private readonly IRequestLogic _logic;
