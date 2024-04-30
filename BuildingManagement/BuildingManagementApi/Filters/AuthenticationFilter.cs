@@ -18,6 +18,7 @@ public class AuthenticationFilter : Attribute, IAuthorizationFilter
     public void OnAuthorization(AuthorizationFilterContext context)
     {
         var authenticationService = _provider.GetRequiredService<IAuthenticationService>();
+
         string headerToken = context.HttpContext.Request.Headers["Authorization"];
         if (headerToken is null)
         {

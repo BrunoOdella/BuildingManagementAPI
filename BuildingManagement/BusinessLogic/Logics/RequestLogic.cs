@@ -13,34 +13,34 @@ public class RequestLogic : IRequestLogic
         _requestRepository = requestRepository;
     }
 
-    public Request_ CreateRequest(Request_ request)
+    public Request_ CreateRequest(Guid managerId, Request_ request)
     {
         ValidateIncomingRequest(request);
 
         return _requestRepository.CreateRequest(request);
     }
     
-    public IEnumerable<Request_> GetAllRequest()
+    public IEnumerable<Request_> GetAllRequest(Guid managerId)
     {
         return _requestRepository.GetAllRequest();
     }
 
-    public IEnumerable<Request_> GetAllRequest(int category)
+    public IEnumerable<Request_> GetAllRequest(Guid managerId, int category)
     {
         return _requestRepository.GetAllRequest(category);
     }
 
-    public Request_ ActivateRequest(Guid id, DateTime startTime)
+    public Request_ ActivateRequest(Guid managerId, Guid id, DateTime startTime)
     {
         return _requestRepository.ActivateRequest(id, startTime);
     }
 
-    public Request_ TerminateRequest(Guid id, DateTime endTime, float totalCost)
+    public Request_ TerminateRequest(Guid managerId, Guid id, DateTime endTime, float totalCost)
     {
         return _requestRepository.TerminateRequest(id, endTime, totalCost);
     }
 
-    public Request_ AsignMaintenancePerson(Guid requestGuid, Guid maintenancePersonId)
+    public Request_ AsignMaintenancePerson(Guid managerId, Guid requestGuid, Guid maintenancePersonId)
     {
         return _requestRepository.AsignMaintenancePerson(requestGuid, maintenancePersonId);
     }

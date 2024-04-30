@@ -16,10 +16,14 @@ namespace BuildingManagementApi.Controllers
     public class RequestsController : ControllerBase
     {
         private readonly IRequestLogic _logic;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public RequestsController(IRequestLogic Ilogic)
+
+        public RequestsController(IRequestLogic Ilogic, IHttpContextAccessor httpContextAccessor)
         {
             _logic = Ilogic;
+            _httpContextAccessor = httpContextAccessor;
+
         }
 
         [HttpGet]
@@ -28,28 +32,28 @@ namespace BuildingManagementApi.Controllers
             if (string.IsNullOrEmpty(category))
             {
                 // Si no se especifica una categoría, obtener todos los Request.
-                return Ok(_logic.GetAllRequest().Select(request => new RequestResponse(request)).ToList());
+                return Ok(_logic.GetAllRequest(new Guid(_httpContextAccessor.HttpContext.Items["userID"] as string)).Select(request => new RequestResponse(request)).ToList());
             }
             // Si se especifica una categoría, obtener solo los Request de esa categoría
-            return Ok(_logic.GetAllRequest(int.Parse(category)).Select(request => new RequestResponse(request)).ToList());
+            return Ok(_logic.GetAllRequest(new Guid(_httpContextAccessor.HttpContext.Items["userID"] as string), int.Parse(category)).Select(request => new RequestResponse(request)).ToList());
         }
 
         [HttpPut("{requestid}/activate")]
         public ObjectResult PutActivateRequest([FromRoute] string requestid, [FromBody] ActiveRequest activeRequest)
         {
-            return Ok(new RequestResponse(_logic.ActivateRequest(new Guid(requestid), activeRequest.StartTime)));
+            return Ok(new RequestResponse(_logic.ActivateRequest(new Guid(_httpContextAccessor.HttpContext.Items["userID"] as string), new Guid(requestid), activeRequest.StartTime)));
         }
 
         [HttpPut("{requestid}/finished")]
         public ObjectResult PutFinishedRequest([FromRoute] string requestid, [FromBody] FinishedRequest finishedRequest)
         {
-            return Ok(new RequestResponse(_logic.TerminateRequest(new Guid(requestid), finishedRequest.EndTime, finishedRequest.TotalCost)));
+            return Ok(new RequestResponse(_logic.TerminateRequest(new Guid(_httpContextAccessor.HttpContext.Items["userID"] as string), new Guid(requestid), finishedRequest.EndTime, finishedRequest.TotalCost)));
         }
 
         [HttpPut("{requestid}")]
         public ObjectResult PutMaintenancePersonRequest([FromRoute] string requestid, [FromBody] MaintenancePersonRequest maintenancePersonRequest)
         {
-            return Ok(new RequestResponse(_logic.AsignMaintenancePerson(new Guid(requestid), maintenancePersonRequest.Id)));
+            return Ok(new RequestResponse(_logic.AsignMaintenancePerson(new Guid(_httpContextAccessor.HttpContext.Items["userID"] as string), new Guid(requestid), maintenancePersonRequest.Id)));
         }
 
     }

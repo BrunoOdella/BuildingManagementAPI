@@ -8,6 +8,7 @@ using Azure.Core;
 using BuildingManagementApi.Controllers;
 using Domain;
 using LogicInterface.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel.Client;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel.DataCollection;
@@ -21,13 +22,22 @@ namespace BuildingManagementApiTest
     public class RequestControllerTest
     {
         private Mock<IRequestLogic> _RlogicMock;
+        private Mock<IHttpContextAccessor> _httpContextAccessorMock;
         private RequestsController _Rcontroller;
 
         [TestInitialize]
         public void TestSetup()
         {
             _RlogicMock = new Mock<IRequestLogic>(MockBehavior.Strict);
-            _Rcontroller = new RequestsController(_RlogicMock.Object);
+            _httpContextAccessorMock = new Mock<IHttpContextAccessor>(MockBehavior.Strict);
+
+            var httpContext = new DefaultHttpContext();
+            Guid expectedUserID = Guid.NewGuid(); // o cualquier Guid que esperes
+            httpContext.Items["userID"] = expectedUserID.ToString();
+            _httpContextAccessorMock.Setup(x => x.HttpContext).Returns(httpContext);
+
+            // Crear el controlador con los mocks
+            _Rcontroller = new RequestsController(_RlogicMock.Object, _httpContextAccessorMock.Object);
         }
 
         [TestMethod]
@@ -67,7 +77,9 @@ namespace BuildingManagementApiTest
             IEnumerable<Request_> expected = new List<Request_>() { ActiveRequest, PendingRequest, FinishedRequest };
 
             List<RequestResponse> response = expected.Select(request => new RequestResponse(request)).ToList();
-            _RlogicMock.Setup(logic => logic.GetAllRequest()).Returns(expected);
+            string userIDString = _httpContextAccessorMock.Object.HttpContext.Items["userID"] as string;
+            Guid userID = new Guid(userIDString);
+            _RlogicMock.Setup(logic => logic.GetAllRequest(userID)).Returns(expected);
 
             ObjectResult result = _Rcontroller.GetAllRequest(null) as ObjectResult;
 
@@ -115,7 +127,11 @@ namespace BuildingManagementApiTest
             IEnumerable<Request_> expected = new List<Request_>() { ActiveRequest};
 
             List<RequestResponse> response = expected.Select(request => new RequestResponse(request)).ToList();
-            _RlogicMock.Setup(logic => logic.GetAllRequest(1)).Returns(expected);
+
+            string userIDString = _httpContextAccessorMock.Object.HttpContext.Items["userID"] as string;
+            Guid userID = Guid.Parse(userIDString);
+
+            _RlogicMock.Setup(logic => logic.GetAllRequest(userID, 1)).Returns(expected);
 
             ObjectResult result = _Rcontroller.GetAllRequest("1") as ObjectResult;
 
@@ -142,7 +158,10 @@ namespace BuildingManagementApiTest
             };
 
             //RequestResponse response = new RequestResponse(ActiveRequest);
-            _RlogicMock.Setup(logic => logic.ActivateRequest(It.IsAny<Guid>(), It.IsAny<DateTime>())).Returns(ActiveRequest);
+            string userIDString = _httpContextAccessorMock.Object.HttpContext.Items["userID"] as string;
+            Guid userID = Guid.Parse(userIDString);
+
+            _RlogicMock.Setup(logic => logic.ActivateRequest(userID, It.IsAny<Guid>(), It.IsAny<DateTime>())).Returns(ActiveRequest);
 
             var aux = new ActiveRequest();
             aux.StartTime = DateTime.Now;
@@ -175,7 +194,10 @@ namespace BuildingManagementApiTest
             };
 
             //RequestResponse response = new RequestResponse(FinishedRequest);
-            _RlogicMock.Setup(logic => logic.TerminateRequest(It.IsAny<Guid>(), It.IsAny<DateTime>(), It.IsAny<float>())).Returns(FinishedRequest);
+            string userIDString = _httpContextAccessorMock.Object.HttpContext.Items["userID"] as string;
+            Guid userID = Guid.Parse(userIDString);
+
+            _RlogicMock.Setup(logic => logic.TerminateRequest(userID, It.IsAny<Guid>(), It.IsAny<DateTime>(), It.IsAny<float>())).Returns(FinishedRequest);
 
             var aux = new FinishedRequest();
             aux.EndTime = DateTime.Now;
@@ -206,7 +228,10 @@ namespace BuildingManagementApiTest
             };
 
             //RequestResponse response = new RequestResponse(ActiveRequest);
-            _RlogicMock.Setup(logic => logic.AsignMaintenancePerson(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(ActiveRequest);
+            string userIDString = _httpContextAccessorMock.Object.HttpContext.Items["userID"] as string;
+            Guid userID = Guid.Parse(userIDString);
+
+            _RlogicMock.Setup(logic => logic.AsignMaintenancePerson(userID, It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(ActiveRequest);
 
             var aux = new MaintenancePersonRequest();
             aux.Id = new Guid();

@@ -44,7 +44,9 @@ namespace BusinessLogicTest
 
             _requestRepositoryMock.Setup(repository => repository.CreateRequest(It.IsAny<Request_>())).Returns(request);
 
-            Request_ result = _requestLogic.CreateRequest(request);
+            Guid managerID = Guid.NewGuid();
+
+            Request_ result = _requestLogic.CreateRequest(managerID, request);
 
             Assert.IsNotNull(result);
             Assert.AreEqual(request, result);
@@ -60,7 +62,8 @@ namespace BusinessLogicTest
 
             try
             {
-                _requestLogic.CreateRequest(request);
+                Guid managerID = Guid.NewGuid();
+                _requestLogic.CreateRequest(managerID, request);
             }
             catch (Exception e)
             {
@@ -92,7 +95,8 @@ namespace BusinessLogicTest
 
             try
             {
-                _requestLogic.CreateRequest(request);
+                Guid managerID = Guid.NewGuid();
+                _requestLogic.CreateRequest(managerID, request);
             }
             catch (Exception e)
             {
@@ -125,7 +129,8 @@ namespace BusinessLogicTest
 
             try
             {
-                _requestLogic.CreateRequest(request);
+                Guid managerID = Guid.NewGuid();
+                _requestLogic.CreateRequest(managerID, request);
             }
             catch (Exception e)
             {
@@ -157,7 +162,8 @@ namespace BusinessLogicTest
 
             try
             {
-                _requestLogic.CreateRequest(request);
+                Guid managerID = Guid.NewGuid();
+                _requestLogic.CreateRequest(managerID, request);
             }
             catch (Exception e)
             {
@@ -190,7 +196,8 @@ namespace BusinessLogicTest
 
             try
             {
-                _requestLogic.CreateRequest(request);
+                Guid managerID = Guid.NewGuid();
+                _requestLogic.CreateRequest(managerID, request);
             }
             catch (Exception e)
             {
@@ -222,7 +229,8 @@ namespace BusinessLogicTest
 
             try
             {
-                _requestLogic.CreateRequest(request);
+                Guid managerID = Guid.NewGuid();
+                _requestLogic.CreateRequest(managerID, request);
             }
             catch (Exception e)
             {
@@ -255,7 +263,8 @@ namespace BusinessLogicTest
 
             try
             {
-                _requestLogic.CreateRequest(request);
+                Guid managerID = Guid.NewGuid();
+                _requestLogic.CreateRequest(managerID, request);
             }
             catch (Exception e)
             {
@@ -288,7 +297,8 @@ namespace BusinessLogicTest
 
             try
             {
-                _requestLogic.CreateRequest(request);
+                Guid managerID = Guid.NewGuid();
+                _requestLogic.CreateRequest(managerID, request);
             }
             catch (Exception e)
             {
@@ -321,7 +331,8 @@ namespace BusinessLogicTest
 
             try
             {
-                _requestLogic.CreateRequest(request);
+                Guid managerID = Guid.NewGuid();
+                _requestLogic.CreateRequest(managerID, request);
             }
             catch (Exception e)
             {
@@ -354,7 +365,8 @@ namespace BusinessLogicTest
 
             try
             {
-                _requestLogic.CreateRequest(request);
+                Guid managerID = Guid.NewGuid();
+                _requestLogic.CreateRequest(managerID, request);
             }
             catch (Exception e)
             {
@@ -386,7 +398,8 @@ namespace BusinessLogicTest
 
             try
             {
-                _requestLogic.CreateRequest(request);
+                Guid managerID = Guid.NewGuid();
+                _requestLogic.CreateRequest(managerID, request);
             }
             catch (Exception e)
             {
@@ -419,7 +432,8 @@ namespace BusinessLogicTest
 
             try
             {
-                _requestLogic.CreateRequest(request);
+                Guid managerID = Guid.NewGuid();
+                _requestLogic.CreateRequest(managerID, request);
             }
             catch (Exception e)
             {
@@ -452,7 +466,8 @@ namespace BusinessLogicTest
 
             try
             {
-                _requestLogic.CreateRequest(request);
+                Guid managerID = Guid.NewGuid();
+                _requestLogic.CreateRequest(managerID, request);
             }
             catch (Exception e)
             {
@@ -485,7 +500,8 @@ namespace BusinessLogicTest
 
             try
             {
-                _requestLogic.CreateRequest(request);
+                Guid managerID = Guid.NewGuid();
+                _requestLogic.CreateRequest(managerID, request);
             }
             catch (Exception e)
             {
@@ -542,7 +558,9 @@ namespace BusinessLogicTest
             _requestRepositoryMock.Setup(repository => repository.GetAllRequest()).Returns(expectedRequests);
 
             // Act
-            IEnumerable<Request_> result = _requestLogic.GetAllRequest();
+            Guid managerID = Guid.NewGuid();
+
+            IEnumerable<Request_> result = _requestLogic.GetAllRequest(managerID);
 
             // Assert
             Assert.IsNotNull(result);
@@ -585,7 +603,10 @@ namespace BusinessLogicTest
             _requestRepositoryMock.Setup(repository => repository.GetAllRequest(category)).Returns(expectedRequests);
 
             // Act
-            IEnumerable<Request_> result = _requestLogic.GetAllRequest(category);
+
+            Guid managerID = Guid.NewGuid();
+
+            IEnumerable<Request_> result = _requestLogic.GetAllRequest(managerID, category);
 
             // Assert
             Assert.IsNotNull(result);
@@ -614,7 +635,9 @@ namespace BusinessLogicTest
             _requestRepositoryMock.Setup(repository => repository.ActivateRequest(id, startTime)).Returns(updatedRequest);
 
             // Act
-            Request_ result = _requestLogic.ActivateRequest(id, startTime);
+            Guid managerID = Guid.NewGuid();
+
+            Request_ result = _requestLogic.ActivateRequest(managerID, id, startTime);
 
             // Assert
             Assert.IsNotNull(result);
@@ -647,7 +670,9 @@ namespace BusinessLogicTest
             _requestRepositoryMock.Setup(repository => repository.TerminateRequest(id, endTime, totalCost)).Returns(finishedRequest);
 
             // Act
-            Request_ result = _requestLogic.TerminateRequest(id, endTime, totalCost);
+            Guid managerID = Guid.NewGuid();
+
+            Request_ result = _requestLogic.TerminateRequest(managerID, id, endTime, totalCost);
 
             // Assert
             Assert.IsNotNull(result);
@@ -687,7 +712,9 @@ namespace BusinessLogicTest
             _requestRepositoryMock.Setup(repository => repository.AsignMaintenancePerson(requestGuid, maintenancePersonId)).Returns(assignedRequest);
 
             // Act
-            Request_ result = _requestLogic.AsignMaintenancePerson(requestGuid, maintenancePersonId);
+            Guid managerID = Guid.NewGuid();
+
+            Request_ result = _requestLogic.AsignMaintenancePerson(managerID, requestGuid, maintenancePersonId);
 
             // Assert
             Assert.IsNotNull(result);
