@@ -12,7 +12,7 @@ namespace BuildingManagementApi.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    //[ServiceFilter(typeof(AuthenticationFilter))]
+    [ServiceFilter(typeof(AuthenticationFilter))]
     public class RequestsController : ControllerBase
     {
         private readonly IRequestLogic _logic;

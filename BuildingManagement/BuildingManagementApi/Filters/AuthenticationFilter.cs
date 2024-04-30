@@ -8,15 +8,16 @@ namespace BuildingManagementApi.Filters;
 
 public class AuthenticationFilter : Attribute, IAuthorizationFilter
 {
-    private readonly IAuthenticationService _authenticationService;
+    private readonly IServiceProvider _provider;
 
-    public AuthenticationFilter(IAuthenticationService authenticationService)
+    public AuthenticationFilter(IServiceProvider provider)
     {
-        _authenticationService = authenticationService;
+        _provider = provider;
     }
 
     public void OnAuthorization(AuthorizationFilterContext context)
     {
+        var authenticationService = _provider.GetRequiredService<IAuthenticationService>();
         string headerToken = context.HttpContext.Request.Headers["Authorization"];
         if (headerToken is null)
         {
@@ -31,7 +32,8 @@ public class AuthenticationFilter : Attribute, IAuthorizationFilter
             try
             {
                 Guid token = Guid.Parse(headerToken);
-                VerifyToken(token, context);
+                var tokenEncontrado = authenticationService.BuscarToken(token);
+                VerifyToken(context, tokenEncontrado);
             }
             catch (FormatException)
             {
@@ -44,11 +46,9 @@ public class AuthenticationFilter : Attribute, IAuthorizationFilter
         }
     }
 
-    private void VerifyToken(Guid token, AuthorizationFilterContext context)
+    private void VerifyToken(AuthorizationFilterContext context, Guid tokenEncontrado)
     {
-        var tokenEncontrado = _authenticationService.BuscarToken(token);
-
-        if (tokenEncontrado == null)
+        if (tokenEncontrado.Equals(Guid.Empty))
         {
             context.Result = new ContentResult()
             {
@@ -59,8 +59,7 @@ public class AuthenticationFilter : Attribute, IAuthorizationFilter
         else
         {
             // Si el token es válido, podrías agregar información adicional al HttpContext, como los detalles del usuario.
-            context.HttpContext.Items.Add("userID", token.ToString());
+            context.HttpContext.Items.Add("userID", tokenEncontrado.ToString());
         }
     }
-
 }

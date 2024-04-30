@@ -5,6 +5,7 @@ using LogicInterface.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
+
 namespace ServiceFactory
 {
     public static class ServiceFactory
@@ -16,6 +17,7 @@ namespace ServiceFactory
             serviceCollection.AddScoped<IInvitationLogic, InvitationLogic>();
             serviceCollection.AddScoped<IRequestLogic, RequestLogic>();
             serviceCollection.AddScoped<IAuthenticationService, AuthenticationService>();
+
         }
         public static void AddDataAccessServices(this IServiceCollection services, string connectionString)
         {

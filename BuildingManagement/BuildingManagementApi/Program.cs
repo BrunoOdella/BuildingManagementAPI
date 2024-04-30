@@ -11,6 +11,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddBusinessLogicServices();
 builder.Services.AddDataAccessServices(builder.Configuration.GetConnectionString("DefaultConnection"));
+builder.Services.AddScoped<BuildingManagementApi.Filters.AuthenticationFilter>();
+
 
 var app = builder.Build();
 
