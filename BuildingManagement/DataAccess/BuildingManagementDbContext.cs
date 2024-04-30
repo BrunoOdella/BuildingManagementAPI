@@ -21,5 +21,14 @@ namespace DataAccess
         public DbSet<Request_> Requests { get; set; }
 
         public DbSet<Manager> Managers { get; set; }
+
+        public DbSet<Location> Locations { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Location>()
+                .HasKey(l => new { l.Latitude, l.Longitude });
+
+        }
     }
 }
