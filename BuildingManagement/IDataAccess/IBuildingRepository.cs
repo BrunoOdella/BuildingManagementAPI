@@ -4,6 +4,6 @@ namespace IDataAccess
 {
     public interface IBuildingRepository
     {
-        Building AddBuilding(Building building);
+        Building CreateBuilding(Building building);
     }
 }

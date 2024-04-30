@@ -31,14 +31,14 @@ namespace BusinessLogicTest
                 Name = "Test Building",
                 Address = "123 Test Ave",
             };
-            _buildingRepositoryMock.Setup(repo => repo.AddBuilding(building)).Returns(building);
+            _buildingRepositoryMock.Setup(repo => repo.CreateBuilding(building)).Returns(building);
 
             // Act
             Building result = _buildingLogic.CreateBuilding(managerId, building);
 
             // Assert
             Assert.IsNotNull(result);
-            _buildingRepositoryMock.Verify(repo => repo.AddBuilding(It.IsAny<Building>()), Times.Once);
+            _buildingRepositoryMock.Verify(repo => repo.CreateBuilding(It.IsAny<Building>()), Times.Once);
         }
 
         [TestMethod]

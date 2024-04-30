@@ -19,9 +19,9 @@ namespace DataAccessTest
         }
 
         [TestMethod]
-        public void AddBuildingTest()
+        public void CreateBuildingTest()
         {
-            using (var context = CreateDbContext("TestAddBuilding"))
+            using (var context = CreateDbContext("TestCreateBuilding"))
             {
                 var repository = new BuildingRepository(context);
                 var expected = new Building
@@ -33,7 +33,7 @@ namespace DataAccessTest
                     CommonExpenses = 500
                 };
 
-                var result = repository.AddBuilding(expected);
+                var result = repository.CreateBuilding(expected);
                 context.SaveChanges();
 
                 Assert.IsNotNull(result);

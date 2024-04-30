@@ -26,7 +26,7 @@ namespace BusinessLogic.Logics
             }
 
             // Agregar validaciones
-            return _buildingRepository.AddBuilding(building);
+            return _buildingRepository.CreateBuilding(building);
         }
     }
 

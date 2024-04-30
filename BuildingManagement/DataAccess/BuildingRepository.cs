@@ -1,13 +1,23 @@
 ﻿using Domain;
 using IDataAccess;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess
 {
     public class BuildingRepository : IBuildingRepository
     {
-        public Building AddBuilding(Building building)
+        private readonly BuildingManagementDbContext _context;
+
+        public BuildingRepository(BuildingManagementDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+
+        public Building CreateBuilding(Building building)
+        {
+            _context.Buildings.Add(building);
+            _context.SaveChanges();
+            return building;
         }
     }
 }
