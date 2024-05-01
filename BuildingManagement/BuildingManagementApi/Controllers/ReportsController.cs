@@ -1,4 +1,5 @@
 ﻿using BuildingManagementApi.Filters;
+using Domain;
 using LogicInterface.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,22 +12,38 @@ namespace BuildingManagementApi.Controllers
     [ServiceFilter(typeof(AuthenticationFilter))]
     public class ReportsController : ControllerBase
     {
-        private readonly IReportLogic _logic;
+        private readonly IReportLogicByMaintenanceStaff _logicByMaintenanceStaff;
+        private readonly IReportLogicByBuilding _logicByBuilding;
+
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ReportsController(IReportLogic logic, IHttpContextAccessor httpContextAccessor)
+        public ReportsController(IReportLogicByMaintenanceStaff logicByMaintenanceStaff, IReportLogicByBuilding logicByBuilding,IHttpContextAccessor httpContextAccessor)
         {
-            _logic = logic;
+            _logicByMaintenanceStaff = logicByMaintenanceStaff;
+            _logicByBuilding = logicByBuilding;
             _httpContextAccessor = httpContextAccessor;
         }
 
-        [HttpGet("request_by_building")]
-        public ObjectResult GetReport_RequestByBuilding()
+        [HttpGet("request_by_building/{BuildingID}")]
+        public ObjectResult GetReport_RequestByBuilding([FromQuery] string? buildingID)
         {
             var managerID = new Guid(_httpContextAccessor.HttpContext.Items["userID"] as string);
-            return Ok(_logic.RequestByBuilding(managerID)
-                .Select(request => new Report_RequestByBuildingResponse(request)).ToList());
-            return null;
+
+            if (string.IsNullOrEmpty(buildingID))
+                return Ok(new Report_RequestByBuildingResponse(_logicByBuilding.RequestByBuilding(managerID)));
+
+            return Ok(new Report_RequestByBuildingResponse(_logicByBuilding.RequestByBuilding(managerID, new Guid(buildingID))));
+        }
+
+        [HttpGet("request_by_maintenance_staff/{MaintenanceStaffID}")]
+        public ObjectResult GetReport_RequestByMaintenanceStaff([FromQuery] string? buildingID)
+        {
+            var managerID = new Guid(_httpContextAccessor.HttpContext.Items["userID"] as string);
+
+            if (string.IsNullOrEmpty(buildingID))
+                return Ok(new Report_RequestByBuildingResponse(_logicByMaintenanceStaff.RequestByMaintenanceStaff(managerID)));
+
+            return Ok(new Report_RequestByBuildingResponse(_logicByMaintenanceStaff.RequestByMaintenanceStaff(managerID, new Guid(buildingID))));
         }
     }
 }
