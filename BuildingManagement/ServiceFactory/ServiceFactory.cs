@@ -18,7 +18,6 @@ namespace ServiceFactory
             serviceCollection.AddScoped<IRequestLogic, RequestLogic>();
             serviceCollection.AddScoped<IBuildingLogic, BuildingLogic>();
             serviceCollection.AddScoped<IAuthenticationService, AuthenticationService>();
-
         }
         public static void AddDataAccessServices(this IServiceCollection services, string connectionString)
         {

@@ -61,5 +61,12 @@ namespace BuildingManagementApi.Controllers
             return Ok(new RequestResponse(_logic.ActivateRequest(managerID, new Guid(requestid), ActivateRequest.MaintenancePersonId, ActivateRequest.StartTime)));
         }
 
+        [HttpPost]
+        public ObjectResult PostRequest([FromBody] CreateRequestRequest createRequest)
+        {
+            var managerID = new Guid(_httpContextAccessor.HttpContext.Items["userID"] as string);
+            return StatusCode(201, new CreateRequestResponse(_logic.CreateRequest(managerID, createRequest.ToEntity())));
+        }
+
     }
 }

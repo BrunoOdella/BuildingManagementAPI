@@ -3,7 +3,7 @@ namespace Domain;
 
 public class Request_
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
     public string Description { get; set; }
     public Status Status { get; set; } = Status.Pending;
     public int? Category { get; set; }

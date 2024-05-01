@@ -12,6 +12,11 @@ public class MaintenanceStaffRepository : IMaintenanceStaffRepository
         _context = context;
     }
 
+    public IEnumerable<MaintenanceStaff> GetAll(Guid managerId)
+    {
+        throw new NotImplementedException();
+    }
+
     public MaintenanceStaff GetMaintenanceStaff(Guid managerId, Guid maintenancePersonId)
     {
         throw new NotImplementedException();

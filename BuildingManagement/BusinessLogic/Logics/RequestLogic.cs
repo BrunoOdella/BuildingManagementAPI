@@ -22,11 +22,14 @@ public class RequestLogic : IRequestLogic
         ValidateIncomingRequest(request);
 
         Building actualBuilding = _buildingRepository.GetBuilding(managerId, request.Apartment.BuildingId);
+        Apartment actualApartment = _buildingRepository.GetApartment(managerId, request.Apartment.ApartmentId, request.Apartment.BuildingId);
 
         if (actualBuilding == null)
         {
             throw new InvalidOperationException("Building does not exist.");
         }
+
+        request.Apartment = actualApartment;
 
         return _requestRepository.CreateRequest(request);
     }
@@ -89,17 +92,20 @@ public class RequestLogic : IRequestLogic
         return actualRequest;
     }
 
-    //no usada
+    /*no usada
     public Request_ AsignMaintenancePerson(Guid managerId, Guid requestGuid, Guid maintenancePersonId)
     {
         throw new NotImplementedException();
     }
+    */
 
     private void ValidateIncomingRequest(Request_ request)
     {
         // General validations
         // Empty request
-        if (request.Id == Guid.Empty)
+        if (request.StartTime.Equals(request.CreationTime) && 
+            request.CreationTime.Equals(request.EndTime) && 
+            request.CreationTime.Equals(DateTime.MinValue))
             throw new ArgumentException("Can not create an empty Request.");
 
         // Cateogry can not be empty
