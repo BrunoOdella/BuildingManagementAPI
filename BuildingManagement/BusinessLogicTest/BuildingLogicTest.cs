@@ -30,6 +30,10 @@ namespace BusinessLogicTest
             {
                 Name = "Test Building",
                 Address = "123 Test Ave",
+                Apartments = new List<Apartment>()
+                {
+                    new Apartment()
+                }
             };
             _buildingRepositoryMock.Setup(repo => repo.CreateBuilding(building)).Returns(building);
 

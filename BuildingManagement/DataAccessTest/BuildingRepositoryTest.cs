@@ -28,6 +28,7 @@ namespace DataAccessTest
                 {
                     BuildingId = Guid.NewGuid(),
                     Name = "Sky Tower",
+                    ConstructionCompany = "x",
                     Address = "123 Main St",
                     Location = new Location { Latitude = 40.7128, Longitude = -74.0060 },
                     CommonExpenses = 500

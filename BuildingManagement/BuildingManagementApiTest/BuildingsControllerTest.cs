@@ -15,17 +15,16 @@ namespace BuildingManagementApiTest
         private Mock<IBuildingLogic> _buildingLogicMock;
         private BuildingsController _buildingsController;
         private Mock<IHttpContextAccessor> _httpContextAccessorMock;
-        private DefaultHttpContext _httpContext;
 
         [TestInitialize]
         public void Setup()
         {
             _buildingLogicMock = new Mock<IBuildingLogic>(MockBehavior.Strict);
-            _httpContextAccessorMock = new Mock<IHttpContextAccessor>();
-            _httpContext = new DefaultHttpContext();
-            _httpContext.Request.Headers["Authorization"] = Guid.NewGuid().ToString();
-
-            _httpContextAccessorMock.Setup(_ => _.HttpContext).Returns(_httpContext);
+            _httpContextAccessorMock = new Mock<IHttpContextAccessor>(MockBehavior.Strict);
+            var httpContext = new DefaultHttpContext();
+            Guid expectedUserID = Guid.NewGuid();
+            httpContext.Items["userID"] = expectedUserID.ToString();
+            _httpContextAccessorMock.Setup(x => x.HttpContext).Returns(httpContext);
             _buildingsController = new BuildingsController(_buildingLogicMock.Object, _httpContextAccessorMock.Object);
         }
 
@@ -33,7 +32,7 @@ namespace BuildingManagementApiTest
         public void CreateBuilding_ReturnsCreatedResponse_WhenBuildingIsSuccessfullyCreated()
         {
             // Arrange
-            string managerId = _httpContext.Request.Headers["Authorization"];
+            string userIDString = _httpContextAccessorMock.Object.HttpContext.Items["userID"] as string;
             var request = new CreateBuildingRequest
             {
                 Name = "New Building",
@@ -47,7 +46,7 @@ namespace BuildingManagementApiTest
 
             var building = request.ToEntity();
 
-            _buildingLogicMock.Setup(l => l.CreateBuilding(managerId, It.IsAny<Building>()))
+            _buildingLogicMock.Setup(l => l.CreateBuilding(userIDString, It.IsAny<Building>()))
                               .Returns(building);
 
             // Act
@@ -59,7 +58,7 @@ namespace BuildingManagementApiTest
             var response = result.Value as BuildingResponse;
             Assert.IsNotNull(response);
             Assert.AreEqual(building.BuildingId, response.BuildingId);
-            _buildingLogicMock.Verify(x => x.CreateBuilding(managerId, It.IsAny<Building>()), Times.Once);
+            _buildingLogicMock.Verify(x => x.CreateBuilding(userIDString, It.IsAny<Building>()), Times.Once);
             _buildingLogicMock.VerifyAll();
         }
 
@@ -68,14 +67,14 @@ namespace BuildingManagementApiTest
         {
             // Arrange
             var buildingId = Guid.NewGuid();
-            string managerId = _httpContext.Request.Headers["Authorization"];
-            _buildingLogicMock.Setup(l => l.DeleteBuilding(managerId, buildingId)).Verifiable();
+            string userIDString = _httpContextAccessorMock.Object.HttpContext.Items["userID"] as string;
+            _buildingLogicMock.Setup(l => l.DeleteBuilding(userIDString, buildingId)).Verifiable();
 
             // Act
             var result = _buildingsController.DeleteBuilding(buildingId) as NoContentResult;
 
             // Assert
-            _buildingLogicMock.Verify(l => l.DeleteBuilding(managerId, buildingId), Times.Once);
+            _buildingLogicMock.Verify(l => l.DeleteBuilding(userIDString, buildingId), Times.Once);
             Assert.IsNotNull(result);
             Assert.AreEqual(204, result.StatusCode);
         }
