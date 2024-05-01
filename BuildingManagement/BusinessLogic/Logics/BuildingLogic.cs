@@ -47,8 +47,34 @@ namespace BusinessLogic.Logics
 
         public Building UpdateBuilding(string managerId, Building building)
         {
-            throw new NotImplementedException();
+            if (!Guid.TryParse(managerId, out Guid parsedManagerId))
+                throw new ArgumentException("Invalid manager ID format.");
+
+            var existingBuilding = _buildingRepository.GetBuildingById(building.BuildingId);
+            if (existingBuilding == null)
+                throw new InvalidOperationException("Building not found.");
+
+            if (existingBuilding.ManagerId != parsedManagerId)
+                throw new UnauthorizedAccessException("Manager does not have permission to update this building.");
+
+            // Ejemplo de verificación de nulidad antes de la asignación
+            if (building.Name != null)
+                existingBuilding.Name = building.Name;
+            if (building.Address != null)
+                existingBuilding.Address = building.Address;
+            if (building.Location != null)
+            {
+                existingBuilding.Location.Latitude = building.Location.Latitude;
+                existingBuilding.Location.Longitude = building.Location.Longitude;
+            }
+            existingBuilding.ConstructionCompany = building.ConstructionCompany;
+            existingBuilding.CommonExpenses = building.CommonExpenses;
+
+            _buildingRepository.UpdateBuilding(existingBuilding);
+            return existingBuilding;
         }
+
+
     }
 
 

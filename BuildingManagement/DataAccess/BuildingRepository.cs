@@ -35,5 +35,15 @@ namespace DataAccess
         {
             return _context.Buildings.FirstOrDefault(i => i.BuildingId.Equals(buildingId) && i.ManagerId.Equals(managerId));
         }
+
+        public Building GetBuildingById(Guid buildingId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Building UpdateBuilding(object existingBuilding)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
