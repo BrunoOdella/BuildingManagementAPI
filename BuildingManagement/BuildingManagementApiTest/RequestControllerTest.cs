@@ -246,5 +246,46 @@ namespace BuildingManagementApiTest
 
             _RlogicMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void PostRequest_ShouldCreateRequestResponse()
+        {
+            var id = Guid.NewGuid();
+
+            CreateRequestRequest createdRequest = new CreateRequestRequest()
+            {
+                Description = "Description A",
+                Category = 1,
+                CreationTime = DateTime.Now.AddDays(-1),
+                ApartmentID = new Guid()
+            };
+
+
+
+            Request_ request = new Request_()
+            {
+                Id = id,
+                Status = Status.Pending,
+                Description = "Description A",
+                Category = 1,
+                CreationTime = DateTime.Now.AddDays(-1),
+                Apartment = new Apartment() { ApartmentId = createdRequest.ApartmentID }
+            };
+
+            CreateRequestResponse response = new CreateRequestResponse(request);
+
+            string userIDString = _httpContextAccessorMock.Object.HttpContext.Items["userID"] as string;
+            Guid userID = Guid.Parse(userIDString);
+
+            _RlogicMock.Setup(logic => logic.CreateRequest(userID, It.IsAny<Request_>())).Returns(request);
+            
+            ObjectResult result = _Rcontroller.PostRequest(createdRequest);
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(201, result.StatusCode);
+            Assert.AreEqual(response, result.Value);
+
+            _RlogicMock.VerifyAll();
+        }
     }
 }

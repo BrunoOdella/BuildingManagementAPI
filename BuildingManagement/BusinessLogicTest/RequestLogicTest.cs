@@ -41,6 +41,11 @@ namespace BusinessLogicTest
                 BuildingId = Guid.NewGuid()
             };
 
+            Apartment apartment = new Apartment()
+            {
+                BuildingId = building.BuildingId
+            };
+
             Request_ request = new Request_()
             {
                 Category = 1,
@@ -52,11 +57,12 @@ namespace BusinessLogicTest
                 Status = Status.Finished,
                 TotalCost = 1000,
                 MaintenanceStaff = new MaintenanceStaff(),
-                Apartment = new Apartment(){BuildingId = building.BuildingId}
+                Apartment = apartment
             };
             
             _requestRepositoryMock.Setup(repository => repository.CreateRequest(It.IsAny<Request_>())).Returns(request);
             _buildingRepositoryMock.Setup(repo => repo.GetBuilding(_managerID, It.IsAny<Guid>())).Returns(building);
+            _buildingRepositoryMock.Setup(repo => repo.GetApartment(_managerID, It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(apartment);
 
             Request_ result = _requestLogic.CreateRequest(_managerID, request);
 
@@ -85,6 +91,7 @@ namespace BusinessLogicTest
             };
 
             _buildingRepositoryMock.Setup(repo => repo.GetBuilding(_managerID, It.IsAny<Guid>())).Returns((Building)null);
+            _buildingRepositoryMock.Setup(repo => repo.GetApartment(_managerID, It.IsAny<Guid>(), It.IsAny<Guid>())).Returns((Apartment)null);
 
             Exception exception = null;
             // Act
@@ -112,7 +119,6 @@ namespace BusinessLogicTest
 
             try
             {
-                
                 _requestLogic.CreateRequest(_managerID, request);
             }
             catch (Exception e)
@@ -550,7 +556,6 @@ namespace BusinessLogicTest
 
             try
             {
-                
                 _requestLogic.CreateRequest(_managerID, request);
             }
             catch (Exception e)
@@ -933,6 +938,47 @@ namespace BusinessLogicTest
 
             Assert.IsInstanceOfType(exception, typeof(InvalidOperationException));
             Assert.IsTrue(exception.Message.Equals("End time has to be greater than Creation time."));
+
+            _requestRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void TerminateRequest_InvalidMaintenancePerson_ThrowError()
+        {
+            Building building = new Building()
+            {
+                BuildingId = Guid.NewGuid()
+            };
+
+            Apartment apartment = new Apartment()
+            {
+                BuildingId = building.BuildingId
+            };
+
+            Request_ request = new Request_()
+            {
+                Category = 1,
+                CreationTime = DateTime.Now.AddDays(-2),
+                Description = "description A",
+                Id = Guid.NewGuid(),
+                StartTime = DateTime.Now.AddDays(-1),
+                Status = Status.Active,
+                MaintenanceStaff = null,
+                Apartment = apartment
+            };
+            Exception exception = null;
+            // Act
+            try
+            {
+                _requestLogic.CreateRequest(_managerID, request);
+            }
+            catch (Exception ex)
+            {
+                exception = ex;
+            }
+
+            Assert.IsInstanceOfType(exception, typeof(ArgumentException));
+            Assert.IsTrue(exception.Message.Equals("If status is Active, a Maintenance Person must to be asigned."));
 
             _requestRepositoryMock.VerifyAll();
         }

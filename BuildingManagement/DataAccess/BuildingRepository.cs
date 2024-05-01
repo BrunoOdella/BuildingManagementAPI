@@ -20,6 +20,13 @@ namespace DataAccess
             return building;
         }
 
+        public Apartment GetApartment(Guid managerId, Guid apartmentId, Guid buildingId)
+        {
+            var building = _context.Buildings.FirstOrDefault(i => i.BuildingId.Equals(apartmentId) && i.ManagerId.Equals(managerId));
+            var apartment = building.Apartments.FirstOrDefault(a => a.ApartmentId.Equals(apartmentId));
+            return apartment;
+        }
+
         public Building GetBuilding(Guid managerId, Guid buildingId)
         {
             return _context.Buildings.FirstOrDefault(i => i.BuildingId.Equals(buildingId) && i.ManagerId.Equals(managerId));

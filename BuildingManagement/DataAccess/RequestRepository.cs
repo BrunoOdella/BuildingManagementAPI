@@ -28,7 +28,7 @@ namespace DataAccess
             {
                 foreach (var apartment in building.Apartments)
                 {
-                    requests.Concat(apartment.Requests);
+                    requests.AddRange(apartment.Requests);
                 }
             }
 
@@ -47,7 +47,7 @@ namespace DataAccess
                     foreach (var request in apartment.Requests)
                     {
                         if (request.Category == category)
-                            requests.Concat(apartment.Requests);
+                            requests.Add(request);
                     }
                     
                 }
@@ -57,22 +57,28 @@ namespace DataAccess
         }
 
         //no usada
+        /*
         public Request_ ActivateRequest(Guid managerId, Guid requestId, DateTime startTime)
         {
             throw new NotImplementedException();
         }
+        */
 
         //no usada
+        /*
         public Request_ TerminateRequest(Guid managerId, Guid id, DateTime endTime, float totalCost)
         {
             throw new NotImplementedException();
         }
+        */
 
         //no usada
+        /*
         public Request_ AsignMaintenancePerson(Guid managerId, Guid requestGuid, Guid maintenancePersonId)
         {
             throw new NotImplementedException();
         }
+        */
 
         public Request_ GetRequest(Guid managerId, Guid requestId)
         {
