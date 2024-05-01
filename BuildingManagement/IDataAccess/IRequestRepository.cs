@@ -4,7 +4,7 @@ namespace IDataAccess;
 
 public interface IRequestRepository
 {
-    Request_ CreateRequest(Guid managerId, Request_ request);
+    Request_ CreateRequest(Request_ request);
     IEnumerable<Request_> GetAllRequest(Guid managerId);
     IEnumerable<Request_> GetAllRequest(Guid managerId, int category);
     Request_ ActivateRequest(Guid managerId, Guid requestId, DateTime startTime);

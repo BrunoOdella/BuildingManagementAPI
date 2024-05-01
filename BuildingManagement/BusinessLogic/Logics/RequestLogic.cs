@@ -8,18 +8,27 @@ public class RequestLogic : IRequestLogic
 {
     private readonly IRequestRepository _requestRepository;
     private readonly IMaintenanceStaffRepository _maintenanceStaffRepository;
+    private readonly IBuildingRepository _buildingRepository;
 
-    public RequestLogic(IRequestRepository requestRepository, IMaintenanceStaffRepository maintenanceStaffRepository)
+    public RequestLogic(IRequestRepository requestRepository, IMaintenanceStaffRepository maintenanceStaffRepository, IBuildingRepository buildingRepository)
     {
         _requestRepository = requestRepository;
         _maintenanceStaffRepository = maintenanceStaffRepository;
+        _buildingRepository = buildingRepository;
     }
 
     public Request_ CreateRequest(Guid managerId, Request_ request)
     {
         ValidateIncomingRequest(request);
 
-        return _requestRepository.CreateRequest(managerId, request);
+        Building actualBuilding = _buildingRepository.GetBuilding(managerId, request.Apartment.BuildingId);
+
+        if (actualBuilding == null)
+        {
+            throw new InvalidOperationException("Building does not exist.");
+        }
+
+        return _requestRepository.CreateRequest(request);
     }
     
     public IEnumerable<Request_> GetAllRequest(Guid managerId)
@@ -50,10 +59,10 @@ public class RequestLogic : IRequestLogic
         actualRequest.MaintenanceStaff = actualMaintenanceStaff;
         actualRequest.StartTime = startTime;
 
-        actualMaintenanceStaff.Requests.Add(actualRequest);
+        //actualMaintenanceStaff.Requests.Add(actualRequest);
 
         _requestRepository.Update(actualRequest);
-        _maintenanceStaffRepository.Update(actualMaintenanceStaff);
+        //_maintenanceStaffRepository.Update(actualMaintenanceStaff);
 
         return actualRequest;
     }
@@ -83,7 +92,7 @@ public class RequestLogic : IRequestLogic
     //no usada
     public Request_ AsignMaintenancePerson(Guid managerId, Guid requestGuid, Guid maintenancePersonId)
     {
-        return _requestRepository.AsignMaintenancePerson(managerId, requestGuid, maintenancePersonId);
+        throw new NotImplementedException();
     }
 
     private void ValidateIncomingRequest(Request_ request)

@@ -12,4 +12,5 @@ public class Request_
     public DateTime EndTime { get; set; }
     public float TotalCost { get; set; }
     public MaintenanceStaff MaintenanceStaff { get; set; }
+    public Apartment Apartment { get; set; }
 }

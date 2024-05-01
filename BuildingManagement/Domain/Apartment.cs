@@ -12,4 +12,5 @@ public class Apartment
     public Guid BuildingId { get; set; }
     // Propiedad de navegación hacia Building
     public Building Building { get; set; }
+    public List<Request_> Requests { get; set; } = new List<Request_>();
 }
