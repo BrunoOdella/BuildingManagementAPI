@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(BuildingManagementDbContext))]
-    [Migration("20240501042420_v3")]
-    partial class v3
+    [Migration("20240501203206_v2")]
+    partial class v2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,16 +46,11 @@ namespace DataAccess.Migrations
                     b.Property<int>("NumberOfBathrooms")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("OwnerId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("ApartmentId");
 
                     b.HasIndex("BuildingId");
 
-                    b.HasIndex("OwnerId");
-
-                    b.ToTable("Apartment");
+                    b.ToTable("Apartments");
                 });
 
             modelBuilder.Entity("Domain.Admin", b =>
@@ -102,12 +97,6 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("LocationLatitude")
-                        .HasColumnType("float");
-
-                    b.Property<double>("LocationLongitude")
-                        .HasColumnType("float");
-
                     b.Property<Guid>("ManagerId")
                         .HasColumnType("uniqueidentifier");
 
@@ -118,8 +107,6 @@ namespace DataAccess.Migrations
                     b.HasKey("BuildingId");
 
                     b.HasIndex("ManagerId");
-
-                    b.HasIndex("LocationLatitude", "LocationLongitude");
 
                     b.ToTable("Buildings");
                 });
@@ -150,17 +137,19 @@ namespace DataAccess.Migrations
                     b.ToTable("Invitations");
                 });
 
-            modelBuilder.Entity("Domain.Location", b =>
+            modelBuilder.Entity("Domain.MaintenanceStaff", b =>
                 {
-                    b.Property<double>("Latitude")
-                        .HasColumnType("float");
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<double>("Longitude")
-                        .HasColumnType("float");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Latitude", "Longitude");
+                    b.HasKey("ID");
 
-                    b.ToTable("Locations");
+                    b.ToTable("MaintenanceStaff");
                 });
 
             modelBuilder.Entity("Domain.Manager", b =>
@@ -185,7 +174,6 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Domain.Owner", b =>
                 {
                     b.Property<Guid>("OwnerId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
@@ -202,13 +190,16 @@ namespace DataAccess.Migrations
 
                     b.HasKey("OwnerId");
 
-                    b.ToTable("Owner");
+                    b.ToTable("Owners");
                 });
 
             modelBuilder.Entity("Domain.Request_", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ApartmentId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int?>("Category")
@@ -224,7 +215,7 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("MaintenancePersonId")
+                    b.Property<Guid>("MaintenanceStaffID")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("StartTime")
@@ -238,6 +229,10 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ApartmentId");
+
+                    b.HasIndex("MaintenanceStaffID");
+
                     b.ToTable("Requests");
                 });
 
@@ -249,15 +244,7 @@ namespace DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Owner", "Owner")
-                        .WithMany()
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Building");
-
-                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("Domain.Building", b =>
@@ -268,20 +255,75 @@ namespace DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationLatitude", "LocationLongitude")
+                    b.OwnsOne("Domain.Location", "Location", b1 =>
+                        {
+                            b1.Property<Guid>("BuildingId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<double>("Latitude")
+                                .HasColumnType("float");
+
+                            b1.Property<double>("Longitude")
+                                .HasColumnType("float");
+
+                            b1.HasKey("BuildingId");
+
+                            b1.ToTable("Locations");
+
+                            b1.WithOwner()
+                                .HasForeignKey("BuildingId");
+                        });
+
+                    b.Navigation("Location")
+                        .IsRequired();
+
+                    b.Navigation("Manager");
+                });
+
+            modelBuilder.Entity("Domain.Owner", b =>
+                {
+                    b.HasOne("Apartment", null)
+                        .WithOne("Owner")
+                        .HasForeignKey("Domain.Owner", "OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Request_", b =>
+                {
+                    b.HasOne("Apartment", "Apartment")
+                        .WithMany("Requests")
+                        .HasForeignKey("ApartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Location");
+                    b.HasOne("Domain.MaintenanceStaff", "MaintenanceStaff")
+                        .WithMany("Requests")
+                        .HasForeignKey("MaintenanceStaffID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Manager");
+                    b.Navigation("Apartment");
+
+                    b.Navigation("MaintenanceStaff");
+                });
+
+            modelBuilder.Entity("Apartment", b =>
+                {
+                    b.Navigation("Owner")
+                        .IsRequired();
+
+                    b.Navigation("Requests");
                 });
 
             modelBuilder.Entity("Domain.Building", b =>
                 {
                     b.Navigation("Apartments");
+                });
+
+            modelBuilder.Entity("Domain.MaintenanceStaff", b =>
+                {
+                    b.Navigation("Requests");
                 });
 
             modelBuilder.Entity("Domain.Manager", b =>

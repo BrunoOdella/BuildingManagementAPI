@@ -13,4 +13,5 @@ public class Request_
     public float TotalCost { get; set; }
     public MaintenanceStaff MaintenanceStaff { get; set; }
     public Apartment Apartment { get; set; }
+    public Guid ApartmentId { get; set; }
 }

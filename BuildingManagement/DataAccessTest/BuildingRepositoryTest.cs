@@ -46,5 +46,47 @@ namespace DataAccessTest
                 Assert.AreEqual(expected.Name, storedBuilding.Name);
             }
         }
+
+        [TestMethod]
+        public void DeleteBuilding_ExistingBuilding_ReturnsTrue()
+        {
+            using (var context = CreateDbContext("TestDeleteBuilding"))
+            {
+                var repository = new BuildingRepository(context);
+                var building = new Building
+                {
+                    BuildingId = Guid.NewGuid(),
+                    Name = "Sky Tower",
+                    Address = "123 Main St",
+                    ConstructionCompany = "contruction company"
+                };
+
+                context.Buildings.Add(building);
+                context.SaveChanges();
+
+                // Act
+                bool result = repository.DeleteBuilding(building.BuildingId);
+
+                // Assert
+                Assert.IsTrue(result);
+                var deletedBuilding = context.Buildings.FirstOrDefault(b => b.BuildingId == building.BuildingId);
+                Assert.IsNull(deletedBuilding);
+            }
+        }
+
+        [TestMethod]
+        public void DeleteBuilding_NonExistingBuilding_ReturnsFalse()
+        {
+            using (var context = CreateDbContext("TestDeleteNonExistingBuilding"))
+            {
+                var repository = new BuildingRepository(context);
+
+                // Act
+                bool result = repository.DeleteBuilding(Guid.NewGuid());
+
+                // Assert
+                Assert.IsFalse(result);
+            }
+        }
     }
 }

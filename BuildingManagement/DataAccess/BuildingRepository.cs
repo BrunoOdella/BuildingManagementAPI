@@ -22,9 +22,15 @@ namespace DataAccess
 
         public bool DeleteBuilding(Guid buildingId)
         {
-            throw new NotImplementedException();
+            var building = _context.Buildings.Find(buildingId);
+            if (building == null)
+            {
+                return false;
+            }
+            _context.Buildings.Remove(building);
+            _context.SaveChanges();
+            return true;
         }
-
         public Building GetBuilding(Guid managerId, Guid buildingId)
         {
             return _context.Buildings.FirstOrDefault(i => i.BuildingId.Equals(buildingId) && i.ManagerId.Equals(managerId));
