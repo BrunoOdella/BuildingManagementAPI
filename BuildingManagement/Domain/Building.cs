@@ -6,7 +6,7 @@
         public string Name { get; set; }
         public string Address { get; set; }
         public Location Location { get; set; }
-        public ConstructionCompany ConstructionCompany { get; set; }
+        public string ConstructionCompany { get; set; }
         public int CommonExpenses { get; set; }
         public List<Apartment> Apartments { get; set; }
 

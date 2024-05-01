@@ -24,9 +24,20 @@ namespace BusinessLogic.Logics
             {
                 throw new ArgumentException("Invalid manager ID");
             }
-
+            building.ManagerId = parsedManagerId;
+            building.BuildingId = new Guid();
             // Agregar validaciones
+            foreach (Apartment apartment in building.Apartments)
+            {
+                apartment.BuildingId = building.BuildingId;
+                apartment.ApartmentId = new Guid();
+            }
             return _buildingRepository.CreateBuilding(building);
+        }
+
+        public void DeleteBuilding(string? managerId, Guid buildingId)
+        {
+            throw new NotImplementedException();
         }
     }
 

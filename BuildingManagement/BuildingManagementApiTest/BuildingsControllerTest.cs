@@ -40,7 +40,7 @@ namespace BuildingManagementApiTest
                 Address = "123 Main St",
                 Latitude = 45.0,
                 Longitude = -75.0,
-                ConstructionCompanyId = Guid.NewGuid(),
+                ConstructionCompany = "Empresa 1",
                 CommonExpenses = 500,
                 Apartments = new List<ApartmentData>()
             };
@@ -64,7 +64,7 @@ namespace BuildingManagementApiTest
         }
 
         [TestMethod]
-        public void DeleteBuilding_ReturnsOk_WhenDeletionIsSuccessful()
+        public void DeleteBuilding_ReturnsNoContent_WhenDeletionIsSuccessful()
         {
             // Arrange
             var buildingId = Guid.NewGuid();
@@ -72,13 +72,14 @@ namespace BuildingManagementApiTest
             _buildingLogicMock.Setup(l => l.DeleteBuilding(managerId, buildingId)).Verifiable();
 
             // Act
-            var result = _buildingsController.DeleteBuilding(buildingId) as OkResult;
+            var result = _buildingsController.DeleteBuilding(buildingId) as NoContentResult;
 
             // Assert
             _buildingLogicMock.Verify(l => l.DeleteBuilding(managerId, buildingId), Times.Once);
             Assert.IsNotNull(result);
-            Assert.AreEqual(200, result.StatusCode);
+            Assert.AreEqual(204, result.StatusCode);
         }
+
 
     }
 

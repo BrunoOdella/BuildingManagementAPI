@@ -10,5 +10,6 @@ namespace LogicInterface.Interfaces
     public interface IBuildingLogic
     {
         Building CreateBuilding(string managerId, Building building);
+        void DeleteBuilding(string? managerId, Guid buildingId);
     }
 }

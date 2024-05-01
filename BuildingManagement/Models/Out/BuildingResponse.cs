@@ -17,7 +17,7 @@ namespace Models.Out
             Name = building.Name;
             Address = building.Address;
             Location = building.Location;
-            ConstructionCompanyName = building.ConstructionCompany.Name;
+            ConstructionCompanyName = building.ConstructionCompany;
             CommonExpenses = building.CommonExpenses;
         }
     }

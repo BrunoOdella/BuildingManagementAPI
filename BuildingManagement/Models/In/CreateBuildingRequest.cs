@@ -8,7 +8,7 @@ namespace Models.In
         public string Address { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
-        public Guid ConstructionCompanyId { get; set; }
+        public string ConstructionCompany { get; set; }
         public int CommonExpenses { get; set; }
         public List<ApartmentData> Apartments { get; set; }
 
@@ -19,7 +19,7 @@ namespace Models.In
                 Name = this.Name,
                 Address = this.Address,
                 Location = new Location { Latitude = this.Latitude, Longitude = this.Longitude },
-                ConstructionCompany = new ConstructionCompany { CompanyId = this.ConstructionCompanyId },
+                ConstructionCompany = this.ConstructionCompany,
                 CommonExpenses = this.CommonExpenses,
                 Apartments = this.Apartments.Select(a => a.ToEntity()).ToList()
             };
