@@ -1,4 +1,5 @@
 ﻿using BuildingManagementApi.Filters;
+using Domain;
 using LogicInterface.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Models.In;
@@ -35,5 +36,19 @@ namespace BuildingManagementApi.Controllers
             _buildingLogic.DeleteBuilding(managerId, BuildingId);
             return NoContent();
         }
+
+        [HttpPut("{buildingId}")]
+        public IActionResult UpdateBuilding(Guid buildingId, [FromBody] UpdateBuildingRequest request)
+        {
+            string managerId = _httpContextAccessor.HttpContext.Items["userID"] as string;
+            Building buildingToUpdate = request.ToEntity();
+            buildingToUpdate.BuildingId = buildingId;
+
+            var updatedBuilding = _buildingLogic.UpdateBuilding(managerId, buildingToUpdate);
+            return Ok(new BuildingResponse(updatedBuilding));
+        }
+
+
+
     }
 }

@@ -11,5 +11,6 @@ namespace LogicInterface.Interfaces
     {
         Building CreateBuilding(string managerId, Building building);
         void DeleteBuilding(string? managerId, Guid buildingId);
+        Building UpdateBuilding(string managerId, Building building);
     }
 }

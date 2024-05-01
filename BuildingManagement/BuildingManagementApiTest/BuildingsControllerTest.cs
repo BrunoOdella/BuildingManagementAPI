@@ -79,6 +79,41 @@ namespace BuildingManagementApiTest
             Assert.AreEqual(204, result.StatusCode);
         }
 
+        [TestMethod]
+        public void UpdateBuilding_ReturnsOkResponse_WhenBuildingIsSuccessfullyUpdated()
+        {
+            // Arrange
+            var buildingId = Guid.NewGuid();
+            string managerId = _httpContextAccessorMock.Object.HttpContext.Items["userID"] as string;
+            var request = new UpdateBuildingRequest
+            {
+                Name = "Updated Building",
+                Address = "456 New St",
+                Latitude = 40.7128,
+                Longitude = -74.0060,
+                ConstructionCompany = "New Construction Co",
+                CommonExpenses = 750
+            };
+
+            var building = request.ToEntity();
+            building.BuildingId = buildingId;
+
+            _buildingLogicMock.Setup(l => l.UpdateBuilding(managerId, It.IsAny<Building>()))
+                              .Returns(building);
+
+            // Act
+            var result = _buildingsController.UpdateBuilding(buildingId, request) as OkObjectResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(200, result.StatusCode);
+            var response = result.Value as BuildingResponse;
+            Assert.IsNotNull(response);
+            Assert.AreEqual(building.BuildingId, response.BuildingId);
+            _buildingLogicMock.Verify(x => x.UpdateBuilding(managerId, It.IsAny<Building>()), Times.Once);
+            _buildingLogicMock.VerifyAll();
+        }
+
 
     }
 

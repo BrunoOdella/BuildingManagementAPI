@@ -44,6 +44,11 @@ namespace BusinessLogic.Logics
                 throw new InvalidOperationException("Building not found or not permitted to delete.");
             }
         }
+
+        public Building UpdateBuilding(string managerId, Building building)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 
