@@ -11,5 +11,5 @@ public class Request_
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
     public float TotalCost { get; set; }
-    public Guid MaintenancePersonId { get; set; }
+    public MaintenanceStaff MaintenanceStaff { get; set; }
 }
