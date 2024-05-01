@@ -7,6 +7,6 @@ namespace IDataAccess
         Building CreateBuilding(Building building);
         bool DeleteBuilding(Guid buildingId);
         Building GetBuilding(Guid managerId, Guid buildingId);
-        Building UpdateBuilding(object existingBuilding);
+        Building UpdateBuilding(Building existingBuilding);
     }
 }

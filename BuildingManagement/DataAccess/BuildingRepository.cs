@@ -36,14 +36,13 @@ namespace DataAccess
             return _context.Buildings.FirstOrDefault(i => i.BuildingId.Equals(buildingId) && i.ManagerId.Equals(managerId));
         }
 
-        public Building GetBuildingById(Guid buildingId)
+        public Building UpdateBuilding(Building existingBuilding)
         {
-            throw new NotImplementedException();
+            var entity = _context.Buildings.Attach(existingBuilding);
+            entity.State = EntityState.Modified;
+            _context.SaveChanges();
+            return existingBuilding;
         }
 
-        public Building UpdateBuilding(object existingBuilding)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

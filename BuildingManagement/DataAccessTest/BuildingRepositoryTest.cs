@@ -88,5 +88,47 @@ namespace DataAccessTest
                 Assert.IsFalse(result);
             }
         }
+
+
+        [TestMethod]
+        public void UpdateBuilding_ExistingBuilding_UpdatesAndSavesCorrectly()
+        {
+            using (var context = CreateDbContext("TestUpdateBuilding"))
+            {
+                var repository = new BuildingRepository(context);
+                var originalBuilding = new Building
+                {
+                    BuildingId = Guid.NewGuid(),
+                    Name = "Original Name",
+                    Address = "Original Address",
+                    ConstructionCompany = "Original Company",
+                    CommonExpenses = 100,
+                    Location = new Location { Latitude = 40.7128, Longitude = -74.0060 }
+                };
+
+                context.Buildings.Add(originalBuilding);
+                context.SaveChanges();
+
+                // Change some properties
+                originalBuilding.Name = "Updated Name";
+                originalBuilding.Address = "Updated Address";
+                originalBuilding.CommonExpenses = 200;
+
+                // Act
+                var updatedBuilding = repository.UpdateBuilding(originalBuilding);
+
+                // Assert
+                Assert.AreEqual("Updated Name", updatedBuilding.Name);
+                Assert.AreEqual("Updated Address", updatedBuilding.Address);
+                Assert.AreEqual(200, updatedBuilding.CommonExpenses);
+
+                // Verify that changes are saved to the database
+                var storedBuilding = context.Buildings.FirstOrDefault(b => b.BuildingId == originalBuilding.BuildingId);
+                Assert.IsNotNull(storedBuilding);
+                Assert.AreEqual("Updated Name", storedBuilding.Name);
+                Assert.AreEqual("Updated Address", storedBuilding.Address);
+                Assert.AreEqual(200, storedBuilding.CommonExpenses);
+            }
+        }
     }
 }
