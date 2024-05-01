@@ -50,14 +50,12 @@ namespace BusinessLogic.Logics
             if (!Guid.TryParse(managerId, out Guid parsedManagerId))
                 throw new ArgumentException("Invalid manager ID format.");
 
-            var existingBuilding = _buildingRepository.GetBuildingById(building.BuildingId);
+            // Usar GetBuilding en lugar de GetBuildingById
+            var existingBuilding = _buildingRepository.GetBuilding(parsedManagerId, building.BuildingId);
             if (existingBuilding == null)
-                throw new InvalidOperationException("Building not found.");
+                throw new InvalidOperationException("Building not found or manager does not have permission to update this building.");
 
-            if (existingBuilding.ManagerId != parsedManagerId)
-                throw new UnauthorizedAccessException("Manager does not have permission to update this building.");
-
-            // Ejemplo de verificación de nulidad antes de la asignación
+            // No es necesario verificar el ManagerId aquí ya que GetBuilding debería manejarlo
             if (building.Name != null)
                 existingBuilding.Name = building.Name;
             if (building.Address != null)
@@ -73,6 +71,7 @@ namespace BusinessLogic.Logics
             _buildingRepository.UpdateBuilding(existingBuilding);
             return existingBuilding;
         }
+
 
 
     }

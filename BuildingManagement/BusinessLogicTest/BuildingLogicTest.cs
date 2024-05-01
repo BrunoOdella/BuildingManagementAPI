@@ -96,7 +96,7 @@ namespace BusinessLogicTest
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void UpdateBuilding_WithInvalidManagerId_ThrowsArgumentException()
+        public void UpdateBuilding_InvalidManagerId_ThrowsArgumentException()
         {
             // Arrange
             string invalidManagerId = "invalid-guid";
@@ -114,22 +114,7 @@ namespace BusinessLogicTest
             string managerId = Guid.NewGuid().ToString();
             Building building = new Building { BuildingId = Guid.NewGuid() };
 
-            _buildingRepositoryMock.Setup(r => r.GetBuildingById(building.BuildingId)).Returns((Building)null);
-
-            // Act
-            _buildingLogic.UpdateBuilding(managerId, building);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(UnauthorizedAccessException))]
-        public void UpdateBuilding_ManagerNotMatch_ThrowsUnauthorizedAccessException()
-        {
-            // Arrange
-            string managerId = Guid.NewGuid().ToString();
-            Building building = new Building { BuildingId = Guid.NewGuid(), ManagerId = Guid.NewGuid() };
-            Building existingBuilding = new Building { BuildingId = building.BuildingId, ManagerId = Guid.NewGuid() };
-
-            _buildingRepositoryMock.Setup(r => r.GetBuildingById(building.BuildingId)).Returns(existingBuilding);
+            _buildingRepositoryMock.Setup(r => r.GetBuilding(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns((Building)null);
 
             // Act
             _buildingLogic.UpdateBuilding(managerId, building);
@@ -138,36 +123,71 @@ namespace BusinessLogicTest
         [TestMethod]
         public void UpdateBuilding_ValidRequest_UpdatesBuilding()
         {
-            // Asegúrate de que todo esté correctamente inicializado
+            // Arrange
             string managerId = Guid.NewGuid().ToString();
+            Guid buildingId = Guid.NewGuid();
             Building building = new Building
             {
-                BuildingId = Guid.NewGuid(),
+                BuildingId = buildingId,
                 Name = "Updated Name",
                 Address = "Updated Address",
                 Location = new Location { Latitude = 40.0, Longitude = -74.0 },
                 ConstructionCompany = "New Company",
-                CommonExpenses = 500,
-                ManagerId = Guid.Parse(managerId)
+                CommonExpenses = 500
             };
 
             Building existingBuilding = new Building
             {
-                BuildingId = building.BuildingId,
+                BuildingId = buildingId,
                 ManagerId = Guid.Parse(managerId),
-                Location = new Location() // Asegúrate de que Location también está inicializado en existingBuilding
+                Location = new Location { Latitude = 35.0, Longitude = -75.0 } // Asegurarse de inicializar Location aquí también
             };
 
-            _buildingRepositoryMock.Setup(r => r.GetBuildingById(building.BuildingId)).Returns(existingBuilding);
+            _buildingRepositoryMock.Setup(r => r.GetBuilding(Guid.Parse(managerId), buildingId)).Returns(existingBuilding);
             _buildingRepositoryMock.Setup(r => r.UpdateBuilding(It.IsAny<Building>())).Returns(existingBuilding);
 
             // Act
             var result = _buildingLogic.UpdateBuilding(managerId, building);
 
             // Assert
-            Assert.IsNotNull(result);
-            _buildingRepositoryMock.Verify(r => r.UpdateBuilding(It.IsAny<Building>()), Times.Once);
-            Assert.AreEqual(building.Name, result.Name);
+            Assert.AreEqual("Updated Name", result.Name);
+            Assert.AreEqual("Updated Address", result.Address);
+            Assert.AreEqual(40.0, result.Location.Latitude);
+            Assert.AreEqual(-74.0, result.Location.Longitude);
+            Assert.AreEqual("New Company", result.ConstructionCompany);
+            Assert.AreEqual(500, result.CommonExpenses);
+        }
+
+
+        [TestMethod]
+        public void UpdateBuilding_PartialUpdate_UpdatesOnlySpecifiedFields()
+        {
+            // Arrange
+            string managerId = Guid.NewGuid().ToString();
+            Guid buildingId = Guid.NewGuid();
+            Building building = new Building
+            {
+                BuildingId = buildingId,
+                Name = "Partially Updated Name"
+                // Address and other fields are not provided and should not be updated
+            };
+            Building existingBuilding = new Building
+            {
+                BuildingId = buildingId,
+                ManagerId = Guid.Parse(managerId),
+                Name = "Old Name",
+                Address = "Old Address"
+            };
+
+            _buildingRepositoryMock.Setup(r => r.GetBuilding(Guid.Parse(managerId), buildingId)).Returns(existingBuilding);
+            _buildingRepositoryMock.Setup(r => r.UpdateBuilding(It.IsAny<Building>())).Returns(existingBuilding);
+
+            // Act
+            var result = _buildingLogic.UpdateBuilding(managerId, building);
+
+            // Assert
+            Assert.AreEqual("Partially Updated Name", result.Name);
+            Assert.AreEqual("Old Address", result.Address);  // Should not be updated
         }
 
 
