@@ -3,9 +3,10 @@ using Domain;
 
 namespace Models.In;
 
-public class ActiveRequest
+public class ActivateRequest
 {
     public Status Status { get; set; } = Status.Active;
     public DateTime StartTime { get; set; }
+    public Guid MaintenancePersonId { get; set; }
 
 }

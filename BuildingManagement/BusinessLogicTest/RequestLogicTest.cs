@@ -15,13 +15,17 @@ namespace BusinessLogicTest
     public class RequestLogicTest
     {
         private Mock<IRequestRepository> _requestRepositoryMock;
+        private Mock<IMaintenanceStaffRepository> _staffRepositoryMock;
         private RequestLogic _requestLogic;
+        private Guid _managerID;
 
         [TestInitialize]
         public void TestSetup()
         {
             _requestRepositoryMock = new Mock<IRequestRepository>(MockBehavior.Strict);
-            _requestLogic = new RequestLogic(_requestRepositoryMock.Object);
+            _staffRepositoryMock = new Mock<IMaintenanceStaffRepository>(MockBehavior.Strict);
+            _requestLogic = new RequestLogic(_requestRepositoryMock.Object, _staffRepositoryMock.Object);
+            _managerID = Guid.NewGuid();
         }
 
         // Start - CreateRequest 
@@ -39,14 +43,13 @@ namespace BusinessLogicTest
                 StartTime = DateTime.Now.AddDays(-1),
                 Status = Status.Finished,
                 TotalCost = 1000,
-                MaintenancePersonId = new Guid()
+                MaintenanceStaff = new MaintenanceStaff()
             };
 
-            _requestRepositoryMock.Setup(repository => repository.CreateRequest(It.IsAny<Request_>())).Returns(request);
+            _requestRepositoryMock.Setup(repository => repository.CreateRequest(_managerID, It.IsAny<Request_>())).Returns(request);
 
-            Guid managerID = Guid.NewGuid();
 
-            Request_ result = _requestLogic.CreateRequest(managerID, request);
+            Request_ result = _requestLogic.CreateRequest(_managerID, request);
 
             Assert.IsNotNull(result);
             Assert.AreEqual(request, result);
@@ -62,8 +65,8 @@ namespace BusinessLogicTest
 
             try
             {
-                Guid managerID = Guid.NewGuid();
-                _requestLogic.CreateRequest(managerID, request);
+                
+                _requestLogic.CreateRequest(_managerID, request);
             }
             catch (Exception e)
             {
@@ -88,15 +91,15 @@ namespace BusinessLogicTest
                 StartTime = DateTime.Now.AddDays(-1),
                 Status = Status.Finished,
                 TotalCost = 1000, 
-                MaintenancePersonId = new Guid()
+                MaintenanceStaff = new MaintenanceStaff()
             };
 
             Exception exception = null;
 
             try
             {
-                Guid managerID = Guid.NewGuid();
-                _requestLogic.CreateRequest(managerID, request);
+                
+                _requestLogic.CreateRequest(_managerID, request);
             }
             catch (Exception e)
             {
@@ -122,15 +125,15 @@ namespace BusinessLogicTest
                 StartTime = DateTime.Now.AddDays(-1),
                 Status = Status.Finished,
                 TotalCost = 1000,
-                MaintenancePersonId = new Guid()
+                MaintenanceStaff = new MaintenanceStaff()
             };
 
             Exception exception = null;
 
             try
             {
-                Guid managerID = Guid.NewGuid();
-                _requestLogic.CreateRequest(managerID, request);
+                
+                _requestLogic.CreateRequest(_managerID, request);
             }
             catch (Exception e)
             {
@@ -155,15 +158,15 @@ namespace BusinessLogicTest
                 StartTime = DateTime.Now.AddDays(-1),
                 Status = Status.Finished,
                 TotalCost = 1000,
-                MaintenancePersonId = new Guid()
+                MaintenanceStaff = new MaintenanceStaff()
             };
 
             Exception exception = null;
 
             try
             {
-                Guid managerID = Guid.NewGuid();
-                _requestLogic.CreateRequest(managerID, request);
+                
+                _requestLogic.CreateRequest(_managerID, request);
             }
             catch (Exception e)
             {
@@ -189,15 +192,15 @@ namespace BusinessLogicTest
                 StartTime = DateTime.Now.AddDays(-1),
                 Status = Status.Finished,
                 TotalCost = 1000,
-                MaintenancePersonId = new Guid()
+                MaintenanceStaff = new MaintenanceStaff()
             };
 
             Exception exception = null;
 
             try
             {
-                Guid managerID = Guid.NewGuid();
-                _requestLogic.CreateRequest(managerID, request);
+                
+                _requestLogic.CreateRequest(_managerID, request);
             }
             catch (Exception e)
             {
@@ -229,8 +232,8 @@ namespace BusinessLogicTest
 
             try
             {
-                Guid managerID = Guid.NewGuid();
-                _requestLogic.CreateRequest(managerID, request);
+                
+                _requestLogic.CreateRequest(_managerID, request);
             }
             catch (Exception e)
             {
@@ -263,8 +266,8 @@ namespace BusinessLogicTest
 
             try
             {
-                Guid managerID = Guid.NewGuid();
-                _requestLogic.CreateRequest(managerID, request);
+                
+                _requestLogic.CreateRequest(_managerID, request);
             }
             catch (Exception e)
             {
@@ -290,15 +293,15 @@ namespace BusinessLogicTest
                 //StartTime = DateTime.Now.AddDays(-1),
                 Status = Status.Active,
                 TotalCost = 1000,
-                MaintenancePersonId = new Guid()
+                MaintenanceStaff = new MaintenanceStaff()
             };
 
             Exception exception = null;
 
             try
             {
-                Guid managerID = Guid.NewGuid();
-                _requestLogic.CreateRequest(managerID, request);
+                
+                _requestLogic.CreateRequest(_managerID, request);
             }
             catch (Exception e)
             {
@@ -324,15 +327,15 @@ namespace BusinessLogicTest
                 StartTime = DateTime.Now.AddDays(-1),
                 Status = Status.Active,
                 TotalCost = 1000,
-                MaintenancePersonId = new Guid()
+                MaintenanceStaff = new MaintenanceStaff()
             };
 
             Exception exception = null;
 
             try
             {
-                Guid managerID = Guid.NewGuid();
-                _requestLogic.CreateRequest(managerID, request);
+                
+                _requestLogic.CreateRequest(_managerID, request);
             }
             catch (Exception e)
             {
@@ -358,15 +361,15 @@ namespace BusinessLogicTest
                 StartTime = DateTime.Now.AddDays(-1),
                 Status = Status.Active,
                 TotalCost = 1000,
-                MaintenancePersonId = new Guid()
+                MaintenanceStaff = new MaintenanceStaff()
             };
 
             Exception exception = null;
 
             try
             {
-                Guid managerID = Guid.NewGuid();
-                _requestLogic.CreateRequest(managerID, request);
+                
+                _requestLogic.CreateRequest(_managerID, request);
             }
             catch (Exception e)
             {
@@ -398,8 +401,8 @@ namespace BusinessLogicTest
 
             try
             {
-                Guid managerID = Guid.NewGuid();
-                _requestLogic.CreateRequest(managerID, request);
+                
+                _requestLogic.CreateRequest(_managerID, request);
             }
             catch (Exception e)
             {
@@ -425,15 +428,15 @@ namespace BusinessLogicTest
                 StartTime = DateTime.Now.AddDays(-1),
                 Status = Status.Finished,
                 TotalCost = 1000,
-                MaintenancePersonId = new Guid()
+                MaintenanceStaff = new MaintenanceStaff()
             };
 
             Exception exception = null;
 
             try
             {
-                Guid managerID = Guid.NewGuid();
-                _requestLogic.CreateRequest(managerID, request);
+                
+                _requestLogic.CreateRequest(_managerID, request);
             }
             catch (Exception e)
             {
@@ -459,15 +462,15 @@ namespace BusinessLogicTest
                 StartTime = DateTime.Now.AddDays(1),
                 Status = Status.Finished,
                 TotalCost = 1000,
-                MaintenancePersonId = new Guid()
+                MaintenanceStaff = new MaintenanceStaff()
             };
 
             Exception exception = null;
 
             try
             {
-                Guid managerID = Guid.NewGuid();
-                _requestLogic.CreateRequest(managerID, request);
+                
+                _requestLogic.CreateRequest(_managerID, request);
             }
             catch (Exception e)
             {
@@ -493,15 +496,15 @@ namespace BusinessLogicTest
                 StartTime = DateTime.Now.AddDays(-1),
                 Status = Status.Finished,
                 TotalCost = 1000,
-                MaintenancePersonId = new Guid()
+                MaintenanceStaff = new MaintenanceStaff()
             };
 
             Exception exception = null;
 
             try
             {
-                Guid managerID = Guid.NewGuid();
-                _requestLogic.CreateRequest(managerID, request);
+                
+                _requestLogic.CreateRequest(_managerID, request);
             }
             catch (Exception e)
             {
@@ -531,7 +534,7 @@ namespace BusinessLogicTest
                     Id = Guid.NewGuid(),
                     StartTime = DateTime.Now.AddDays(-1),
                     Status = Status.Active,
-                    MaintenancePersonId = new Guid()
+                    MaintenanceStaff = new MaintenanceStaff()
                 },
                 new Request_()
                 {
@@ -543,7 +546,7 @@ namespace BusinessLogicTest
                     StartTime = DateTime.Now.AddDays(-1),
                     Status = Status.Finished,
                     TotalCost = 1000,
-                    MaintenancePersonId = new Guid()
+                    MaintenanceStaff = new MaintenanceStaff()
                 },
                 new Request_()
                 {
@@ -555,12 +558,12 @@ namespace BusinessLogicTest
                 }
             };
 
-            _requestRepositoryMock.Setup(repository => repository.GetAllRequest()).Returns(expectedRequests);
+            _requestRepositoryMock.Setup(repository => repository.GetAllRequest(_managerID)).Returns(expectedRequests);
 
             // Act
-            Guid managerID = Guid.NewGuid();
+            
 
-            IEnumerable<Request_> result = _requestLogic.GetAllRequest(managerID);
+            IEnumerable<Request_> result = _requestLogic.GetAllRequest(_managerID);
 
             // Assert
             Assert.IsNotNull(result);
@@ -584,7 +587,7 @@ namespace BusinessLogicTest
                     Id = Guid.NewGuid(),
                     StartTime = DateTime.Now.AddDays(-1),
                     Status = Status.Active,
-                    MaintenancePersonId = new Guid()
+                    MaintenanceStaff = new MaintenanceStaff()
                 },
                 new Request_()
                 {
@@ -596,17 +599,17 @@ namespace BusinessLogicTest
                     StartTime = DateTime.Now.AddDays(-1),
                     Status = Status.Finished,
                     TotalCost = 1000,
-                    MaintenancePersonId = new Guid()
+                    MaintenanceStaff = new MaintenanceStaff()
                 }
             };
 
-            _requestRepositoryMock.Setup(repository => repository.GetAllRequest(category)).Returns(expectedRequests);
+            _requestRepositoryMock.Setup(repository => repository.GetAllRequest(_managerID, category)).Returns(expectedRequests);
 
             // Act
 
-            Guid managerID = Guid.NewGuid();
+            
 
-            IEnumerable<Request_> result = _requestLogic.GetAllRequest(managerID, category);
+            IEnumerable<Request_> result = _requestLogic.GetAllRequest(_managerID, category);
 
             // Assert
             Assert.IsNotNull(result);
@@ -620,6 +623,7 @@ namespace BusinessLogicTest
             // Arrange
             Guid id = Guid.NewGuid();
             DateTime startTime = DateTime.Now.AddDays(-1);
+            var maintenanceStaff = new MaintenanceStaff();
 
             Request_ updatedRequest = new Request_()
             {
@@ -629,15 +633,18 @@ namespace BusinessLogicTest
                 Id = id,
                 StartTime = startTime,
                 Status = Status.Active,
-                MaintenancePersonId = new Guid()
+                MaintenanceStaff = maintenanceStaff
             };
 
-            _requestRepositoryMock.Setup(repository => repository.ActivateRequest(id, startTime)).Returns(updatedRequest);
+            _requestRepositoryMock.Setup(repository => repository.GetRequest(_managerID, id)).Returns(updatedRequest);
+            _staffRepositoryMock.Setup(repository => repository.GetMaintenanceStaff(_managerID, maintenanceStaff.ID))
+                .Returns(maintenanceStaff);
+            _requestRepositoryMock.Setup(repository => repository.Update(updatedRequest));
+            _staffRepositoryMock.Setup(repository => repository.Update(maintenanceStaff));
 
             // Act
-            Guid managerID = Guid.NewGuid();
 
-            Request_ result = _requestLogic.ActivateRequest(managerID, id, startTime);
+            Request_ result = _requestLogic.ActivateRequest(_managerID, id, maintenanceStaff.ID, startTime);
 
             // Assert
             Assert.IsNotNull(result);
@@ -664,15 +671,16 @@ namespace BusinessLogicTest
                 StartTime = DateTime.Now.AddDays(-2),
                 Status = Status.Finished,
                 TotalCost = totalCost,
-                MaintenancePersonId = new Guid()
+                MaintenanceStaff = new MaintenanceStaff()
             };
 
-            _requestRepositoryMock.Setup(repository => repository.TerminateRequest(id, endTime, totalCost)).Returns(finishedRequest);
+            _requestRepositoryMock.Setup(repository => repository.GetRequest(_managerID, id)).Returns(finishedRequest);
+            _requestRepositoryMock.Setup(repository => repository.Update(finishedRequest));
 
             // Act
-            Guid managerID = Guid.NewGuid();
 
-            Request_ result = _requestLogic.TerminateRequest(managerID, id, endTime, totalCost);
+
+            Request_ result = _requestLogic.TerminateRequest(_managerID, id, endTime, totalCost);
 
             // Assert
             Assert.IsNotNull(result);
@@ -688,7 +696,7 @@ namespace BusinessLogicTest
         {
             // Arrange
             Guid requestGuid = Guid.NewGuid();
-            Guid maintenancePersonId = Guid.NewGuid();
+            var maintenancePerson = new MaintenanceStaff();
             Request_ unassignedRequest = new Request_()
             {
                 Category = 1,
@@ -706,23 +714,178 @@ namespace BusinessLogicTest
                 Id = requestGuid,
                 StartTime = DateTime.Now,
                 Status = Status.Active,
-                MaintenancePersonId = maintenancePersonId
+                MaintenanceStaff = maintenancePerson
             };
 
-            _requestRepositoryMock.Setup(repository => repository.AsignMaintenancePerson(requestGuid, maintenancePersonId)).Returns(assignedRequest);
+            var maintenancePersonId = maintenancePerson.ID;
+
+            _requestRepositoryMock.Setup(repository => repository.AsignMaintenancePerson(_managerID, requestGuid, maintenancePersonId)).Returns(assignedRequest);
 
             // Act
-            Guid managerID = Guid.NewGuid();
+            
 
-            Request_ result = _requestLogic.AsignMaintenancePerson(managerID, requestGuid, maintenancePersonId);
+            Request_ result = _requestLogic.AsignMaintenancePerson(_managerID, requestGuid, maintenancePersonId);
 
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(assignedRequest, result);
-            Assert.AreEqual(maintenancePersonId, result.MaintenancePersonId);
+            Assert.AreEqual(maintenancePersonId, result.MaintenanceStaff.ID);
             _requestRepositoryMock.VerifyAll();
         }
 
+        [TestMethod]
+        public void AsignMaintenancePerson_InvalidRequest_DontAsignsPersonToRequest()
+        {
+            // Arrange
+            Guid id = Guid.NewGuid();
+            DateTime startTime = DateTime.Now.AddDays(-1);
+            var maintenanceStaff = new MaintenanceStaff();
 
+            Request_ updatedRequest = new Request_();
+
+            _requestRepositoryMock.Setup(repository => repository.GetRequest(_managerID, id)).Returns((Request_)null);
+            _staffRepositoryMock.Setup(repository => repository.GetMaintenanceStaff(_managerID, maintenanceStaff.ID))
+                .Returns(maintenanceStaff);
+            Exception exception = null;
+            // Act
+            try
+            {
+                _requestLogic.ActivateRequest(_managerID, id, maintenanceStaff.ID, startTime);
+            }
+            catch (Exception ex)
+            {
+                exception = ex;
+            }
+
+            Assert.IsInstanceOfType(exception, typeof(InvalidOperationException));
+            Assert.IsTrue(exception.Message.Equals("Request does not exist."));
+
+            _requestRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void AsignMaintenancePerson_InvalidMaintenanceStaff_DontAsignsPersonToRequest()
+        {
+            // Arrange
+            Guid id = Guid.NewGuid();
+            DateTime startTime = DateTime.Now.AddDays(-1);
+            var maintenanceStaff = new MaintenanceStaff();
+
+            Request_ updatedRequest = new Request_();
+
+            _staffRepositoryMock.Setup(repository => repository.GetMaintenanceStaff(_managerID, maintenanceStaff.ID))
+                .Returns((MaintenanceStaff)null);
+            Exception exception = null;
+            // Act
+            try
+            {
+                _requestLogic.ActivateRequest(_managerID, id, maintenanceStaff.ID, startTime);
+            }
+            catch (Exception ex)
+            {
+                exception = ex;
+            }
+
+            Assert.IsInstanceOfType(exception, typeof(InvalidOperationException));
+            Assert.IsTrue(exception.Message.Equals("Maintenance staff does not exist."));
+
+            _requestRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void TerminateRequest_InvalidRequest_ThrowError()
+        {
+            // Arrange
+            Guid id = Guid.NewGuid();
+            DateTime endTime = DateTime.Now;
+            var requestId = new Guid();
+
+            Request_ updatedRequest = new Request_();
+
+            _requestRepositoryMock.Setup(repository => 
+                repository.GetRequest(_managerID, requestId)).Returns((Request_)null);
+            
+            Exception exception = null;
+            // Act
+            try
+            {
+                _requestLogic.TerminateRequest(_managerID, requestId, endTime, 1000);
+            }
+            catch (Exception ex)
+            {
+                exception = ex;
+            }
+
+            Assert.IsInstanceOfType(exception, typeof(InvalidOperationException));
+            Assert.IsTrue(exception.Message.Equals("Request does not exist."));
+
+            _requestRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void TerminateRequest_InvalidRequestStartTime_ThrowError()
+        {
+            // Arrange
+            Guid id = Guid.NewGuid();
+            DateTime endTime = DateTime.Now.AddDays(-1);
+            var requestId = new Guid(); 
+            var request = new Request_()
+            {
+                Id = requestId,
+                StartTime = DateTime.Now
+            };
+
+            _requestRepositoryMock.Setup(repository =>
+                repository.GetRequest(_managerID, requestId)).Returns(request);
+
+            Exception exception = null;
+            // Act
+            try
+            {
+                _requestLogic.TerminateRequest(_managerID, requestId, endTime, 1000);
+            }
+            catch (Exception ex)
+            {
+                exception = ex;
+            }
+
+            Assert.IsInstanceOfType(exception, typeof(InvalidOperationException));
+            Assert.IsTrue(exception.Message.Equals("End time has to be greater than Start time."));
+
+            _requestRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void TerminateRequest_InvalidRequestCreationTime_ThrowError()
+        {
+            // Arrange
+            Guid id = Guid.NewGuid();
+            DateTime endTime = DateTime.Now.AddDays(-1);
+            var requestId = new Guid();
+            var request = new Request_()
+            {
+                Id = requestId,
+                CreationTime = DateTime.Now
+            };
+
+            _requestRepositoryMock.Setup(repository =>
+                repository.GetRequest(_managerID, requestId)).Returns(request);
+
+            Exception exception = null;
+            // Act
+            try
+            {
+                _requestLogic.TerminateRequest(_managerID, requestId, endTime, 1000);
+            }
+            catch (Exception ex)
+            {
+                exception = ex;
+            }
+
+            Assert.IsInstanceOfType(exception, typeof(InvalidOperationException));
+            Assert.IsTrue(exception.Message.Equals("End time has to be greater than Creation time."));
+
+            _requestRepositoryMock.VerifyAll();
+        }
     }
 }

@@ -32,7 +32,7 @@ namespace ServiceFactory
             services.AddScoped<IManagerRepository, ManagerRepository>();
             services.AddScoped<IBuildingRepository, BuildingRepository>();
             services.AddScoped<IAuthenticationServiceRepository, AuthenticationRepository>();
-
+            services.AddScoped<IMaintenanceStaffRepository, MaintenanceStaffRepository>();
         }
     }
 }
