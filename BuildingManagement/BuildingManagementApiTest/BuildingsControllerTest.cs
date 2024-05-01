@@ -62,6 +62,24 @@ namespace BuildingManagementApiTest
             _buildingLogicMock.Verify(x => x.CreateBuilding(managerId, It.IsAny<Building>()), Times.Once);
             _buildingLogicMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void DeleteBuilding_ReturnsOk_WhenDeletionIsSuccessful()
+        {
+            // Arrange
+            var buildingId = Guid.NewGuid();
+            string managerId = _httpContext.Request.Headers["Authorization"];
+            _buildingLogicMock.Setup(l => l.DeleteBuilding(managerId, buildingId)).Verifiable();
+
+            // Act
+            var result = _buildingsController.DeleteBuilding(buildingId) as OkResult;
+
+            // Assert
+            _buildingLogicMock.Verify(l => l.DeleteBuilding(managerId, buildingId), Times.Once);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(200, result.StatusCode);
+        }
+
     }
 
 }
