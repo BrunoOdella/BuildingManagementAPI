@@ -20,6 +20,11 @@ namespace DataAccess
             return building;
         }
 
+        public bool DeleteBuilding(Guid buildingId)
+        {
+            throw new NotImplementedException();
+        }
+
         public Building GetBuilding(Guid managerId, Guid buildingId)
         {
             return _context.Buildings.FirstOrDefault(i => i.BuildingId.Equals(buildingId) && i.ManagerId.Equals(managerId));

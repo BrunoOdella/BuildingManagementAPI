@@ -35,9 +35,18 @@ namespace BusinessLogic.Logics
             return _buildingRepository.CreateBuilding(building);
         }
 
-        public void DeleteBuilding(string? managerId, Guid buildingId)
+        public void DeleteBuilding(string managerId, Guid buildingId)
         {
-            throw new NotImplementedException();
+            if (!Guid.TryParse(managerId, out Guid managerGuid))
+            {
+                throw new ArgumentException("Invalid manager ID");
+            }
+
+            bool result = _buildingRepository.DeleteBuilding(buildingId);
+            if (!result)
+            {
+                throw new InvalidOperationException("Building not found or not permitted to delete.");
+            }
         }
     }
 
