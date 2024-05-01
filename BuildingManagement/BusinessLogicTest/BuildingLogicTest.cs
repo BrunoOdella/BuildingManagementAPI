@@ -58,5 +58,37 @@ namespace BusinessLogicTest
 
             // no hay hacer ya que ExpectedException
         }
+
+
+
+        [TestMethod]
+        public void DeleteBuilding_SuccessfulDeletion_Returns()
+        {
+            // Arrange
+            string managerId = Guid.NewGuid().ToString();
+            Guid buildingId = Guid.NewGuid();
+            _buildingRepositoryMock.Setup(repo => repo.DeleteBuilding(buildingId)).Returns(true);
+
+            // Act
+            _buildingLogic.DeleteBuilding(managerId, buildingId);
+
+            // Assert
+            _buildingRepositoryMock.Verify(repo => repo.DeleteBuilding(buildingId), Times.Once);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void DeleteBuilding_BuildingNotFound_ThrowsInvalidOperationException()
+        {
+            // Arrange
+            string managerId = Guid.NewGuid().ToString();
+            Guid buildingId = Guid.NewGuid();
+            _buildingRepositoryMock.Setup(repo => repo.DeleteBuilding(buildingId)).Returns(false);
+
+            // Act
+            _buildingLogic.DeleteBuilding(managerId, buildingId);
+
+            // Assert is handled by ExpectedException
+        }
     }
 }
