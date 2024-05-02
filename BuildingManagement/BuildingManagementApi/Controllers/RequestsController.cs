@@ -29,14 +29,14 @@ namespace BuildingManagementApi.Controllers
         [HttpGet]
         public ObjectResult GetAllRequest([FromQuery] string? category)
         {
-            var managerID = new Guid(_httpContextAccessor.HttpContext.Items["userID"] as string);
+            var personID = new Guid(_httpContextAccessor.HttpContext.Items["userID"] as string);
             if (string.IsNullOrEmpty(category))
             {
                 // Si no se especifica una categoría, obtener todos los Request.
-                return Ok(_logic.GetAllRequest(managerID).Select(request => new RequestResponse(request)).ToList());
+                return Ok(_logic.GetAllRequest(personID).Select(request => new RequestResponse(request)).ToList());
             }
             // Si se especifica una categoría, obtener solo los Request de esa categoría
-            return Ok(_logic.GetAllRequest(new Guid(_httpContextAccessor.HttpContext.Items["userID"] as string), int.Parse(category)).Select(request => new RequestResponse(request)).ToList());
+            return Ok(_logic.GetAllRequest(personID, int.Parse(category)).Select(request => new RequestResponse(request)).ToList());
         }
 
         /*
@@ -57,8 +57,8 @@ namespace BuildingManagementApi.Controllers
         [HttpPut("{requestid}")]
         public ObjectResult PutMaintenancePersonRequest([FromRoute] string requestid, [FromBody] ActivateRequest ActivateRequest)
         {
-            var managerID = new Guid(_httpContextAccessor.HttpContext.Items["userID"] as string);
-            return Ok(new RequestResponse(_logic.ActivateRequest(managerID, new Guid(requestid), ActivateRequest.MaintenancePersonId, ActivateRequest.StartTime)));
+            var staffID = new Guid(_httpContextAccessor.HttpContext.Items["userID"] as string);
+            return Ok(new RequestResponse(_logic.ActivateRequest(staffID, new Guid(requestid), ActivateRequest.MaintenancePersonId, ActivateRequest.StartTime)));
         }
 
         [HttpPost]

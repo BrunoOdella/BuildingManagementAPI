@@ -9,12 +9,14 @@ public class RequestLogic : IRequestLogic
     private readonly IRequestRepository _requestRepository;
     private readonly IMaintenanceStaffRepository _maintenanceStaffRepository;
     private readonly IBuildingRepository _buildingRepository;
+    private readonly IManagerRepository _managerRepository;
 
     public RequestLogic(IRequestRepository requestRepository, IMaintenanceStaffRepository maintenanceStaffRepository, IBuildingRepository buildingRepository)
     {
         _requestRepository = requestRepository;
         _maintenanceStaffRepository = maintenanceStaffRepository;
         _buildingRepository = buildingRepository;
+
     }
 
     public Request_ CreateRequest(Guid managerId, Request_ request)
@@ -23,6 +25,8 @@ public class RequestLogic : IRequestLogic
 
         Building actualBuilding = _buildingRepository.GetBuilding(managerId, request.Apartment.BuildingId);
         Apartment actualApartment = _buildingRepository.GetApartment(managerId, request.Apartment.ApartmentId, request.Apartment.BuildingId);
+        MaintenanceStaff actualMaintenanceStaff =
+            _maintenanceStaffRepository.GetMaintenanceStaff(managerId, request.MaintenanceStaff.ID);
 
         if (actualBuilding == null)
         {
@@ -30,13 +34,17 @@ public class RequestLogic : IRequestLogic
         }
 
         request.Apartment = actualApartment;
+        request.MaintenanceStaff = actualMaintenanceStaff;
 
         return _requestRepository.CreateRequest(request);
     }
     
-    public IEnumerable<Request_> GetAllRequest(Guid managerId)
+    public IEnumerable<Request_> GetAllRequest(Guid personID)
     {
-        return _requestRepository.GetAllRequest(managerId);
+        var manager = _managerRepository.Get(personID);
+        if(manager == null)
+            return _requestRepository.GetAllRequestStaff(personID);
+        return _requestRepository.GetAllRequest(personID);
     }
 
     public IEnumerable<Request_> GetAllRequest(Guid managerId, int category)
@@ -129,6 +137,9 @@ public class RequestLogic : IRequestLogic
             !request.EndTime.Equals(DateTime.MinValue) &&
             request.EndTime < request.CreationTime)
             throw new ArgumentException("End time can not be less than Creation Time.");
+
+        if (request.MaintenanceStaff == null)
+            throw new ArgumentException("A Maintenance Person must to be asigned.");
         // End general validations
 
         // Status = Pending
@@ -147,9 +158,7 @@ public class RequestLogic : IRequestLogic
             (!request.EndTime.Equals(DateTime.MinValue)))
             throw new ArgumentException("If status is Active, End Time need to be empty.");
 
-        if(request.Status == Status.Active &&
-           request.MaintenanceStaff == null)
-            throw new ArgumentException("If status is Active, a Maintenance Person must to be asigned.");
+        
         //Cosas por definir: si el status es Finished, el end time lo ponemos como DateTime.Now o lo debemos recibir??
         // Status = Finished
         if (request.Status == Status.Finished &&

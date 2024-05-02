@@ -8,28 +8,21 @@ namespace BusinessLogicTest;
 [TestClass]
 public class AuthenticationServiceTest
 {
-    private Mock<IAuthenticationServiceRepository> _authenticationRepository;
+    private Mock<IManagerRepository> _managerRepositoryMock;
+    private Mock<IMaintenanceStaffRepository> _maintenanceStaffRepositoryMock;
+    private Mock<IAdminRepository> _adminRepositoryMock;
+
+
     private AuthenticationService _authenticationServiceLogic;
 
     [TestInitialize]
     public void TestSetup()
     {
-        _authenticationRepository = new Mock<IAuthenticationServiceRepository>(MockBehavior.Strict);
-        _authenticationServiceLogic = new AuthenticationService(_authenticationRepository.Object);
+        _managerRepositoryMock = new Mock<IManagerRepository>(MockBehavior.Strict);
+        _maintenanceStaffRepositoryMock = new Mock<IMaintenanceStaffRepository>(MockBehavior.Strict);
+        _adminRepositoryMock = new Mock<IAdminRepository>(MockBehavior.Strict);
+        _authenticationServiceLogic = new AuthenticationService(_managerRepositoryMock.Object, _maintenanceStaffRepositoryMock.Object, _adminRepositoryMock.Object);
     }
 
-    [TestMethod]
-    public void CreateCategory_Succes()
-    {
-        Guid token = Guid.NewGuid();
-
-        _authenticationRepository.Setup(c => c.BuscarToken(token)).Returns(token);
-
-        Guid response = _authenticationServiceLogic.BuscarToken(token);
-
-        Assert.IsNotNull(response);
-        Assert.AreEqual(token, response);
-
-        _authenticationRepository.VerifyAll();
-    }
+    
 }

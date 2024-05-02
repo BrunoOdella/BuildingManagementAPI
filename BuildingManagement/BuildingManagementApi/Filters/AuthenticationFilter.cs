@@ -37,7 +37,7 @@ public class AuthenticationFilter : Attribute, IAuthorizationFilter
                 var verbo = context.HttpContext.Request.Method;
                 var uri = context.HttpContext.Request.Path.ToString();
 
-                var tokenEncontrado = authenticationService.BuscarToken(token);
+                var tokenEncontrado = authenticationService.BuscarToken(token, verbo, uri);
                 VerifyToken(context, tokenEncontrado);
             }
             catch (FormatException)

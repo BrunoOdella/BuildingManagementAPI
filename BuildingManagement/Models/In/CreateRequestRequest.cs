@@ -8,6 +8,7 @@ public class CreateRequestRequest
     public int Category { get; set; }
     public DateTime CreationTime { get; set; }
     public Guid ApartmentID { get; set; }
+    public Guid MaintenanceStaffID { get; set; }
 
     public Request_ ToEntity()
     {
@@ -16,7 +17,8 @@ public class CreateRequestRequest
             Description = Description,
             Category = Category,
             CreationTime = CreationTime,
-            Apartment = new Apartment(){ApartmentId = ApartmentID}
+            Apartment = new Apartment(){ApartmentId = ApartmentID},
+            MaintenanceStaff = new MaintenanceStaff() { ID = MaintenanceStaffID }
         };
     } 
 }

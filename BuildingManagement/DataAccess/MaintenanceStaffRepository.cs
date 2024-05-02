@@ -22,6 +22,11 @@ public class MaintenanceStaffRepository : IMaintenanceStaffRepository
         throw new NotImplementedException();
     }
 
+    public Guid GetMaintenanceStaff(Guid maintenancePersonId)
+    {
+        throw new NotImplementedException();
+    }
+
     public void Update(MaintenanceStaff actualMaintenanceStaff)
     {
         throw new NotImplementedException();

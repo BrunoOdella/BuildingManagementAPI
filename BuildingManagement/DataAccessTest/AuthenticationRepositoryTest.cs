@@ -18,6 +18,9 @@ public class AuthenticationRepositoryTest
     public void BuscarToken()
     {
         using (var context = CreateDbContext("TestSearchToken"))
+        {
+
+        } ;
 
     }
 }

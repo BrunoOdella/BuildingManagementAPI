@@ -13,6 +13,7 @@ namespace IDataAccess
         void CreateManager(Manager manager);
         Manager GetManagerByEmail(string email);
         void UpdateManager(Manager manager);
+        Guid Get(Guid managerID);
     }
 
 }

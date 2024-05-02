@@ -12,4 +12,5 @@ public interface IRequestRepository
     //Request_ AsignMaintenancePerson(Guid managerId, Guid requestGuid, Guid maintenancePersonId);
     Request_ GetRequest(Guid managerId, Guid requestId);
     void Update(Request_ actualRequest);
+    IEnumerable<Request_> GetAllRequestStaff(Guid staffID);
 }

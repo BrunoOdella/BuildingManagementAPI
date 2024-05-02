@@ -33,5 +33,15 @@ namespace DataAccess
             _context.Managers.Update(manager);
             _context.SaveChanges();
         }
+
+        public Guid Get(Guid managerID)
+        {
+            var manager = _context.Managers.FirstOrDefault(m => m.ManagerId.Equals(managerID));
+            if (manager == null)
+            {
+                return Guid.Empty;
+            }
+            return manager.ManagerId;
+        }
     }
 }

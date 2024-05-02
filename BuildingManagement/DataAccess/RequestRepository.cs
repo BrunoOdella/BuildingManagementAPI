@@ -104,5 +104,10 @@ namespace DataAccess
                 _context.SaveChanges();
             }
         }
+
+        public IEnumerable<Request_> GetAllRequestStaff(Guid staffID)
+        {
+            return _context.Requests.Where(r => r.MaintenanceStaff.ID.Equals(staffID));
+        }
     }
 }
