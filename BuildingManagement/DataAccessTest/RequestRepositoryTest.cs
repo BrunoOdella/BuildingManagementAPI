@@ -40,7 +40,11 @@ public class RequestRepositoryTest
                 Id = Guid.NewGuid(),
                 StartTime = DateTime.Now.AddDays(-1),
                 Status = Status.Active,
-                MaintenanceStaff = new MaintenanceStaff() { ID = new Guid(), Name = "nombre" },
+                MaintenanceStaff = new MaintenanceStaff() { ID = new Guid(), Name = "nombre",
+                    LastName = "apellido",
+                    Email = "mail@example.com",
+                    Password = "Password123"
+                },
                 Apartment = apartment
             };
 
@@ -88,7 +92,10 @@ public class RequestRepositoryTest
             MaintenanceStaff maintenanceStaff = new MaintenanceStaff()
             {
                 ID = new Guid(),
-                Name = "nombre"
+                Name = "nombre",
+                LastName = "apellido",
+                Email = "mail@example.com",
+                Password = "Password123"
             };
 
             Request_ expected1 = new Request_()
@@ -164,7 +171,10 @@ public class RequestRepositoryTest
             MaintenanceStaff maintenanceStaff = new MaintenanceStaff()
             {
                 ID = new Guid(),
-                Name = "nombre"
+                Name = "nombre",
+                LastName = "apellido",
+                Email = "mail@example.com",
+                Password = "Password123"
             };
 
             Request_ expected1 = new Request_()
@@ -239,7 +249,10 @@ public class RequestRepositoryTest
             MaintenanceStaff maintenanceStaff = new MaintenanceStaff()
             {
                 ID = new Guid(),
-                Name = "nombre"
+                Name = "nombre",
+                LastName = "apellido",
+                Email = "mail@example.com",
+                Password = "Password123"
             };
 
             Request_ expected1 = new Request_()
@@ -313,7 +326,10 @@ public class RequestRepositoryTest
             MaintenanceStaff maintenanceStaff = new MaintenanceStaff()
             {
                 ID = new Guid(),
-                Name = "nombre"
+                Name = "nombre",
+                LastName = "apellido",
+                Email = "mail@example.com",
+                Password = "Password123"
             };
 
             Request_ original = new Request_()
