@@ -12,6 +12,7 @@ namespace BusinessLogicTest;
 public class ConcreteReportFactory_RequestByBuildingTest
 {
     private Mock<IBuildingRepository> _buildingMock;
+    private Mock<IRequestRepository> _requestRepositoryMock;
     private ConcreteReportFactory_RequestByBuilding _requestByBuilding;
     private Guid _managerID;
 
@@ -20,7 +21,7 @@ public class ConcreteReportFactory_RequestByBuildingTest
     public void TestSetup()
     {
         _buildingMock = new Mock<IBuildingRepository>(MockBehavior.Strict);
-        _requestByBuilding = new ConcreteReportFactory_RequestByBuilding(_buildingMock.Object);
+        _requestByBuilding = new ConcreteReportFactory_RequestByBuilding(_buildingMock.Object, _requestRepositoryMock.Object);
         _managerID = Guid.NewGuid();
     }
 

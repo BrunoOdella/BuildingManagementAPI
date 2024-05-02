@@ -9,6 +9,7 @@ namespace BusinessLogicTest;
 public class ConcreteReportFactory_RequestByMaintenanceStaffTest
 {
     private Mock<IMaintenanceStaffRepository> _staffReposotoryMock;
+    private Mock<IRequestRepository> _requestRepositoryMock;
     private ConcreteReportFactory_RequestByMaintenanceStaff _requestByBuilding;
     private Guid _managerID;
 
@@ -17,7 +18,8 @@ public class ConcreteReportFactory_RequestByMaintenanceStaffTest
     public void TestSetup()
     {
         _staffReposotoryMock = new Mock<IMaintenanceStaffRepository>(MockBehavior.Strict);
-        _requestByBuilding = new ConcreteReportFactory_RequestByMaintenanceStaff(_staffReposotoryMock.Object);
+        _requestRepositoryMock = new Mock<IRequestRepository>(MockBehavior.Strict);
+        _requestByBuilding = new ConcreteReportFactory_RequestByMaintenanceStaff(_staffReposotoryMock.Object, _requestRepositoryMock.Object);
         _managerID = Guid.NewGuid();
     }
 
