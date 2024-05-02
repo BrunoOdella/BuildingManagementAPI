@@ -140,11 +140,28 @@ namespace DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("BuildingId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("ID");
+
+                    b.HasIndex("BuildingId");
 
                     b.ToTable("MaintenanceStaff");
                 });
@@ -212,7 +229,7 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("MaintenanceStaffID")
+                    b.Property<Guid>("MaintenanceStaffId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("StartTime")
@@ -228,7 +245,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ApartmentId");
 
-                    b.HasIndex("MaintenanceStaffID");
+                    b.HasIndex("MaintenanceStaffId");
 
                     b.ToTable("Requests");
                 });
@@ -277,6 +294,17 @@ namespace DataAccess.Migrations
                     b.Navigation("Manager");
                 });
 
+            modelBuilder.Entity("Domain.MaintenanceStaff", b =>
+                {
+                    b.HasOne("Domain.Building", "Building")
+                        .WithMany("MaintenanceStaff")
+                        .HasForeignKey("BuildingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Building");
+                });
+
             modelBuilder.Entity("Domain.Owner", b =>
                 {
                     b.HasOne("Apartment", null)
@@ -296,8 +324,8 @@ namespace DataAccess.Migrations
 
                     b.HasOne("Domain.MaintenanceStaff", "MaintenanceStaff")
                         .WithMany("Requests")
-                        .HasForeignKey("MaintenanceStaffID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("MaintenanceStaffId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Apartment");
@@ -316,6 +344,8 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Domain.Building", b =>
                 {
                     b.Navigation("Apartments");
+
+                    b.Navigation("MaintenanceStaff");
                 });
 
             modelBuilder.Entity("Domain.MaintenanceStaff", b =>

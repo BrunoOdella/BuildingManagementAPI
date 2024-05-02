@@ -22,6 +22,14 @@ namespace DataAccess
             _context.Admins.Add(admin);
             return admin;
         }
+
+        public Guid Get(Guid adminID)
+        {
+            var admin = _context.Admins.FirstOrDefault(a => a.AdminID.Equals(adminID));
+            if(admin == null)
+                return Guid.Empty;
+            return admin.AdminID;
+        }
     }
 
 }

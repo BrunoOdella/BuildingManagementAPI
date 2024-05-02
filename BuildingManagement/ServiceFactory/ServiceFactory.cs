@@ -17,7 +17,11 @@ namespace ServiceFactory
             serviceCollection.AddScoped<IInvitationLogic, InvitationLogic>();
             serviceCollection.AddScoped<IRequestLogic, RequestLogic>();
             serviceCollection.AddScoped<IBuildingLogic, BuildingLogic>();
+            serviceCollection.AddScoped<IMaintenanceStaffLogic, MaintenanceStaffLogic>();
             serviceCollection.AddScoped<IAuthenticationService, AuthenticationService>();
+            serviceCollection.AddScoped<IReportLogicByBuilding, ConcreteReportFactory_RequestByBuilding>();
+            serviceCollection
+                .AddScoped<IReportLogicByMaintenanceStaff, ConcreteReportFactory_RequestByMaintenanceStaff>();
         }
         public static void AddDataAccessServices(this IServiceCollection services, string connectionString)
         {

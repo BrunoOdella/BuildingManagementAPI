@@ -19,19 +19,19 @@ public class AuthenticationService : IAuthenticationService
 
     public Guid BuscarToken(Guid token, string verbo, string uri)
     {
-        if (uri.Contains("request".ToLower()))
-            return BuscarTokenRequest(token, verbo, "");
-        if (uri.Contains("request".ToLower()) && uri.Contains("finished".ToLower()))
+        if (uri.ToLower().Contains("request".ToLower()) && uri.Contains("finished".ToLower()))
             return BuscarTokenRequest(token, verbo, "staff");
-        if (uri.Contains("request".ToLower()))
+        if (uri.ToLower().Contains("request".ToLower()) && !uri.ToLower().Contains("categories"))
+            return BuscarTokenRequest(token, verbo, "");
+        if (uri.ToLower().Contains("invitations".ToLower()))
             return BuscarTokenInvitation(token, verbo);
-        if (uri.Contains("request".ToLower()))
+        if (uri.ToLower().Contains("categoriesrequests"))
             return BuscarTokenCreateCategory(token, verbo);
-        if (uri.Contains("request".ToLower()))
+        if (uri.ToLower().Contains("admins".ToLower()))
             return BuscarTokenAdmin(token, verbo);
-        if (uri.Contains("request".ToLower()))
+        if (uri.ToLower().Contains("buildings".ToLower()))
             return BuscarTokenBuilding(token, verbo);
-        if (uri.Contains("request".ToLower()))
+        if (uri.ToLower().Contains("reports".ToLower()))
             return BuscarTokenReport(token, verbo);
         throw new NotImplementedException();
     }
@@ -94,7 +94,7 @@ public class AuthenticationService : IAuthenticationService
         var manager = _managerRepository.Get(token);
         var staff = _maintenanceStaffRepository.GetMaintenanceStaff(token);
 
-        if (manager == null)
+        if (manager.Equals(Guid.Empty))
             return staff;
         return manager;
     }

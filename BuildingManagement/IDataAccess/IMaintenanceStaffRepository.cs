@@ -4,8 +4,9 @@ namespace IDataAccess;
 
 public interface IMaintenanceStaffRepository
 {
+    MaintenanceStaff AddMaintenanceStaff(MaintenanceStaff maintenanceStaff);
     IEnumerable<MaintenanceStaff> GetAll(Guid managerId);
     MaintenanceStaff GetMaintenanceStaff(Guid managerId, Guid maintenancePersonId);
     Guid GetMaintenanceStaff(Guid maintenancePersonId);
-    void Update(MaintenanceStaff actualMaintenanceStaff);
+    //void Update(MaintenanceStaff actualMaintenanceStaff);
 }

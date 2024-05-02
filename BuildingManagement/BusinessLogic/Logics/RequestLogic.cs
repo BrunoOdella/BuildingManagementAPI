@@ -11,12 +11,12 @@ public class RequestLogic : IRequestLogic
     private readonly IBuildingRepository _buildingRepository;
     private readonly IManagerRepository _managerRepository;
 
-    public RequestLogic(IRequestRepository requestRepository, IMaintenanceStaffRepository maintenanceStaffRepository, IBuildingRepository buildingRepository)
+    public RequestLogic(IRequestRepository requestRepository, IMaintenanceStaffRepository maintenanceStaffRepository, IBuildingRepository buildingRepository, IManagerRepository managerRepository)
     {
         _requestRepository = requestRepository;
         _maintenanceStaffRepository = maintenanceStaffRepository;
         _buildingRepository = buildingRepository;
-
+        _managerRepository = managerRepository;
     }
 
     public Request_ CreateRequest(Guid managerId, Request_ request)
