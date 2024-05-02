@@ -4,10 +4,10 @@ namespace Models.Out;
 
 public class Report_RequestByBuildingResponse
 {
-    public List<MaintenanceStaffReport> MaintenanceStaffReports { get; set; }
+    public List<BuildingReport> MaintenanceStaffReports { get; set; }
 
     public Report_RequestByBuildingResponse(Report reportRequestByBuilding)
     {
-        MaintenanceStaffReports = reportRequestByBuilding.MaintenanceStaffReports;
+        MaintenanceStaffReports = reportRequestByBuilding.BuildingReports;
     }
 }

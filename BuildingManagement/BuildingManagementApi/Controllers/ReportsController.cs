@@ -17,7 +17,7 @@ namespace BuildingManagementApi.Controllers
 
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ReportsController(IReportLogicByMaintenanceStaff logicByMaintenanceStaff, IReportLogicByBuilding logicByBuilding,IHttpContextAccessor httpContextAccessor)
+        public ReportsController(IReportLogicByMaintenanceStaff logicByMaintenanceStaff, IReportLogicByBuilding logicByBuilding, IHttpContextAccessor httpContextAccessor)
         {
             _logicByMaintenanceStaff = logicByMaintenanceStaff;
             _logicByBuilding = logicByBuilding;
