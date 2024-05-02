@@ -22,6 +22,7 @@ namespace DataAccess
         public DbSet<Location> Locations { get; set; }
         public DbSet<Apartment> Apartments { get; set; }
         public DbSet<Owner> Owners { get; set; }
+        public DbSet<MaintenanceStaff> MaintenanceStaff { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

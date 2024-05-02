@@ -12,6 +12,13 @@ public class MaintenanceStaffRepository : IMaintenanceStaffRepository
         _context = context;
     }
 
+    public MaintenanceStaff AddMaintenanceStaff(MaintenanceStaff maintenanceStaff)
+    {
+        _context.MaintenanceStaff.Add(maintenanceStaff);
+        _context.SaveChanges();
+        return maintenanceStaff; // Retorna el objeto después de ser añadido a la base de datos.
+    }
+
     public IEnumerable<MaintenanceStaff> GetAll(Guid managerId)
     {
         throw new NotImplementedException();
