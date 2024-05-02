@@ -48,7 +48,7 @@ namespace BuildingManagementApiTest
                 Id = new Guid(),
                 Description = "Description A",
                 Status = Status.Active,
-                Category = 1,
+                CategoryID = 1,
                 CreationTime = DateTime.Now.AddDays(-1),
                 StartTime = DateTime.Now
             };
@@ -58,7 +58,7 @@ namespace BuildingManagementApiTest
                 Id = new Guid(),
                 Description = "Description A",
                 Status = Status.Finished,
-                Category = 2,
+                CategoryID = 2,
                 CreationTime = DateTime.Now.AddDays(-2),
                 StartTime = DateTime.Now.AddDays(-1),
                 EndTime = DateTime.Now,
@@ -70,7 +70,7 @@ namespace BuildingManagementApiTest
                 Id = new Guid(),
                 Description = "Description A",
                 Status = Status.Pending,
-                Category = 3,
+                CategoryID = 3,
                 CreationTime = DateTime.Now.AddDays(-1),
             };
 
@@ -91,14 +91,14 @@ namespace BuildingManagementApiTest
         }
 
         [TestMethod]
-        public void GetRequest_ShouldReturnCategory1Request()
+        public void GetRequest_ShouldReturnCategoryID1Request()
         {
             Request_ ActiveRequest = new Request_()
             {
                 Id = new Guid(),
                 Description = "Description A",
                 Status = Status.Active,
-                Category = 1,
+                CategoryID = 1,
                 CreationTime = DateTime.Now.AddDays(-1),
                 StartTime = DateTime.Now
             };
@@ -108,7 +108,7 @@ namespace BuildingManagementApiTest
                 Id = new Guid(),
                 Description = "Description A",
                 Status = Status.Finished,
-                Category = 2,
+                CategoryID = 2,
                 CreationTime = DateTime.Now.AddDays(-2),
                 StartTime = DateTime.Now.AddDays(-1),
                 EndTime = DateTime.Now,
@@ -120,7 +120,7 @@ namespace BuildingManagementApiTest
                 Id = new Guid(),
                 Description = "Description A",
                 Status = Status.Pending,
-                Category = 3,
+                CategoryID = 3,
                 CreationTime = DateTime.Now.AddDays(-1),
             };
 
@@ -133,7 +133,7 @@ namespace BuildingManagementApiTest
 
             _RlogicMock.Setup(logic => logic.GetAllRequest(userID, 1)).Returns(expected);
 
-            ObjectResult result = _Rcontroller.GetAllRequest("1") as ObjectResult;
+            ObjectResult result = _Rcontroller.GetAllRequest(1) as ObjectResult;
 
             Assert.IsNotNull(result);
             Assert.AreEqual(200, result.StatusCode);
@@ -153,7 +153,7 @@ namespace BuildingManagementApiTest
                 Id = id,
                 Description = "Description A",
                 Status = Status.Active,
-                Category = 1,
+                CategoryID = 1,
                 CreationTime = DateTime.Now.AddDays(-1),
                 StartTime = DateTime.Now
             };
@@ -188,7 +188,7 @@ namespace BuildingManagementApiTest
                 Id = new Guid(),
                 Description = "Description A",
                 Status = Status.Finished,
-                Category = 2,
+                CategoryID = 2,
                 CreationTime = DateTime.Now.AddDays(-2),
                 StartTime = DateTime.Now.AddDays(-1),
                 EndTime = DateTime.Now,
@@ -224,7 +224,7 @@ namespace BuildingManagementApiTest
                 Id = new Guid(),
                 Description = "Description A",
                 Status = Status.Active,
-                Category = 1,
+                CategoryID = 1,
                 CreationTime = DateTime.Now.AddDays(-1),
                 StartTime = DateTime.Now
             };
@@ -267,7 +267,7 @@ namespace BuildingManagementApiTest
                 Id = id,
                 Status = Status.Pending,
                 Description = "Description A",
-                Category = 1,
+                CategoryID = 1,
                 CreationTime = DateTime.Now.AddDays(-1),
                 Apartment = new Apartment() { ApartmentId = createdRequest.ApartmentID }
             };

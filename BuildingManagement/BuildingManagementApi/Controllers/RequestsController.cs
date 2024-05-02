@@ -27,16 +27,16 @@ namespace BuildingManagementApi.Controllers
         }
 
         [HttpGet]
-        public ObjectResult GetAllRequest([FromQuery] string? category)
+        public ObjectResult GetAllRequest([FromQuery] int? category)
         {
             var personID = new Guid(_httpContextAccessor.HttpContext.Items["userID"] as string);
-            if (string.IsNullOrEmpty(category))
+            if (category is null)
             {
                 // Si no se especifica una categoría, obtener todos los Request.
                 return Ok(_logic.GetAllRequest(personID).Select(request => new RequestResponse(request)).ToList());
             }
             // Si se especifica una categoría, obtener solo los Request de esa categoría
-            return Ok(_logic.GetAllRequest(personID, int.Parse(category)).Select(request => new RequestResponse(request)).ToList());
+            return Ok(_logic.GetAllRequest(personID, (int)category).Select(request => new RequestResponse(request)).ToList());
         }
 
         /*

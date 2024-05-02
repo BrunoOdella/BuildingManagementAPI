@@ -42,6 +42,53 @@ namespace DataAccessTest
             }
         }
 
+        [TestMethod]
+        public void Get()
+        {
+            using (var context = CreateDbContext("TestGetAdmin"))
+            {
+                var repository = new AdminRepository(context);
+
+                Guid id = Guid.NewGuid();
+
+                Admin expected = new Admin
+                {
+                    AdminID = id,
+                    FirstName = "Juan",
+                    LastName = "Odella",
+                    Email = "odella@example.com",
+                    Password = "password",
+                };
+
+                context.Admins.Add(expected);
+
+                context.SaveChanges();
+
+                var result = repository.Get(id);
+
+                Assert.IsNotNull(result);
+                Assert.AreEqual(expected.AdminID, result);
+            }
+        }
+
+        [TestMethod]
+        public void Get_AdminNotExist()
+        {
+            using (var context = CreateDbContext("TestGetAdmin"))
+            {
+                var repository = new AdminRepository(context);
+
+                Guid id = Guid.NewGuid();
+
+                var result = repository.Get(id);
+
+                Assert.IsNotNull(result);
+                Assert.AreEqual(Guid.Empty, result);
+            }
+        }
+
+
+
 
     }
 }

@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Logics;
+using Domain;
 using LogicInterface.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -32,16 +33,16 @@ namespace BuildingManagementApi.Controllers
         }
 
         [HttpDelete("{InvitationId}")]
-        public IActionResult DeleteInvitation(Guid id)
+        public IActionResult DeleteInvitation([FromRoute] Guid InvitationId)
         {
-            _invitationLogic.DeleteInvitation(id);
+            _invitationLogic.DeleteInvitation(InvitationId);
             return NoContent();
         }
 
         [HttpPut("{InvitationId}")]
-        public IActionResult AcceptInvitation(Guid id, [FromBody] AcceptInvitationRequest acceptRequest)
+        public IActionResult AcceptInvitation([FromRoute] Guid InvitationId, [FromBody] AcceptInvitationRequest acceptRequest)
         {
-            var response = _invitationLogic.AcceptInvitation(id, acceptRequest.Password);
+            var response = _invitationLogic.AcceptInvitation(InvitationId, acceptRequest.Password);
             return Ok(new InvitationResponse(response));
         }
 

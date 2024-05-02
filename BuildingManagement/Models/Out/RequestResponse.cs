@@ -12,19 +12,19 @@ public class RequestResponse
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
     public float TotalCost { get; set; }
-    public Apartment Apartment { get; set; }
+    public Guid ApartmentID { get; set; }
 
     public RequestResponse(Request_ request)
     {
         Id = request.Id;
         Description = request.Description;
         Status = request.Status;
-        Category = request.Category;
+        Category = request.CategoryID;
         CreationTime = request.CreationTime;
         StartTime = request.StartTime;
         EndTime = request.EndTime;
         TotalCost = request.TotalCost;
-        Apartment = request.Apartment;
+        ApartmentID = request.ApartmentId;
     }
 
     public override bool Equals(object obj)

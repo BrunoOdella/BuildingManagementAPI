@@ -21,7 +21,7 @@ public class AuthenticationService : IAuthenticationService
     {
         if (uri.ToLower().Contains("request".ToLower()) && uri.Contains("finished".ToLower()))
             return BuscarTokenRequest(token, verbo, "staff");
-        if (uri.ToLower().Contains("request".ToLower()) && !uri.ToLower().Contains("categories"))
+        if (uri.ToLower().Contains("request".ToLower()) && !uri.ToLower().Contains("categories") && !uri.ToLower().Contains("reports"))
             return BuscarTokenRequest(token, verbo, "");
         if (uri.ToLower().Contains("invitations".ToLower()))
             return BuscarTokenInvitation(token, verbo);
@@ -91,9 +91,24 @@ public class AuthenticationService : IAuthenticationService
 
     private Guid BuscarTokenManagerAndStaff(Guid token)
     {
-        var manager = _managerRepository.Get(token);
-        var staff = _maintenanceStaffRepository.GetMaintenanceStaff(token);
+        Guid manager = Guid.Empty;
+        try
+        {
+            manager = _managerRepository.Get(token);
+        }
+        catch (Exception e)
+        {
+        }
 
+        Guid staff = Guid.Empty;
+
+        try
+        {
+            staff = _maintenanceStaffRepository.GetMaintenanceStaff(token);
+        }
+        catch (Exception e)
+        {
+        }
         if (manager.Equals(Guid.Empty))
             return staff;
         return manager;

@@ -32,7 +32,7 @@ public class ConcreteReportFactory_RequestByMaintenanceStaffTest
 
         Request_ request = new Request_()
         {
-            Category = 1,
+            CategoryID = 1,
             CreationTime = DateTime.Now.AddDays(-2),
             Description = "description A",
             EndTime = DateTime.Now,
@@ -45,7 +45,7 @@ public class ConcreteReportFactory_RequestByMaintenanceStaffTest
 
         Request_ request2 = new Request_()
         {
-            Category = 1,
+            CategoryID = 1,
             CreationTime = DateTime.Now.AddDays(-2),
             Description = "description b",
             Id = Guid.NewGuid(),
@@ -55,7 +55,7 @@ public class ConcreteReportFactory_RequestByMaintenanceStaffTest
 
         Request_ request3 = new Request_()
         {
-            Category = 1,
+            CategoryID = 1,
             CreationTime = DateTime.Now.AddDays(-2),
             Description = "description c",
             Id = Guid.NewGuid(),
@@ -98,7 +98,7 @@ public class ConcreteReportFactory_RequestByMaintenanceStaffTest
 
         Request_ request = new Request_()
         {
-            Category = 1,
+            CategoryID = 1,
             CreationTime = DateTime.Now.AddDays(-2),
             Description = "description A",
             EndTime = DateTime.Now,
@@ -111,7 +111,7 @@ public class ConcreteReportFactory_RequestByMaintenanceStaffTest
 
         Request_ request2 = new Request_()
         {
-            Category = 1,
+            CategoryID = 1,
             CreationTime = DateTime.Now.AddDays(-2),
             Description = "description b",
             Id = Guid.NewGuid(),
@@ -121,7 +121,7 @@ public class ConcreteReportFactory_RequestByMaintenanceStaffTest
 
         Request_ request3 = new Request_()
         {
-            Category = 1,
+            CategoryID = 1,
             CreationTime = DateTime.Now.AddDays(-2),
             Description = "description c",
             Id = Guid.NewGuid(),

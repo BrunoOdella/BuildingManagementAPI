@@ -16,20 +16,27 @@ namespace DataAccess
         public Request_ CreateRequest(Request_ request)
         {
             _context.Requests.Add(request);
+
+            _context.SaveChanges();
+
             return request;
         }
 
         public IEnumerable<Request_> GetAllRequest(Guid managerId)
         {
             var buildings = _context.Buildings.Where(b => b.ManagerId.Equals(managerId)).ToList();
+            List<Apartment> apartments = new List<Apartment>();
+            foreach (var buiding in buildings)
+            {
+                var actualApartments = _context.Apartments.Where(a => a.BuildingId.Equals(buiding.BuildingId)).ToList();
+                apartments.AddRange(actualApartments);
+            }
+
             var requests = new List<Request_>();
 
-            foreach (var building in buildings)
+            foreach (var apartment in apartments)
             {
-                foreach (var apartment in building.Apartments)
-                {
-                    requests.AddRange(apartment.Requests);
-                }
+                requests.AddRange(_context.Requests.Where(r => r.ApartmentId.Equals(apartment.ApartmentId)).ToList());
             }
 
             return requests;
@@ -38,22 +45,24 @@ namespace DataAccess
         public IEnumerable<Request_> GetAllRequest(Guid managerId, int category)
         {
             var buildings = _context.Buildings.Where(b => b.ManagerId.Equals(managerId)).ToList();
-            var requests = new List<Request_>();
+            var requestsResponse = new List<Request_>();
 
             foreach (var building in buildings)
             {
-                foreach (var apartment in building.Apartments)
+                var apartments = _context.Apartments.Where(a => a.BuildingId.Equals(building.BuildingId)).ToList();
+                foreach (var apartment in apartments)
                 {
-                    foreach (var request in apartment.Requests)
+                    var requests = _context.Requests.Where(r => r.ApartmentId.Equals(apartment.ApartmentId)).ToList();
+                    foreach (var request in requests)
                     {
-                        if (request.Category == category)
-                            requests.Add(request);
+                        if (request.CategoryID == category)
+                            requestsResponse.Add(request);
                     }
                     
                 }
             }
 
-            return requests;
+            return requestsResponse;
         }
 
         //no usada

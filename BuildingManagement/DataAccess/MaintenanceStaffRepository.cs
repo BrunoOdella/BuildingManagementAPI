@@ -24,9 +24,11 @@ public class MaintenanceStaffRepository : IMaintenanceStaffRepository
         var buildings = _context.Buildings.Where(b => b.ManagerId.Equals(managerId)).ToList();
         List<MaintenanceStaff> maintenanceStaff = new List<MaintenanceStaff>();
 
+
         foreach (var buildong in buildings)
         {
-            maintenanceStaff.AddRange(buildong.MaintenanceStaff);
+            var staff = _context.MaintenanceStaff.Where(s => s.BuildingId.Equals(buildong.BuildingId)).ToList();
+            maintenanceStaff.AddRange(staff);
         }
         return  maintenanceStaff;
     }
@@ -35,15 +37,17 @@ public class MaintenanceStaffRepository : IMaintenanceStaffRepository
     {
         var buildings = _context.Buildings.Where(b => b.ManagerId.Equals(managerId)).ToList();
 
+        var maintenanceStaff = _context.MaintenanceStaff.FirstOrDefault(s => s.ID.Equals(maintenancePersonId));
+
+        if (maintenanceStaff == null)
+            return null;
+
         foreach (var buildong in buildings)
         {
-            foreach (var staff in buildong.MaintenanceStaff)
-            {
-                if (staff.ID.Equals(maintenancePersonId))
-                    return staff;
-            }
+            if (maintenanceStaff.BuildingId.Equals(buildong.BuildingId))
+                return maintenanceStaff;
         }
-        return (MaintenanceStaff) null;
+        return null;
     }
 
     public Guid GetMaintenanceStaff(Guid maintenancePersonId)

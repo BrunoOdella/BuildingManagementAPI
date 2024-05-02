@@ -23,15 +23,15 @@ public class RequestLogic : IRequestLogic
     {
         ValidateIncomingRequest(request);
 
-        Building actualBuilding = _buildingRepository.GetBuilding(managerId, request.Apartment.BuildingId);
         Apartment actualApartment = _buildingRepository.GetApartment(managerId, request.Apartment.ApartmentId, request.Apartment.BuildingId);
-        MaintenanceStaff actualMaintenanceStaff =
-            _maintenanceStaffRepository.GetMaintenanceStaff(managerId, request.MaintenanceStaff.ID);
 
-        if (actualBuilding == null)
+        if (actualApartment == null)
         {
-            throw new InvalidOperationException("Building does not exist.");
+            throw new InvalidOperationException("Apartment does not exist.");
         }
+
+        MaintenanceStaff actualMaintenanceStaff =
+            _maintenanceStaffRepository.GetMaintenanceStaff(managerId, request.MaintenanceStaffId);
 
         request.Apartment = actualApartment;
         request.MaintenanceStaff = actualMaintenanceStaff;
@@ -69,6 +69,7 @@ public class RequestLogic : IRequestLogic
 
         actualRequest.MaintenanceStaff = actualMaintenanceStaff;
         actualRequest.StartTime = startTime;
+        actualRequest.Status = Status.Active;
 
         //actualMaintenanceStaff.Requests.Add(actualRequest);
 
@@ -117,7 +118,7 @@ public class RequestLogic : IRequestLogic
             throw new ArgumentException("Can not create an empty Request.");
 
         // Cateogry can not be empty
-        if (request.Category is null)
+        if (request.CategoryID is null)
             throw new ArgumentException("Category can not be empty.");
 
         // Description can not be empty

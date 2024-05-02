@@ -20,6 +20,7 @@ namespace DataAccess
         public Admin CreateAdmin(Admin admin)
         {
             _context.Admins.Add(admin);
+            _context.SaveChanges();
             return admin;
         }
 

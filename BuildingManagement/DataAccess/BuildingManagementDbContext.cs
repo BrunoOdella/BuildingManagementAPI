@@ -23,6 +23,7 @@ namespace DataAccess
         public DbSet<Apartment> Apartments { get; set; }
         public DbSet<Owner> Owners { get; set; }
         public DbSet<MaintenanceStaff> MaintenanceStaff { get; set; }
+        public DbSet<Category> Category { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -65,12 +66,13 @@ namespace DataAccess
                 .WithOne()
                 .HasForeignKey<Owner>(o => o.OwnerId)
                 .OnDelete(DeleteBehavior.Cascade);  // Cascada en la eliminación de Owner
+
+            // Configuración de la relación unidireccional entre Request_ y Category
+            modelBuilder.Entity<Request_>()
+                .HasOne(r => r.Category)  // Request_ tiene una Category
+                .WithMany()  // No hay navegación inversa desde Category a Request_
+                .HasForeignKey(r => r.CategoryID)  // CategoryId es la clave foránea en Request_
+                .OnDelete(DeleteBehavior.Restrict);  // Configura el comportamiento en caso de eliminación
         }
-
-
-
-
-
-
     }
 }

@@ -34,7 +34,7 @@ public class RequestRepositoryTest
 
             Request_ expected = new Request_()
             {
-                Category = 1,
+                CategoryID = 1,
                 CreationTime = DateTime.Now.AddDays(-2),
                 Description = "description A",
                 Id = Guid.NewGuid(),
@@ -100,7 +100,7 @@ public class RequestRepositoryTest
 
             Request_ expected1 = new Request_()
             {
-                Category = 1,
+                CategoryID = 1,
                 CreationTime = DateTime.Now.AddDays(-2),
                 Description = "description A",
                 Id = Guid.NewGuid(),
@@ -112,7 +112,7 @@ public class RequestRepositoryTest
 
             Request_ expected2 = new Request_()
             {
-                Category = 2,
+                CategoryID = 2,
                 CreationTime = DateTime.Now.AddDays(-2),
                 Description = "description b",
                 Id = Guid.NewGuid(),
@@ -141,9 +141,9 @@ public class RequestRepositoryTest
     }
 
     [TestMethod]
-    public void GetAllRequest_WithCategory2()
+    public void GetAllRequest_WithCategoryID2()
     {
-        using (var context = CreateDbContext("TestGetAllRequestWithCategory2"))
+        using (var context = CreateDbContext("TestGetAllRequestWithCategoryID2"))
         {
             var manager = new Manager()
             {
@@ -179,7 +179,7 @@ public class RequestRepositoryTest
 
             Request_ expected1 = new Request_()
             {
-                Category = 1,
+                CategoryID = 1,
                 CreationTime = DateTime.Now.AddDays(-2),
                 Description = "description A",
                 Id = Guid.NewGuid(),
@@ -191,7 +191,7 @@ public class RequestRepositoryTest
 
             Request_ expected2 = new Request_()
             {
-                Category = 2,
+                CategoryID = 2,
                 CreationTime = DateTime.Now.AddDays(-2),
                 Description = "description b",
                 Id = Guid.NewGuid(),
@@ -257,7 +257,7 @@ public class RequestRepositoryTest
 
             Request_ expected1 = new Request_()
             {
-                Category = 1,
+                CategoryID = 1,
                 CreationTime = DateTime.Now.AddDays(-2),
                 Description = "description A",
                 Id = request1ID,
@@ -269,7 +269,7 @@ public class RequestRepositoryTest
 
             Request_ expected2 = new Request_()
             {
-                Category = 2,
+                CategoryID = 2,
                 CreationTime = DateTime.Now.AddDays(-2),
                 Description = "description b",
                 Id = Guid.NewGuid(),
@@ -334,7 +334,7 @@ public class RequestRepositoryTest
 
             Request_ original = new Request_()
             {
-                Category = 1,
+                CategoryID = 1,
                 CreationTime = DateTime.Now.AddDays(-2),
                 Description = "description A",
                 Id = requestID,
@@ -346,7 +346,7 @@ public class RequestRepositoryTest
 
             Request_ updated = new Request_()
             {
-                Category = 2,
+                CategoryID = 2,
                 CreationTime = DateTime.Now.AddDays(-2),
                 Description = "description b",
                 Id = requestID,

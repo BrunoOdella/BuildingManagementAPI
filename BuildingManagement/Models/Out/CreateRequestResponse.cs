@@ -15,7 +15,7 @@ public class CreateRequestResponse
     {
         this.Id = request.Id;
         this.Description = request.Description;
-        this.Category = (int)request.Category;
+        this.Category = (int)request.CategoryID;
         this.CreationTime = request.CreationTime;
         this.Status = request.Status;
         this.ApartmentID = request.Apartment.ApartmentId;

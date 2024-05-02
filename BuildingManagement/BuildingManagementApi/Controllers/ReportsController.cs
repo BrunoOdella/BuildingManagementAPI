@@ -7,7 +7,7 @@ using Models.Out;
 
 namespace BuildingManagementApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     [ServiceFilter(typeof(AuthenticationFilter))]
     public class ReportsController : ControllerBase
@@ -24,26 +24,26 @@ namespace BuildingManagementApi.Controllers
             _httpContextAccessor = httpContextAccessor;
         }
 
-        [HttpGet("request_by_building/{BuildingID}")]
-        public ObjectResult GetReport_RequestByBuilding([FromQuery] string? buildingID)
+        [HttpGet("request_by_building")]
+        public ObjectResult GetReport_RequestByBuilding([FromQuery] string? BuildingID)
         {
             var managerID = new Guid(_httpContextAccessor.HttpContext.Items["userID"] as string);
 
-            if (string.IsNullOrEmpty(buildingID))
+            if (string.IsNullOrEmpty(BuildingID))
                 return Ok(new Report_RequestByBuildingResponse(_logicByBuilding.RequestByBuilding(managerID)));
 
-            return Ok(new Report_RequestByBuildingResponse(_logicByBuilding.RequestByBuilding(managerID, new Guid(buildingID))));
+            return Ok(new Report_RequestByBuildingResponse(_logicByBuilding.RequestByBuilding(managerID, new Guid(BuildingID))));
         }
 
-        [HttpGet("request_by_maintenance_staff/{MaintenanceStaffID}")]
-        public ObjectResult GetReport_RequestByMaintenanceStaff([FromQuery] string? buildingID)
+        [HttpGet("request_by_maintenance_staff")]
+        public ObjectResult GetReport_RequestByMaintenanceStaff([FromQuery] string? MaintenanceStaffID)
         {
             var managerID = new Guid(_httpContextAccessor.HttpContext.Items["userID"] as string);
 
-            if (string.IsNullOrEmpty(buildingID))
-                return Ok(new Report_RequestByBuildingResponse(_logicByMaintenanceStaff.RequestByMaintenanceStaff(managerID)));
+            if (string.IsNullOrEmpty(MaintenanceStaffID))
+                return Ok(new Report_RequestByMaintenanceStaffResponse(_logicByMaintenanceStaff.RequestByMaintenanceStaff(managerID)));
 
-            return Ok(new Report_RequestByBuildingResponse(_logicByMaintenanceStaff.RequestByMaintenanceStaff(managerID, new Guid(buildingID))));
+            return Ok(new Report_RequestByMaintenanceStaffResponse(_logicByMaintenanceStaff.RequestByMaintenanceStaff(managerID, new Guid(MaintenanceStaffID))));
         }
     }
 }

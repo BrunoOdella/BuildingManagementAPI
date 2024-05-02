@@ -1,12 +1,15 @@
-﻿using LogicInterface.Interfaces;
+﻿using BuildingManagementApi.Filters;
+using LogicInterface.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models.In;
+using Models.Out;
 
 namespace BuildingManagementApi.Controllers
 {
     [Route("api/v1/buildings/{buildingId}/maintenancestaff")]
     [ApiController]
+    [ServiceFilter(typeof(AuthenticationFilter))]
     public class MaintenanceStaffController : ControllerBase
     {
         private readonly IMaintenanceStaffLogic _maintenanceStaffLogic;
@@ -23,9 +26,9 @@ namespace BuildingManagementApi.Controllers
         {
             string managerId = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
             var maintenanceStaff = request.ToEntity(buildingId);
-            var response = _maintenanceStaffLogic.AddMaintenanceStaff(managerId, maintenanceStaff);
+            var response = new CreateMaintenanceStaffResponse(_maintenanceStaffLogic.AddMaintenanceStaff(managerId, maintenanceStaff));
 
-            return CreatedAtAction(nameof(CreateMaintenanceStaff), new { id = response.ID }, response);
+            return StatusCode(201, response);
         }
     }
 }

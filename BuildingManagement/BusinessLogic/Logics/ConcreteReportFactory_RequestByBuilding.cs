@@ -7,15 +7,17 @@ namespace BusinessLogic.Logics;
 public class ConcreteReportFactory_RequestByBuilding : IReportLogicByBuilding
 {
     private readonly IBuildingRepository _buildingRepository;
+    private readonly IRequestRepository _requestRepository;
 
-    public ConcreteReportFactory_RequestByBuilding(IBuildingRepository buildingRepository)
+    public ConcreteReportFactory_RequestByBuilding(IBuildingRepository buildingRepository, IRequestRepository requestRepository)
     {
         _buildingRepository = buildingRepository;
+        _requestRepository = requestRepository;
     }
 
     public Report RequestByBuilding(Guid managerId)
     {
-        var buildings = _buildingRepository.GetAll(managerId);
+        var buildings = _buildingRepository.GetAll(managerId).ToList();
 
         Report report = new Report();
         report.BuildingReports = new List<BuildingReport>();
@@ -25,9 +27,13 @@ public class ConcreteReportFactory_RequestByBuilding : IReportLogicByBuilding
             var actualLine = new BuildingReport();
             actualLine.BuildingName = building.Name;
 
-            foreach (var apartment in building.Apartments)
+            var apartments = _buildingRepository.getAllApartments(managerId, building.BuildingId);
+
+            foreach (var apartment in apartments)
             {
-                foreach (var request in apartment.Requests)
+                var requests = _requestRepository.GetAllRequest(managerId).Where(r => r.ApartmentId.Equals(apartment.ApartmentId)).ToList();
+
+                foreach (var request in requests)
                 {
                     switch (request.Status)
                     {
@@ -61,9 +67,13 @@ public class ConcreteReportFactory_RequestByBuilding : IReportLogicByBuilding
         var actualLine = new BuildingReport();
         actualLine.BuildingName = building.Name;
 
-        foreach (var apartment in building.Apartments)
+        var apartments = _buildingRepository.getAllApartments(managerId, building.BuildingId);
+
+        foreach (var apartment in apartments)
         {
-            foreach (var request in apartment.Requests)
+            var requests = _requestRepository.GetAllRequest(managerId).Where(r => r.ApartmentId.Equals(apartment.ApartmentId)).ToList();
+
+            foreach (var request in requests)
             {
                 switch (request.Status)
                 {

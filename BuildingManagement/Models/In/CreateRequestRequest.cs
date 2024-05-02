@@ -15,10 +15,12 @@ public class CreateRequestRequest
         return new Request_()
         {
             Description = Description,
-            Category = Category,
+            CategoryID = Category,
             CreationTime = CreationTime,
             Apartment = new Apartment(){ApartmentId = ApartmentID},
-            MaintenanceStaff = new MaintenanceStaff() { ID = MaintenanceStaffID }
+            MaintenanceStaff = new MaintenanceStaff() { ID = MaintenanceStaffID },
+            MaintenanceStaffId = MaintenanceStaffID,
+            ApartmentId = ApartmentID
         };
     } 
 }

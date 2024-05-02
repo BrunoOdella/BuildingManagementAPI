@@ -1,16 +1,19 @@
 ﻿using Domain;
 using IDataAccess;
 using LogicInterface.Interfaces;
+using System;
 
 namespace BusinessLogic.Logics;
 
 public class ConcreteReportFactory_RequestByMaintenanceStaff : IReportLogicByMaintenanceStaff
 {
     private readonly IMaintenanceStaffRepository _maintenanceStaffRepository;
+    private readonly IRequestRepository _requestRepository;
     
-    public ConcreteReportFactory_RequestByMaintenanceStaff(IMaintenanceStaffRepository maintenanceStaffRepository)
+    public ConcreteReportFactory_RequestByMaintenanceStaff(IMaintenanceStaffRepository maintenanceStaffRepository, IRequestRepository requestRepository)
     {
         _maintenanceStaffRepository = maintenanceStaffRepository;
+        _requestRepository = requestRepository;
     }
 
     public Report RequestByMaintenanceStaff(Guid managerId)
@@ -22,7 +25,7 @@ public class ConcreteReportFactory_RequestByMaintenanceStaff : IReportLogicByMai
         
         foreach (MaintenanceStaff person in maintenanceStaff)
         {
-            var requests = person.Requests;
+            var requests = _requestRepository.GetAllRequestStaff(person.ID).ToList();
             var actualLine = new MaintenanceStaffReport();
             actualLine.StaffName = person.Name;
             double totalTimeSpend = 0;
@@ -67,7 +70,7 @@ public class ConcreteReportFactory_RequestByMaintenanceStaff : IReportLogicByMai
         Report report = new Report();
         report.MaintenanceStaffReports = new List<MaintenanceStaffReport>();
 
-        var requests = maintenanceStaff.Requests;
+        var requests = _requestRepository.GetAllRequestStaff(maintenanceStaff.ID).ToList();
         var actualLine = new MaintenanceStaffReport();
         actualLine.StaffName = maintenanceStaff.Name;
         double totalTimeSpend = 0;

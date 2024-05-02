@@ -18,6 +18,7 @@ namespace DataAccess
         public Invitation CreateInvitation(Invitation invitation)
         {
             _context.Invitations.Add(invitation);
+            _context.SaveChanges();
             return invitation;
         }
 

@@ -40,6 +40,7 @@ namespace BusinessLogic.Logics
 
         public Invitation CreateInvitation(Invitation invitation)
         {
+            invitation.Status = "No aceptada";
             return _invitationRepository.CreateInvitation(invitation);
         }
 

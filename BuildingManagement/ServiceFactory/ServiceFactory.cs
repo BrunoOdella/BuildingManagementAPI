@@ -34,7 +34,6 @@ namespace ServiceFactory
             services.AddScoped<IRequestRepository, RequestRepository>();
             services.AddScoped<IManagerRepository, ManagerRepository>();
             services.AddScoped<IBuildingRepository, BuildingRepository>();
-            services.AddScoped<IAuthenticationServiceRepository, AuthenticationRepository>();
             services.AddScoped<IMaintenanceStaffRepository, MaintenanceStaffRepository>();
         }
     }

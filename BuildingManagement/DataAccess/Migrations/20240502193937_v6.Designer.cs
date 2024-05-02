@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(BuildingManagementDbContext))]
-    [Migration("20240502054852_migrations")]
-    partial class migrations
+    [Migration("20240502193937_v6")]
+    partial class v6
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -109,6 +109,27 @@ namespace DataAccess.Migrations
                     b.HasIndex("ManagerId");
 
                     b.ToTable("Buildings");
+                });
+
+            modelBuilder.Entity("Domain.Category", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Category");
                 });
 
             modelBuilder.Entity("Domain.Invitation", b =>
@@ -219,7 +240,7 @@ namespace DataAccess.Migrations
                     b.Property<Guid>("ApartmentId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("Category")
+                    b.Property<int?>("CategoryID")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreationTime")
@@ -247,6 +268,8 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ApartmentId");
+
+                    b.HasIndex("CategoryID");
 
                     b.HasIndex("MaintenanceStaffId");
 
@@ -325,6 +348,11 @@ namespace DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryID")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("Domain.MaintenanceStaff", "MaintenanceStaff")
                         .WithMany("Requests")
                         .HasForeignKey("MaintenanceStaffId")
@@ -332,6 +360,8 @@ namespace DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("Apartment");
+
+                    b.Navigation("Category");
 
                     b.Navigation("MaintenanceStaff");
                 });

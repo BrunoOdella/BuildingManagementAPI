@@ -22,14 +22,33 @@ namespace DataAccess
 
         public IEnumerable<Building> GetAll(Guid managerId)
         {
-            throw new NotImplementedException();
+            return _context.Buildings.Where(b => b.ManagerId.Equals(managerId));
         }
 
         public Apartment GetApartment(Guid managerId, Guid apartmentId, Guid buildingId)
         {
-            var building = _context.Buildings.FirstOrDefault(i => i.BuildingId.Equals(apartmentId) && i.ManagerId.Equals(managerId));
-            var apartment = building.Apartments.FirstOrDefault(a => a.ApartmentId.Equals(apartmentId));
-            return apartment;
+            var apartment = _context.Apartments.FirstOrDefault(a => a.ApartmentId.Equals(apartmentId));
+
+            var building = _context.Buildings.FirstOrDefault(b => b.BuildingId.Equals(apartment.BuildingId));
+
+            if(building.ManagerId.Equals(managerId))
+                return apartment;
+            return null;
+        }
+
+        public List<Apartment> getAllApartments(Guid managerId, Guid buildingId)
+        {
+            var building = _context.Buildings.FirstOrDefault(b => b.ManagerId.Equals(managerId));
+
+            if (building is null)
+                return null;
+
+            var apartments = _context.Apartments.Where(a => a.BuildingId.Equals(building.BuildingId)).ToList();
+
+            if(apartments is null)
+                return null;
+
+            return apartments;
         }
 
         public bool DeleteBuilding(Guid buildingId)

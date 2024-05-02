@@ -57,7 +57,7 @@ namespace BusinessLogicTest
 
             Request_ request = new Request_()
             {
-                Category = 1,
+                CategoryID = 1,
                 CreationTime = DateTime.Now.AddDays(-2),
                 Description = "description A",
                 EndTime = DateTime.Now,
@@ -88,7 +88,7 @@ namespace BusinessLogicTest
 
             Request_ request = new Request_()
             {
-                Category = 1,
+                CategoryID = 1,
                 CreationTime = DateTime.Now.AddDays(-2),
                 Description = "description A",
                 EndTime = DateTime.Now,
@@ -145,7 +145,7 @@ namespace BusinessLogicTest
         }
 
         [TestMethod]
-        public void CreateRequest_ValidatesEmptyCategory_DontCreateRequest()
+        public void CreateRequest_ValidatesEmptyCategoryID_DontCreateRequest()
         {
             Request_ request = new Request_()
             {
@@ -156,7 +156,7 @@ namespace BusinessLogicTest
                 StartTime = DateTime.Now.AddDays(-1),
                 Status = Status.Finished,
                 TotalCost = 1000, 
-                MaintenanceStaff = new MaintenanceStaff()
+                MaintenanceStaff = new MaintenanceStaff(),
             };
 
             Exception exception = null;
@@ -182,7 +182,7 @@ namespace BusinessLogicTest
         {
             Request_ request = new Request_()
             {
-                Category = 1,
+                CategoryID = 1,
                 CreationTime = DateTime.Now.AddDays(-2),
                 Description = "",
                 EndTime = DateTime.Now,
@@ -216,7 +216,7 @@ namespace BusinessLogicTest
         {
             Request_ request = new Request_()
             {
-                Category = 1,
+                CategoryID = 1,
                 CreationTime = DateTime.Now.AddDays(-2),
                 EndTime = DateTime.Now,
                 Id = Guid.NewGuid(),
@@ -249,7 +249,7 @@ namespace BusinessLogicTest
         {
             Request_ request = new Request_()
             {
-                Category = 1,
+                CategoryID = 1,
                 //CreationTime = DateTime.Now.AddDays(-2),
                 Description = "description A",
                 EndTime = DateTime.Now,
@@ -283,7 +283,7 @@ namespace BusinessLogicTest
         {
             Request_ request = new Request_()
             {
-                Category = 1,
+                CategoryID = 1,
                 CreationTime = DateTime.Now.AddDays(-2),
                 Description = "description A",
                 EndTime = DateTime.Now,
@@ -317,7 +317,7 @@ namespace BusinessLogicTest
         {
             Request_ request = new Request_()
             {
-                Category = 1,
+                CategoryID = 1,
                 CreationTime = DateTime.Now.AddDays(-2),
                 Description = "description A",
                 //EndTime = DateTime.Now,
@@ -351,7 +351,7 @@ namespace BusinessLogicTest
         {
             Request_ request = new Request_()
             {
-                Category = 1,
+                CategoryID = 1,
                 CreationTime = DateTime.Now.AddDays(-2),
                 Description = "description A",
                 EndTime = DateTime.Now,
@@ -385,7 +385,7 @@ namespace BusinessLogicTest
         {
             Request_ request = new Request_()
             {
-                Category = 1,
+                CategoryID = 1,
                 CreationTime = DateTime.Now.AddDays(-2),
                 Description = "description A",
                 EndTime = DateTime.Now,
@@ -419,7 +419,7 @@ namespace BusinessLogicTest
         {
             Request_ request = new Request_()
             {
-                Category = 1,
+                CategoryID = 1,
                 CreationTime = DateTime.Now,
                 Description = "description A",
                 //EndTime = DateTime.Now,
@@ -453,7 +453,7 @@ namespace BusinessLogicTest
         {
             Request_ request = new Request_()
             {
-                Category = 1,
+                CategoryID = 1,
                 CreationTime = DateTime.Now,
                 Description = "description A",
                 //EndTime = DateTime.Now,
@@ -486,7 +486,7 @@ namespace BusinessLogicTest
         {
             Request_ request = new Request_()
             {
-                Category = 1,
+                CategoryID = 1,
                 CreationTime = DateTime.Now,
                 Description = "description A",
                 EndTime = DateTime.Now,
@@ -520,7 +520,7 @@ namespace BusinessLogicTest
         {
             Request_ request = new Request_()
             {
-                Category = 1,
+                CategoryID = 1,
                 CreationTime = DateTime.Now,
                 Description = "description A",
                 EndTime = DateTime.Now.AddDays(-1),
@@ -554,7 +554,7 @@ namespace BusinessLogicTest
         {
             Request_ request = new Request_()
             {
-                Category = 1,
+                CategoryID = 1,
                 CreationTime = DateTime.Now.AddDays(-2),
                 Description = "description A",
                 //EndTime = DateTime.Now,
@@ -598,7 +598,7 @@ namespace BusinessLogicTest
             {
                 new Request_()
                 {
-                    Category = 1,
+                    CategoryID = 1,
                     CreationTime = DateTime.Now.AddDays(-2),
                     Description = "description A",
                     Id = Guid.NewGuid(),
@@ -608,7 +608,7 @@ namespace BusinessLogicTest
                 },
                 new Request_()
                 {
-                    Category = 1,
+                    CategoryID = 1,
                     CreationTime = DateTime.Now.AddDays(-2),
                     Description = "description A",
                     EndTime = DateTime.Now,
@@ -623,7 +623,7 @@ namespace BusinessLogicTest
                     Id = new Guid(),
                     Description = "Description A",
                     Status = Status.Pending,
-                    Category = 3,
+                    CategoryID = 3,
                     CreationTime = DateTime.Now.AddDays(-1),
                     MaintenanceStaff = staff
                 }
@@ -646,7 +646,7 @@ namespace BusinessLogicTest
         }
 
         [TestMethod]
-        public void GetAllRequest_ByCategory_ReturnsAllRequestsOfCategory()
+        public void GetAllRequest_ByCategoryID_ReturnsAllRequestsOfCategoryID()
         {
             // Arrange
             int category = 1;
@@ -654,7 +654,7 @@ namespace BusinessLogicTest
             {
                 new Request_()
                 {
-                    Category = category,
+                    CategoryID = category,
                     CreationTime = DateTime.Now.AddDays(-2),
                     Description = "description A",
                     Id = Guid.NewGuid(),
@@ -664,7 +664,7 @@ namespace BusinessLogicTest
                 },
                 new Request_()
                 {
-                    Category = category,
+                    CategoryID = category,
                     CreationTime = DateTime.Now.AddDays(-2),
                     Description = "description A",
                     EndTime = DateTime.Now,
@@ -701,7 +701,7 @@ namespace BusinessLogicTest
 
             Request_ updatedRequest = new Request_()
             {
-                Category = 1,
+                CategoryID = 1,
                 CreationTime = DateTime.Now.AddDays(-2),
                 Description = "description A",
                 Id = id,
@@ -738,7 +738,7 @@ namespace BusinessLogicTest
 
             Request_ finishedRequest = new Request_()
             {
-                Category = 1,
+                CategoryID = 1,
                 CreationTime = DateTime.Now.AddDays(-2),
                 Description = "description A",
                 EndTime = endTime,
@@ -775,7 +775,7 @@ namespace BusinessLogicTest
             var maintenancePerson = new MaintenanceStaff();
             Request_ unassignedRequest = new Request_()
             {
-                Category = 1,
+                CategoryID = 1,
                 CreationTime = DateTime.Now.AddDays(-2),
                 Description = "description A",
                 Id = requestGuid,
@@ -784,7 +784,7 @@ namespace BusinessLogicTest
 
             Request_ assignedRequest = new Request_()
             {
-                Category = 1,
+                CategoryID = 1,
                 CreationTime = DateTime.Now.AddDays(-2),
                 Description = "description A",
                 Id = requestGuid,
@@ -838,6 +838,42 @@ namespace BusinessLogicTest
             Assert.IsTrue(exception.Message.Equals("Request does not exist."));
 
             _requestRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void AsignMaintenancePerson_ValidRequest_Succes()
+        {
+            // Arrange
+            Guid id = Guid.NewGuid();
+            DateTime startTime = DateTime.Now.AddDays(-1);
+            var maintenanceStaff = new MaintenanceStaff()
+            {
+                ID = new Guid()
+            };
+
+            Request_ assignedRequest = new Request_()
+            {
+                CategoryID = 1,
+                CreationTime = DateTime.Now.AddDays(-2),
+                Description = "description A",
+                Id = id,
+                Status = Status.Active
+            };
+
+            _requestRepositoryMock.Setup(repository => repository.GetRequest(_managerID, id)).Returns(assignedRequest);
+            _staffRepositoryMock.Setup(repository => repository.GetMaintenanceStaff(_managerID, maintenanceStaff.ID))
+                .Returns(maintenanceStaff);
+            _requestRepositoryMock.Setup(r => r.Update(assignedRequest));
+
+            // Act
+            var response = _requestLogic.ActivateRequest(_managerID, id, maintenanceStaff.ID, startTime);
+
+
+            Assert.IsNotNull(response);
+            Assert.AreEqual(response.Id, assignedRequest.Id);
+
+            _requestRepositoryMock.VerifyAll();
+            _staffRepositoryMock.VerifyAll();
         }
 
         [TestMethod]
@@ -980,7 +1016,7 @@ namespace BusinessLogicTest
 
             Request_ request = new Request_()
             {
-                Category = 1,
+                CategoryID = 1,
                 CreationTime = DateTime.Now.AddDays(-2),
                 Description = "description A",
                 Id = Guid.NewGuid(),
