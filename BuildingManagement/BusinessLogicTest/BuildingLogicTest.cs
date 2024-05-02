@@ -62,33 +62,61 @@ namespace BusinessLogicTest
 
 
         [TestMethod]
-        public void DeleteBuilding_SuccessfulDeletion_Returns()
+        [ExpectedException(typeof(ArgumentException))]
+        public void DeleteBuilding_InvalidManagerId_ThrowsArgumentException()
         {
             // Arrange
-            string managerId = Guid.NewGuid().ToString();
-            Guid buildingId = Guid.NewGuid();
-            _buildingRepositoryMock.Setup(repo => repo.DeleteBuilding(buildingId)).Returns(true);
+            string invalidManagerId = "not-a-guid";
+
+            // Act
+            _buildingLogic.DeleteBuilding(invalidManagerId, Guid.NewGuid());
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(UnauthorizedAccessException))]
+        public void DeleteBuilding_UnauthorizedManager_ThrowsUnauthorizedAccessException()
+        {
+            // Arrange
+            var managerId = Guid.NewGuid().ToString();
+            var buildingId = Guid.NewGuid();
+            _buildingRepositoryMock.Setup(r => r.GetBuilding(Guid.Parse(managerId), buildingId))
+                .Returns((Building)null); // No building found
 
             // Act
             _buildingLogic.DeleteBuilding(managerId, buildingId);
-
-            // Assert
-            _buildingRepositoryMock.Verify(repo => repo.DeleteBuilding(buildingId), Times.Once);
         }
 
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
-        public void DeleteBuilding_BuildingNotFound_ThrowsInvalidOperationException()
+        public void DeleteBuilding_FailureToDelete_ThrowsInvalidOperationException()
         {
             // Arrange
-            string managerId = Guid.NewGuid().ToString();
-            Guid buildingId = Guid.NewGuid();
-            _buildingRepositoryMock.Setup(repo => repo.DeleteBuilding(buildingId)).Returns(false);
+            var managerId = Guid.NewGuid().ToString();
+            var buildingId = Guid.NewGuid();
+            var building = new Building { BuildingId = buildingId, ManagerId = Guid.Parse(managerId) };
+            _buildingRepositoryMock.Setup(r => r.GetBuilding(Guid.Parse(managerId), buildingId)).Returns(building);
+            _buildingRepositoryMock.Setup(r => r.DeleteBuilding(buildingId)).Returns(false); // Fail to delete
 
             // Act
             _buildingLogic.DeleteBuilding(managerId, buildingId);
+        }
 
-            // Assert is handled by ExpectedException
+        [TestMethod]
+        public void DeleteBuilding_SuccessfulDeletion_CompletesWithoutException()
+        {
+            // Arrange
+            var managerId = Guid.NewGuid().ToString();
+            var buildingId = Guid.NewGuid();
+            var building = new Building { BuildingId = buildingId, ManagerId = Guid.Parse(managerId) };
+            _buildingRepositoryMock.Setup(r => r.GetBuilding(Guid.Parse(managerId), buildingId)).Returns(building);
+            _buildingRepositoryMock.Setup(r => r.DeleteBuilding(buildingId)).Returns(true); // Successfully deleted
+
+            // Act
+            _buildingLogic.DeleteBuilding(managerId, buildingId); // No exception expected
+
+            // Assert
+            _buildingRepositoryMock.Verify(r => r.DeleteBuilding(buildingId), Times.Once);
+            Assert.IsTrue(true); // If reached here, test passed
         }
 
 
