@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class v2 : Migration
+    public partial class migrations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -39,18 +39,6 @@ namespace DataAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Invitations", x => x.InvitationId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "MaintenanceStaff",
-                columns: table => new
-                {
-                    ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MaintenanceStaff", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -130,6 +118,28 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "MaintenanceStaff",
+                columns: table => new
+                {
+                    ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BuildingId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MaintenanceStaff", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_MaintenanceStaff_Buildings_BuildingId",
+                        column: x => x.BuildingId,
+                        principalTable: "Buildings",
+                        principalColumn: "BuildingId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Owners",
                 columns: table => new
                 {
@@ -161,7 +171,7 @@ namespace DataAccess.Migrations
                     StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TotalCost = table.Column<float>(type: "real", nullable: false),
-                    MaintenanceStaffID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    MaintenanceStaffId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ApartmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -174,11 +184,11 @@ namespace DataAccess.Migrations
                         principalColumn: "ApartmentId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Requests_MaintenanceStaff_MaintenanceStaffID",
-                        column: x => x.MaintenanceStaffID,
+                        name: "FK_Requests_MaintenanceStaff_MaintenanceStaffId",
+                        column: x => x.MaintenanceStaffId,
                         principalTable: "MaintenanceStaff",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -192,14 +202,19 @@ namespace DataAccess.Migrations
                 column: "ManagerId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_MaintenanceStaff_BuildingId",
+                table: "MaintenanceStaff",
+                column: "BuildingId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Requests_ApartmentId",
                 table: "Requests",
                 column: "ApartmentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Requests_MaintenanceStaffID",
+                name: "IX_Requests_MaintenanceStaffId",
                 table: "Requests",
-                column: "MaintenanceStaffID");
+                column: "MaintenanceStaffId");
         }
 
         /// <inheritdoc />

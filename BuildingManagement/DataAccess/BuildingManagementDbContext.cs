@@ -30,7 +30,6 @@ namespace DataAccess
             modelBuilder.Entity<Building>()
                 .OwnsOne(b => b.Location);  // Define Location como una propiedad propia de Building
 
-            // Configuraciones de relaciones para otras entidades
             modelBuilder.Entity<Manager>()
                 .HasMany(m => m.Buildings)
                 .WithOne(b => b.Manager)
@@ -44,17 +43,31 @@ namespace DataAccess
                 .OnDelete(DeleteBehavior.Cascade);  // Cascada en la eliminación de Building
 
             modelBuilder.Entity<Apartment>()
-                .HasOne(a => a.Owner)
-                .WithOne()
-                .HasForeignKey<Owner>(o => o.OwnerId)
-                .OnDelete(DeleteBehavior.Cascade);  // Cascada en la eliminación de Apartment
-
-            modelBuilder.Entity<Apartment>()
                 .HasMany(a => a.Requests)
                 .WithOne(r => r.Apartment)
                 .HasForeignKey(r => r.ApartmentId)
-                .OnDelete(DeleteBehavior.Cascade);  // Cascada en la eliminación de Requests
+                .OnDelete(DeleteBehavior.Cascade);  // Cascada en la eliminación de Requests cuando se elimina Apartment
+
+            modelBuilder.Entity<Building>()
+                .HasMany(b => b.MaintenanceStaff)
+                .WithOne(ms => ms.Building)
+                .HasForeignKey(ms => ms.BuildingId)
+                .OnDelete(DeleteBehavior.Cascade);  // Cascada en la eliminación de MaintenanceStaff cuando se elimina Building
+
+            modelBuilder.Entity<MaintenanceStaff>()
+                .HasMany(ms => ms.Requests)
+                .WithOne(r => r.MaintenanceStaff)
+                .HasForeignKey(r => r.MaintenanceStaffId)
+                .OnDelete(DeleteBehavior.Restrict);  // No se eliminan las Requests al eliminar MaintenanceStaff
+
+            modelBuilder.Entity<Apartment>()
+                .HasOne(a => a.Owner)
+                .WithOne()
+                .HasForeignKey<Owner>(o => o.OwnerId)
+                .OnDelete(DeleteBehavior.Cascade);  // Cascada en la eliminación de Owner
         }
+
+
 
 
 
