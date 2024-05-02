@@ -15,6 +15,6 @@ public class CategoriesRequestsLogic : ICategoriesRequestsLogic
 
     public Category CreateCategory(Category category)
     {
-        throw new NotImplementedException();
+        return _logic.Add(category);
     }
 }

@@ -45,6 +45,7 @@ public class ConcreteReportFactory_RequestByBuilding : IReportLogicByBuilding
                     }
                 }
             }
+            report.BuildingReports.Add(actualLine);
         }
 
         return report;
@@ -79,6 +80,7 @@ public class ConcreteReportFactory_RequestByBuilding : IReportLogicByBuilding
                         break;
                 }
             }
+            report.BuildingReports.Add(actualLine);
         }
 
         return report;

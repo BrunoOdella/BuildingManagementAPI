@@ -33,6 +33,10 @@ public class AuthenticationFilter : Attribute, IAuthorizationFilter
             try
             {
                 Guid token = Guid.Parse(headerToken);
+
+                var verbo = context.HttpContext.Request.Method;
+                var uri = context.HttpContext.Request.Path.ToString();
+
                 var tokenEncontrado = authenticationService.BuscarToken(token);
                 VerifyToken(context, tokenEncontrado);
             }

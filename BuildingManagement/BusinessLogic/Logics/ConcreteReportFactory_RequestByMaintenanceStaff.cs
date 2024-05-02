@@ -54,7 +54,7 @@ public class ConcreteReportFactory_RequestByMaintenanceStaff : IReportLogicByMai
             {
                 actualLine.AverageCompletionTimeInHours = totalTimeSpend / actualLine.CompletedRequests;
             }
-
+            report.MaintenanceStaffReports.Add(actualLine);
         }
 
         return report;
@@ -99,6 +99,8 @@ public class ConcreteReportFactory_RequestByMaintenanceStaff : IReportLogicByMai
         {
             actualLine.AverageCompletionTimeInHours = totalTimeSpend / actualLine.CompletedRequests;
         }
+
+        report.MaintenanceStaffReports.Add(actualLine);
 
         return report;
     }
