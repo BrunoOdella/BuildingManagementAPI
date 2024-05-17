@@ -3,18 +3,16 @@ using Domain;
 using LogicInterface.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Models.In;
+using Models.Out;
 using Moq;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BuildingManagementApiTest
 {
     [TestClass]
-    public class MaitenanceStaffControllerTest
+    public class MaintenanceStaffControllerTest
     {
         private Mock<IMaintenanceStaffLogic> _maintenanceStaffLogicMock;
         private MaintenanceStaffController _maintenanceStaffController;
@@ -25,43 +23,50 @@ namespace BuildingManagementApiTest
         {
             _maintenanceStaffLogicMock = new Mock<IMaintenanceStaffLogic>(MockBehavior.Strict);
             _httpContextAccessorMock = new Mock<IHttpContextAccessor>(MockBehavior.Strict);
-            var httpContext = new DefaultHttpContext();
-            Guid expectedUserID = Guid.NewGuid();
-            httpContext.Items["userID"] = expectedUserID.ToString();
+
+            DefaultHttpContext httpContext = new DefaultHttpContext();
+            httpContext.Request.Headers["Authorization"] = Guid.NewGuid().ToString();
             _httpContextAccessorMock.Setup(x => x.HttpContext).Returns(httpContext);
+
             _maintenanceStaffController = new MaintenanceStaffController(_maintenanceStaffLogicMock.Object, _httpContextAccessorMock.Object);
         }
 
         [TestMethod]
         public void CreateMaintenanceStaff_ReturnsCreated_WhenSuccessful()
         {
-            var mockLogic = new Mock<IMaintenanceStaffLogic>();
-            var httpContextAccessor = new Mock<IHttpContextAccessor>();
-            var httpContext = new DefaultHttpContext();
-            httpContext.Request.Headers["Authorization"] = Guid.NewGuid().ToString();
-            httpContextAccessor.Setup(_ => _.HttpContext).Returns(httpContext);
-
-            var controller = new MaintenanceStaffController(mockLogic.Object, httpContextAccessor.Object);
-            var request = new CreateMaintenanceStaffRequest
+            // Arrange
+            Guid buildingId = Guid.NewGuid();
+            CreateMaintenanceStaffRequest request = new CreateMaintenanceStaffRequest
             {
                 Name = "John",
                 LastName = "Doe",
                 Email = "john@example.com",
                 Password = "secure123"
             };
-            var buildingId = Guid.NewGuid();
-            var maintenanceStaff = request.ToEntity(buildingId);
+            MaintenanceStaff maintenanceStaff = request.ToEntity(buildingId);
+            maintenanceStaff.Building = new Building { Name = "Building 1" }; // Initialize Building
 
-            mockLogic.Setup(x => x.AddMaintenanceStaff(It.IsAny<string>(), It.IsAny<MaintenanceStaff>())).Returns(maintenanceStaff);
+            _maintenanceStaffLogicMock
+                .Setup(x => x.AddMaintenanceStaff(It.IsAny<string>(), It.IsAny<MaintenanceStaff>()))
+                .Returns(maintenanceStaff);
 
-            var result = controller.CreateMaintenanceStaff(buildingId, request) as CreatedAtActionResult;
+            // Act
+            IActionResult result = _maintenanceStaffController.CreateMaintenanceStaff(buildingId, request);
 
-            Assert.IsNotNull(result);
-            Assert.AreEqual(201, result.StatusCode);
-            var response = result.Value as MaintenanceStaff;
+            // Assert
+            CreatedResult createdResult = result as CreatedResult;
+            Assert.IsNotNull(createdResult);
+            Assert.AreEqual(StatusCodes.Status201Created, createdResult.StatusCode);
+
+            CreateMaintenanceStaffResponse response = createdResult.Value as CreateMaintenanceStaffResponse;
             Assert.IsNotNull(response);
             Assert.AreEqual(maintenanceStaff.Name, response.Name);
-        }
+            Assert.AreEqual(maintenanceStaff.LastName, response.LastName);
+            Assert.AreEqual(maintenanceStaff.Email, response.Email);
+            Assert.AreEqual(maintenanceStaff.Building.Name, response.BuildingName);
 
+            _maintenanceStaffLogicMock.Verify(x => x.AddMaintenanceStaff(It.IsAny<string>(), It.IsAny<MaintenanceStaff>()), Times.Once);
+            _maintenanceStaffLogicMock.VerifyAll();
+        }
     }
 }

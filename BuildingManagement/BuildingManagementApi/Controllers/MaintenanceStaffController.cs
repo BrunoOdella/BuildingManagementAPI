@@ -26,9 +26,10 @@ namespace BuildingManagementApi.Controllers
         {
             string managerId = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
             var maintenanceStaff = request.ToEntity(buildingId);
-            var response = new CreateMaintenanceStaffResponse(_maintenanceStaffLogic.AddMaintenanceStaff(managerId, maintenanceStaff));
+            var createdStaff = _maintenanceStaffLogic.AddMaintenanceStaff(managerId, maintenanceStaff);
+            var response = new CreateMaintenanceStaffResponse(createdStaff);
 
-            return StatusCode(201, response);
+            return new CreatedResult(string.Empty, response);
         }
     }
 }
