@@ -64,5 +64,9 @@ namespace DataAccess
                 throw new ArgumentException("Invitation not found.");
             }
         }
+        public bool EmailExistsInInvitations(string email)
+        {
+            return _context.Invitations.Any(i => i.Email == email);
+        }
     }
 }

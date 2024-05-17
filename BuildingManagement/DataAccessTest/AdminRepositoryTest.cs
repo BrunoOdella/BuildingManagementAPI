@@ -1,18 +1,22 @@
 ﻿using DataAccess;
 using Domain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Linq;
 
 namespace DataAccessTest
 {
     [TestClass]
     public class AdminRepositoryTest
     {
-        private BuildingManagementDbContext CreateDbContext(string BuildingManagementDb)
+        private BuildingManagementDbContext CreateDbContext(string dbName)
         {
-            var options = new DbContextOptionsBuilder<BuildingManagementDbContext>().UseInMemoryDatabase(BuildingManagementDb).Options;
+            var options = new DbContextOptionsBuilder<BuildingManagementDbContext>()
+                .UseInMemoryDatabase(dbName)
+                .Options;
             return new BuildingManagementDbContext(options);
         }
-
 
         [TestMethod]
         public void CreateAdminTest()
@@ -20,13 +24,13 @@ namespace DataAccessTest
             using (var context = CreateDbContext("TestAddAdmin"))
             {
                 var repository = new AdminRepository(context);
-                Admin expected = new Admin
+                var expected = new Admin
                 {
                     AdminID = Guid.NewGuid(),
                     FirstName = "Juan",
-                    LastName = "Odella",
-                    Email = "odella@example.com",
-                    Password = "password",
+                    LastName = "Perez",
+                    Email = "juan.perez@example.com",
+                    Password = "securePassword123"
                 };
 
                 var result = repository.CreateAdmin(expected);
@@ -43,52 +47,79 @@ namespace DataAccessTest
         }
 
         [TestMethod]
-        public void Get()
+        public void GetAdminTest()
         {
             using (var context = CreateDbContext("TestGetAdmin"))
             {
                 var repository = new AdminRepository(context);
 
-                Guid id = Guid.NewGuid();
-
-                Admin expected = new Admin
+                var expected = new Admin
                 {
-                    AdminID = id,
+                    AdminID = Guid.NewGuid(),
                     FirstName = "Juan",
-                    LastName = "Odella",
-                    Email = "odella@example.com",
-                    Password = "password",
+                    LastName = "Perez",
+                    Email = "juan.perez@example.com",
+                    Password = "securePassword123"
                 };
 
                 context.Admins.Add(expected);
-
                 context.SaveChanges();
 
-                var result = repository.Get(id);
+                var result = repository.Get(expected.AdminID);
 
-                Assert.IsNotNull(result);
                 Assert.AreEqual(expected.AdminID, result);
             }
         }
 
         [TestMethod]
-        public void Get_AdminNotExist()
+        public void GetAdmin_NotExist_ReturnsEmptyGuid()
         {
-            using (var context = CreateDbContext("TestGetAdmin"))
+            using (var context = CreateDbContext("TestGetAdmin_NotExist"))
             {
                 var repository = new AdminRepository(context);
 
-                Guid id = Guid.NewGuid();
+                var result = repository.Get(Guid.NewGuid());
 
-                var result = repository.Get(id);
-
-                Assert.IsNotNull(result);
                 Assert.AreEqual(Guid.Empty, result);
             }
         }
 
+        [TestMethod]
+        public void EmailExistsInAdmins_EmailExists_ReturnsTrue()
+        {
+            using (var context = CreateDbContext("TestEmailExistsInAdmins_True"))
+            {
+                var repository = new AdminRepository(context);
 
+                var admin = new Admin
+                {
+                    AdminID = Guid.NewGuid(),
+                    FirstName = "Juan",
+                    LastName = "Perez",
+                    Email = "juan.perez@example.com",
+                    Password = "securePassword123"
+                };
 
+                context.Admins.Add(admin);
+                context.SaveChanges();
 
+                var result = repository.EmailExistsInAdmins("juan.perez@example.com");
+
+                Assert.IsTrue(result);
+            }
+        }
+
+        [TestMethod]
+        public void EmailExistsInAdmins_EmailNotExists_ReturnsFalse()
+        {
+            using (var context = CreateDbContext("TestEmailExistsInAdmins_False"))
+            {
+                var repository = new AdminRepository(context);
+
+                var result = repository.EmailExistsInAdmins("nonexistent.email@example.com");
+
+                Assert.IsFalse(result);
+            }
+        }
     }
 }

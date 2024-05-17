@@ -9,5 +9,6 @@ namespace IDataAccess
         IEnumerable<Invitation> GetAllInvitations();
         Invitation GetInvitationById(Guid invitationId);
         void UpdateInvitation(Invitation updatedInvitation);
+        bool EmailExistsInInvitations(string email);
     }
 }

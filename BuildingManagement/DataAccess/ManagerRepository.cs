@@ -43,5 +43,9 @@ namespace DataAccess
             }
             return manager.ManagerId;
         }
+        public bool EmailExistsInManagers(string email)
+        {
+            return _context.Managers.Any(m => m.Email == email);
+        }
     }
 }

@@ -55,7 +55,10 @@ public class MaintenanceStaffRepository : IMaintenanceStaffRepository
         var maintenanceStaff = _context.MaintenanceStaff.FirstOrDefault(s => s.ID.Equals(maintenancePersonId));
         return maintenanceStaff.ID;
     }
-
+    public bool EmailExistsInMaintenanceStaff(string email)
+    {
+        return _context.MaintenanceStaff.Any(ms => ms.Email == email);
+    }
     /*
     public void Update(MaintenanceStaff actualMaintenanceStaff)
     {

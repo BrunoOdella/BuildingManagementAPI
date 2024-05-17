@@ -14,6 +14,7 @@ namespace IDataAccess
         Manager GetManagerByEmail(string email);
         void UpdateManager(Manager manager);
         Guid Get(Guid managerID);
+        bool EmailExistsInManagers(string email);
     }
 
 }

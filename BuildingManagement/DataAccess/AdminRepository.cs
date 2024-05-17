@@ -31,6 +31,10 @@ namespace DataAccess
                 return Guid.Empty;
             return admin.AdminID;
         }
+        public bool EmailExistsInAdmins(string email)
+        {
+            return _context.Admins.Any(a => a.Email == email);
+        }
     }
 
 }

@@ -1,4 +1,6 @@
-﻿using Domain;
+﻿using CustomExceptions.InvitationExceptions;
+using CustomExceptions;
+using Domain;
 using IDataAccess;
 using LogicInterface.Interfaces;
 
@@ -6,28 +8,34 @@ namespace BusinessLogic.Logics
 {
     public class InvitationLogic : IInvitationLogic
     {
+        private readonly IInvitationRepository _invitationRepository;
+        private readonly IManagerRepository _managerRepository;
+        private readonly IAdminRepository _adminRepository;
+        private readonly IMaintenanceStaffRepository _maintenanceStaffRepository;
 
-        private IInvitationRepository _invitationRepository;
-        private IManagerRepository _managerRepository;
-
-        public InvitationLogic(IInvitationRepository invitationRepository, IManagerRepository managerRepository)
+        public InvitationLogic(
+            IInvitationRepository invitationRepository,
+            IManagerRepository managerRepository,
+            IAdminRepository adminRepository,
+            IMaintenanceStaffRepository maintenanceStaffRepository)
         {
             _invitationRepository = invitationRepository;
             _managerRepository = managerRepository;
+            _adminRepository = adminRepository;
+            _maintenanceStaffRepository = maintenanceStaffRepository;
         }
-
 
         public Invitation AcceptInvitation(Guid invitationId, string password)
         {
             var invitation = _invitationRepository.GetInvitationById(invitationId);
             if (invitation == null)
-                throw new InvalidOperationException("Invitation does not exist.");
+                throw new InvitationNotFoundException();
 
             if (invitation.Status == "Aceptada")
-                throw new InvalidOperationException("Invitation has already been accepted.");
+                throw new InvitationAlreadyAcceptedException();
 
             if (invitation.ExpirationDate < DateTime.UtcNow)
-                throw new InvalidOperationException("Invitation has expired.");
+                throw new InvitationExpiredException();
 
             invitation.Status = "Aceptada";
             _invitationRepository.UpdateInvitation(invitation);
@@ -40,6 +48,9 @@ namespace BusinessLogic.Logics
 
         public Invitation CreateInvitation(Invitation invitation)
         {
+            if (EmailExistsInSystem(invitation.Email))
+                throw new EmailAlreadyExistsException();
+
             invitation.Status = "No aceptada";
             return _invitationRepository.CreateInvitation(invitation);
         }
@@ -49,23 +60,29 @@ namespace BusinessLogic.Logics
             var invitation = _invitationRepository.GetInvitationById(invitationId);
             if (invitation == null)
             {
-                return false; 
+                return false;
             }
 
             if (invitation.Status == "Aceptada")
             {
-                throw new InvalidOperationException("No se puede eliminar una invitación aceptada.");
+                throw new CannotDeleteAcceptedInvitationException();
             }
 
             _invitationRepository.DeleteInvitation(invitationId);
             return true;
         }
 
-
-
         public IEnumerable<Invitation> GetAllInvitations()
         {
             return _invitationRepository.GetAllInvitations();
+        }
+
+        private bool EmailExistsInSystem(string email)
+        {
+            return _adminRepository.EmailExistsInAdmins(email) ||
+                   _managerRepository.EmailExistsInManagers(email) ||
+                   _maintenanceStaffRepository.EmailExistsInMaintenanceStaff(email) ||
+                   _invitationRepository.EmailExistsInInvitations(email);
         }
     }
 }
