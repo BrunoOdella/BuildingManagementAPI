@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Logics;
+﻿using BuildingManagementApi.Filters;
+using BusinessLogic.Logics;
 using Domain;
 using LogicInterface.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -19,6 +20,7 @@ namespace BuildingManagementApi.Controllers
         }
 
         [HttpPost]
+        [ServiceFilter(typeof(AuthenticationFilter))]
         public IActionResult CreateInvitation([FromBody] CreateInvitationRequest invitation)
         {
             InvitationResponse response = new InvitationResponse(_invitationLogic.CreateInvitation(invitation.ToEntity()));
@@ -27,12 +29,14 @@ namespace BuildingManagementApi.Controllers
         }
 
         [HttpGet]
+        [ServiceFilter(typeof(AuthenticationFilter))]
         public ObjectResult GetAllInvitations()
         {
             return Ok(_invitationLogic.GetAllInvitations().Select(invitation => new InvitationResponse(invitation)).ToList());
         }
 
         [HttpDelete("{InvitationId}")]
+        [ServiceFilter(typeof(AuthenticationFilter))]
         public IActionResult DeleteInvitation([FromRoute] Guid InvitationId)
         {
             _invitationLogic.DeleteInvitation(InvitationId);

@@ -56,7 +56,7 @@ public class AuthenticationService : IAuthenticationService
         switch (verbo)
         {
             case "POST":
-                return (token);
+                return buscarTokenAdmin(token);
             case "PUT":
                 return buscarTokenAdmin(token);
             case "DELETE":

@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using BuildingManagementApi.Filters;
 using LogicInterface.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,7 @@ namespace BuildingManagementApi.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
+    [ServiceFilter(typeof(AuthenticationFilter))]
     public class CategoriesRequestsController : ControllerBase
     {
         private readonly ICategoriesRequestsLogic _logic;
