@@ -1,4 +1,5 @@
 using BuildingManagementApi.Filters;
+using DataAccess;
 using ServiceFactory;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +21,25 @@ builder.Services.AddScoped<BuildingManagementApi.Filters.AuthenticationFilter>()
 
 
 var app = builder.Build();
+
+// Seed data, BORRAR CUANDO ENTREGUEMOSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS!!!!!!!!!!!!!!!!!!!!!!!!!
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<BuildingManagementDbContext>();
+        BuildingManagementDbContext.SeedData(context);
+    }
+    catch (Exception ex)
+    {
+        // Handle exception
+        Console.WriteLine("An error occurred while seeding the database: " + ex.Message);
+    }
+}
+// fin DE Seed data, BORRAR CUANDO ENTREGUEMOSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
