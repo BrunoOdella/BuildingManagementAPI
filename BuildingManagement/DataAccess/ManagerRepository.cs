@@ -1,10 +1,8 @@
 ﻿using Domain;
 using IDataAccess;
+using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess
 {
@@ -25,7 +23,9 @@ namespace DataAccess
 
         public Manager GetManagerByEmail(string email)
         {
-            return _context.Managers.FirstOrDefault(m => m.Email == email);
+            return _context.Managers
+                .Include(m => m.Buildings)
+                .FirstOrDefault(m => m.Email == email);
         }
 
         public void UpdateManager(Manager manager)
@@ -36,13 +36,16 @@ namespace DataAccess
 
         public Guid Get(Guid managerID)
         {
-            var manager = _context.Managers.FirstOrDefault(m => m.ManagerId.Equals(managerID));
+            Manager manager = _context.Managers
+                .Include(m => m.Buildings)
+                .FirstOrDefault(m => m.ManagerId.Equals(managerID));
             if (manager == null)
             {
                 return Guid.Empty;
             }
             return manager.ManagerId;
         }
+
         public bool EmailExistsInManagers(string email)
         {
             return _context.Managers.Any(m => m.Email == email);

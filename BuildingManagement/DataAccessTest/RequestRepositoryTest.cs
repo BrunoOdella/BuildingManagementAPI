@@ -1,377 +1,334 @@
 ﻿using DataAccess;
 using Domain;
 using Microsoft.EntityFrameworkCore;
-using System.Net;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace DataAccessTest;
-
-[TestClass]
-public class RequestRepositoryTest
+namespace DataAccessTest
 {
-    private BuildingManagementDbContext CreateDbContext(string BuildingManagementDb)
+    [TestClass]
+    public class RequestRepositoryTest
     {
-        var options = new DbContextOptionsBuilder<BuildingManagementDbContext>()
-            .UseInMemoryDatabase(BuildingManagementDb).Options;
-        return new BuildingManagementDbContext(options);
-    }
-
-    [TestMethod]
-    public void CreateRequest()
-    {
-        using (var context = CreateDbContext("TestCreateRequest"))
+        private BuildingManagementDbContext CreateDbContext(string dbName)
         {
-            var repo = new RequestRepository(context);
-
-            Building building = new Building()
-            {
-                BuildingId = Guid.NewGuid()
-            };
-
-            Apartment apartment = new Apartment()
-            {
-                BuildingId = building.BuildingId
-            };
-
-            Request_ expected = new Request_()
-            {
-                CategoryID = 1,
-                CreationTime = DateTime.Now.AddDays(-2),
-                Description = "description A",
-                Id = Guid.NewGuid(),
-                StartTime = DateTime.Now.AddDays(-1),
-                Status = Status.Active,
-                MaintenanceStaff = new MaintenanceStaff() { ID = new Guid(), Name = "nombre",
-                    LastName = "apellido",
-                    Email = "mail@example.com",
-                    Password = "Password123"
-                },
-                Apartment = apartment
-            };
-
-            var result = repo.CreateRequest(expected);
-            context.SaveChanges();
-
-            Assert.IsNotNull(result);
-            Assert.AreEqual(expected.Id, result.Id);
-            Assert.AreEqual(expected.MaintenanceStaff.ID, result.MaintenanceStaff.ID);
-
-            var storedRequest = context.Requests.FirstOrDefault(r => r.Id.Equals(expected.Id));
-            Assert.IsNotNull(storedRequest);
-            Assert.AreEqual(expected.MaintenanceStaff.ID, storedRequest.MaintenanceStaff.ID);
+            DbContextOptions<BuildingManagementDbContext> options = new DbContextOptionsBuilder<BuildingManagementDbContext>()
+                .UseInMemoryDatabase(databaseName: dbName)
+                .Options;
+            return new BuildingManagementDbContext(options);
         }
-    }
 
-    [TestMethod]
-    public void GetAllRequest()
-    {
-        using (var context = CreateDbContext("TestGetAllRequest"))
+        [TestMethod]
+        public void CreateRequestTest()
         {
-            var manager = new Manager()
+            using (BuildingManagementDbContext context = CreateDbContext("TestCreateRequest"))
             {
-                ManagerId = new Guid(),
-                Email = "mail",
-                Password = "password"
-            };
+                RequestRepository repository = new RequestRepository(context);
+                Request_ expected = new Request_
+                {
+                    Id = Guid.NewGuid(),
+                    Description = "Fix the leaky faucet",
+                    Status = Status.Pending,
+                    CategoryID = 1,
+                    CreationTime = DateTime.Now,
+                    StartTime = DateTime.Now,
+                    EndTime = DateTime.Now.AddHours(2),
+                    TotalCost = 100.0f,
+                    MaintenanceStaffId = Guid.NewGuid(),
+                    ApartmentId = Guid.NewGuid()
+                };
 
-            Building building = new Building()
-            {
-                BuildingId = Guid.NewGuid(),
-                ManagerId = manager.ManagerId,
-                Manager = manager,
-                Address = "direccion",
-                ConstructionCompany = "company",
-                Name = "nombre"
-            };
+                Request_ result = repository.CreateRequest(expected);
+                context.SaveChanges();
 
-            Apartment apartment = new Apartment()
-            {
-                BuildingId = building.BuildingId,
-                Building = building
-            };
-
-            MaintenanceStaff maintenanceStaff = new MaintenanceStaff()
-            {
-                ID = new Guid(),
-                Name = "nombre",
-                LastName = "apellido",
-                Email = "mail@example.com",
-                Password = "Password123"
-            };
-
-            Request_ expected1 = new Request_()
-            {
-                CategoryID = 1,
-                CreationTime = DateTime.Now.AddDays(-2),
-                Description = "description A",
-                Id = Guid.NewGuid(),
-                StartTime = DateTime.Now.AddDays(-1),
-                Status = Status.Active,
-                MaintenanceStaff = maintenanceStaff,
-                Apartment = apartment
-            };
-
-            Request_ expected2 = new Request_()
-            {
-                CategoryID = 2,
-                CreationTime = DateTime.Now.AddDays(-2),
-                Description = "description b",
-                Id = Guid.NewGuid(),
-                StartTime = DateTime.Now.AddDays(-1),
-                Status = Status.Active,
-                MaintenanceStaff = maintenanceStaff,
-                Apartment = apartment
-            };
-
-            context.Set<Request_>().Add(expected1);
-            context.Set<Request_>().Add(expected2);
-
-            context.SaveChanges();
-
-            var repo = new RequestRepository(context);
-
-            var result = repo.GetAllRequest(manager.ManagerId).ToList();
-
-            Assert.IsNotNull(result);
-            Assert.AreEqual(2, result.Count);
-            Assert.AreEqual(expected1.Id, result[0].Id);
-            Assert.AreEqual(expected2.Id, result[1].Id);
-            Assert.AreEqual(expected1.MaintenanceStaff.ID, result[0].MaintenanceStaff.ID);
-            Assert.AreEqual(expected2.MaintenanceStaff.ID, result[1].MaintenanceStaff.ID);
+                Request_ storedRequest = context.Requests.FirstOrDefault(r => r.Id == expected.Id);
+                Assert.IsNotNull(storedRequest);
+                Assert.AreEqual(expected.Description, storedRequest.Description);
+                Assert.AreEqual(expected.Status, storedRequest.Status);
+            }
         }
-    }
 
-    [TestMethod]
-    public void GetAllRequest_WithCategoryID2()
-    {
-        using (var context = CreateDbContext("TestGetAllRequestWithCategoryID2"))
+        [TestMethod]
+        public void GetAllRequestTest()
         {
-            var manager = new Manager()
+            using (BuildingManagementDbContext context = CreateDbContext("TestGetAllRequest"))
             {
-                ManagerId = new Guid(),
-                Email = "mail",
-                Password = "password"
-            };
+                RequestRepository repository = new RequestRepository(context);
 
-            Building building = new Building()
-            {
-                BuildingId = Guid.NewGuid(),
-                ManagerId = manager.ManagerId,
-                Manager = manager,
-                Address = "direccion",
-                ConstructionCompany = "company",
-                Name = "nombre"
-            };
+                Manager manager = new Manager
+                {
+                    ManagerId = Guid.NewGuid(),
+                    Email = "manager@example.com",
+                    Password = "password"
+                };
 
-            Apartment apartment = new Apartment()
-            {
-                BuildingId = building.BuildingId,
-                Building = building
-            };
+                Building building = new Building
+                {
+                    BuildingId = Guid.NewGuid(),
+                    Name = "Building",
+                    Address = "123 Main St",
+                    ConstructionCompany = "Company",
+                    CommonExpenses = 100,
+                    ManagerId = manager.ManagerId
+                };
 
-            MaintenanceStaff maintenanceStaff = new MaintenanceStaff()
-            {
-                ID = new Guid(),
-                Name = "nombre",
-                LastName = "apellido",
-                Email = "mail@example.com",
-                Password = "Password123"
-            };
+                Apartment apartment = new Apartment
+                {
+                    ApartmentId = Guid.NewGuid(),
+                    Floor = 1,
+                    Number = 101,
+                    BuildingId = building.BuildingId
+                };
 
-            Request_ expected1 = new Request_()
-            {
-                CategoryID = 1,
-                CreationTime = DateTime.Now.AddDays(-2),
-                Description = "description A",
-                Id = Guid.NewGuid(),
-                StartTime = DateTime.Now.AddDays(-1),
-                Status = Status.Active,
-                MaintenanceStaff = maintenanceStaff,
-                Apartment = apartment
-            };
+                Request_ request = new Request_
+                {
+                    Id = Guid.NewGuid(),
+                    Description = "Fix the leaky faucet",
+                    Status = Status.Pending,
+                    CategoryID = 1,
+                    CreationTime = DateTime.Now,
+                    StartTime = DateTime.Now,
+                    EndTime = DateTime.Now.AddHours(2),
+                    TotalCost = 100.0f,
+                    MaintenanceStaffId = Guid.NewGuid(),
+                    ApartmentId = apartment.ApartmentId
+                };
 
-            Request_ expected2 = new Request_()
-            {
-                CategoryID = 2,
-                CreationTime = DateTime.Now.AddDays(-2),
-                Description = "description b",
-                Id = Guid.NewGuid(),
-                StartTime = DateTime.Now.AddDays(-1),
-                Status = Status.Active,
-                MaintenanceStaff = maintenanceStaff,
-                Apartment = apartment
-            };
+                context.Managers.Add(manager);
+                context.Buildings.Add(building);
+                context.Apartments.Add(apartment);
+                context.Requests.Add(request);
+                context.SaveChanges();
 
-            context.Set<Request_>().Add(expected1);
-            context.Set<Request_>().Add(expected2);
-
-            context.SaveChanges();
-
-            var repo = new RequestRepository(context);
-
-            var result = repo.GetAllRequest(manager.ManagerId, 2).ToList();
-
-            Assert.IsNotNull(result);
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual(expected2.Id, result[0].Id);
-            Assert.AreEqual(expected2.MaintenanceStaff.ID, result[0].MaintenanceStaff.ID);
+                List<Request_> result = repository.GetAllRequest(manager.ManagerId).ToList();
+                Assert.AreEqual(1, result.Count);
+                Assert.AreEqual(request.Id, result[0].Id);
+            }
         }
-    }
 
-    [TestMethod]
-    public void GetOneRequest()
-    {
-        using (var context = CreateDbContext("TestGetOneRequest"))
+        [TestMethod]
+        public void GetAllRequestByCategoryTest()
         {
-            var request1ID = Guid.NewGuid();
-            var manager = new Manager()
+            using (BuildingManagementDbContext context = CreateDbContext("TestGetAllRequestByCategory"))
             {
-                ManagerId = new Guid(),
-                Email = "mail",
-                Password = "password"
-            };
+                RequestRepository repository = new RequestRepository(context);
 
-            Building building = new Building()
-            {
-                BuildingId = Guid.NewGuid(),
-                ManagerId = manager.ManagerId,
-                Manager = manager,
-                Address = "direccion",
-                ConstructionCompany = "company",
-                Name = "nombre"
-            };
+                Manager manager = new Manager
+                {
+                    ManagerId = Guid.NewGuid(),
+                    Email = "manager@example.com",
+                    Password = "password"
+                };
 
-            Apartment apartment = new Apartment()
-            {
-                BuildingId = building.BuildingId,
-                Building = building
-            };
+                Building building = new Building
+                {
+                    BuildingId = Guid.NewGuid(),
+                    Name = "Building",
+                    Address = "123 Main St",
+                    ConstructionCompany = "Company",
+                    CommonExpenses = 100,
+                    ManagerId = manager.ManagerId
+                };
 
-            MaintenanceStaff maintenanceStaff = new MaintenanceStaff()
-            {
-                ID = new Guid(),
-                Name = "nombre",
-                LastName = "apellido",
-                Email = "mail@example.com",
-                Password = "Password123"
-            };
+                Apartment apartment = new Apartment
+                {
+                    ApartmentId = Guid.NewGuid(),
+                    Floor = 1,
+                    Number = 101,
+                    BuildingId = building.BuildingId
+                };
 
-            Request_ expected1 = new Request_()
-            {
-                CategoryID = 1,
-                CreationTime = DateTime.Now.AddDays(-2),
-                Description = "description A",
-                Id = request1ID,
-                StartTime = DateTime.Now.AddDays(-1),
-                Status = Status.Active,
-                MaintenanceStaff = maintenanceStaff,
-                Apartment = apartment
-            };
+                Request_ request1 = new Request_
+                {
+                    Id = Guid.NewGuid(),
+                    Description = "Fix the leaky faucet",
+                    Status = Status.Pending,
+                    CategoryID = 1,
+                    CreationTime = DateTime.Now,
+                    StartTime = DateTime.Now,
+                    EndTime = DateTime.Now.AddHours(2),
+                    TotalCost = 100.0f,
+                    MaintenanceStaffId = Guid.NewGuid(),
+                    ApartmentId = apartment.ApartmentId
+                };
 
-            Request_ expected2 = new Request_()
-            {
-                CategoryID = 2,
-                CreationTime = DateTime.Now.AddDays(-2),
-                Description = "description b",
-                Id = Guid.NewGuid(),
-                StartTime = DateTime.Now.AddDays(-1),
-                Status = Status.Active,
-                MaintenanceStaff = maintenanceStaff,
-                Apartment = apartment
-            };
+                Request_ request2 = new Request_
+                {
+                    Id = Guid.NewGuid(),
+                    Description = "Fix the broken window",
+                    Status = Status.Pending,
+                    CategoryID = 2,
+                    CreationTime = DateTime.Now,
+                    StartTime = DateTime.Now,
+                    EndTime = DateTime.Now.AddHours(2),
+                    TotalCost = 200.0f,
+                    MaintenanceStaffId = Guid.NewGuid(),
+                    ApartmentId = apartment.ApartmentId
+                };
 
-            context.Set<Request_>().Add(expected1);
-            context.Set<Request_>().Add(expected2);
+                context.Managers.Add(manager);
+                context.Buildings.Add(building);
+                context.Apartments.Add(apartment);
+                context.Requests.Add(request1);
+                context.Requests.Add(request2);
+                context.SaveChanges();
 
-            context.SaveChanges();
-
-            var repo = new RequestRepository(context);
-
-            var result = repo.GetRequest(manager.ManagerId, request1ID);
-
-            Assert.IsNotNull(result);
-            Assert.AreEqual(expected1.Id, result.Id);
-            Assert.AreEqual(expected1.MaintenanceStaff.ID, result.MaintenanceStaff.ID);
+                List<Request_> result = repository.GetAllRequest(manager.ManagerId, 1).ToList();
+                Assert.AreEqual(1, result.Count);
+                Assert.AreEqual(request1.Id, result[0].Id);
+            }
         }
-    }
 
-    [TestMethod]
-    public void UpdateRequest()
-    {
-        using (var context = CreateDbContext("TestGetOneRequest"))
+        [TestMethod]
+        public void GetRequestTest()
         {
-            var requestID = Guid.NewGuid();
-            var manager = new Manager()
+            using (BuildingManagementDbContext context = CreateDbContext("TestGetRequest"))
             {
-                ManagerId = new Guid(),
-                Email = "mail",
-                Password = "password"
-            };
+                RequestRepository repository = new RequestRepository(context);
 
-            Building building = new Building()
+                Manager manager = new Manager
+                {
+                    ManagerId = Guid.NewGuid(),
+                    Email = "manager@example.com",
+                    Password = "password"
+                };
+
+                Building building = new Building
+                {
+                    BuildingId = Guid.NewGuid(),
+                    Name = "Building",
+                    Address = "123 Main St",
+                    ConstructionCompany = "Company",
+                    CommonExpenses = 100,
+                    ManagerId = manager.ManagerId
+                };
+
+                Apartment apartment = new Apartment
+                {
+                    ApartmentId = Guid.NewGuid(),
+                    Floor = 1,
+                    Number = 101,
+                    BuildingId = building.BuildingId
+                };
+
+                Request_ request = new Request_
+                {
+                    Id = Guid.NewGuid(),
+                    Description = "Fix the leaky faucet",
+                    Status = Status.Pending,
+                    CategoryID = 1,
+                    CreationTime = DateTime.Now,
+                    StartTime = DateTime.Now,
+                    EndTime = DateTime.Now.AddHours(2),
+                    TotalCost = 100.0f,
+                    MaintenanceStaffId = Guid.NewGuid(),
+                    ApartmentId = apartment.ApartmentId
+                };
+
+                context.Managers.Add(manager);
+                context.Buildings.Add(building);
+                context.Apartments.Add(apartment);
+                context.Requests.Add(request);
+                context.SaveChanges();
+
+                Request_ result = repository.GetRequest(manager.ManagerId, request.Id);
+                Assert.IsNotNull(result);
+                Assert.AreEqual(request.Id, result.Id);
+            }
+        }
+
+        [TestMethod]
+        public void UpdateRequestTest()
+        {
+            using (BuildingManagementDbContext context = CreateDbContext("TestUpdateRequest"))
             {
-                BuildingId = Guid.NewGuid(),
-                ManagerId = manager.ManagerId,
-                Manager = manager,
-                Address = "direccion",
-                ConstructionCompany = "company",
-                Name = "nombre"
-            };
+                RequestRepository repository = new RequestRepository(context);
 
-            Apartment apartment = new Apartment()
+                Request_ request = new Request_
+                {
+                    Id = Guid.NewGuid(),
+                    Description = "Fix the leaky faucet",
+                    Status = Status.Pending,
+                    CategoryID = 1,
+                    CreationTime = DateTime.Now,
+                    StartTime = DateTime.Now,
+                    EndTime = DateTime.Now.AddHours(2),
+                    TotalCost = 100.0f,
+                    MaintenanceStaffId = Guid.NewGuid(),
+                    ApartmentId = Guid.NewGuid()
+                };
+
+                context.Requests.Add(request);
+                context.SaveChanges();
+
+                request.Status = Status.Finished;
+                request.EndTime = DateTime.Now;
+                request.TotalCost = 150.0f;
+                repository.Update(request);
+
+                Request_ updatedRequest = context.Requests.FirstOrDefault(r => r.Id == request.Id);
+                Assert.IsNotNull(updatedRequest);
+                Assert.AreEqual(Status.Finished, updatedRequest.Status);
+                Assert.AreEqual(150.0f, updatedRequest.TotalCost);
+            }
+        }
+
+        [TestMethod]
+        public void GetAllRequestStaffTest()
+        {
+            using (BuildingManagementDbContext context = CreateDbContext("TestGetAllRequestStaff"))
             {
-                BuildingId = building.BuildingId,
-                Building = building
-            };
+                RequestRepository repository = new RequestRepository(context);
 
-            MaintenanceStaff maintenanceStaff = new MaintenanceStaff()
-            {
-                ID = new Guid(),
-                Name = "nombre",
-                LastName = "apellido",
-                Email = "mail@example.com",
-                Password = "Password123"
-            };
+                MaintenanceStaff staff = new MaintenanceStaff
+                {
+                    ID = Guid.NewGuid(),
+                    Name = "John",
+                    LastName = "Doe",
+                    Email = "johndoe@example.com",
+                    Password = "password",
+                    BuildingId = Guid.NewGuid()
+                };
 
-            Request_ original = new Request_()
-            {
-                CategoryID = 1,
-                CreationTime = DateTime.Now.AddDays(-2),
-                Description = "description A",
-                Id = requestID,
-                StartTime = DateTime.Now.AddDays(-1),
-                Status = Status.Active,
-                MaintenanceStaff = maintenanceStaff,
-                Apartment = apartment
-            };
+                Request_ request1 = new Request_
+                {
+                    Id = Guid.NewGuid(),
+                    Description = "Fix the leaky faucet",
+                    Status = Status.Pending,
+                    CategoryID = 1,
+                    CreationTime = DateTime.Now,
+                    StartTime = DateTime.Now,
+                    EndTime = DateTime.Now.AddHours(2),
+                    TotalCost = 100.0f,
+                    MaintenanceStaffId = staff.ID,
+                    ApartmentId = Guid.NewGuid()
+                };
 
-            Request_ updated = new Request_()
-            {
-                CategoryID = 2,
-                CreationTime = DateTime.Now.AddDays(-2),
-                Description = "description b",
-                Id = requestID,
-                StartTime = DateTime.Now.AddDays(-1),
-                Status = Status.Finished,
-                MaintenanceStaff = maintenanceStaff,
-                Apartment = apartment,
-                EndTime = DateTime.Now,
-                TotalCost = 1000
-            };
+                Request_ request2 = new Request_
+                {
+                    Id = Guid.NewGuid(),
+                    Description = "Fix the broken window",
+                    Status = Status.Pending,
+                    CategoryID = 2,
+                    CreationTime = DateTime.Now,
+                    StartTime = DateTime.Now,
+                    EndTime = DateTime.Now.AddHours(2),
+                    TotalCost = 200.0f,
+                    MaintenanceStaffId = staff.ID,
+                    ApartmentId = Guid.NewGuid()
+                };
 
-            context.Set<Request_>().Add(original);
+                context.MaintenanceStaff.Add(staff);
+                context.Requests.Add(request1);
+                context.Requests.Add(request2);
+                context.SaveChanges();
 
-            context.SaveChanges();
-
-            var repo = new RequestRepository(context);
-
-            repo.Update(updated);
-
-            var result = context.Requests.FirstOrDefault(r => r.Id.Equals(requestID));
-
-            Assert.IsNotNull(result);
-            Assert.AreEqual(requestID, result.Id);
-            Assert.AreEqual(Status.Finished, result.Status);
-            Assert.AreEqual(1000, result.TotalCost);
+                List<Request_> result = repository.GetAllRequestStaff(staff.ID).ToList();
+                Assert.AreEqual(2, result.Count);
+                Assert.IsTrue(result.Any(r => r.Id == request1.Id));
+                Assert.IsTrue(result.Any(r => r.Id == request2.Id));
+            }
         }
     }
 }

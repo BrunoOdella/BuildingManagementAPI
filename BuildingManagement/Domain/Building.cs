@@ -8,7 +8,7 @@
         public Location Location { get; set; }
         public string ConstructionCompany { get; set; }
         public int CommonExpenses { get; set; }
-        public List<Apartment> Apartments { get; set; }
+        public List<Apartment> Apartments { get; set; } = new List<Apartment>();
         public List<MaintenanceStaff> MaintenanceStaff { get; set; }
 
         // Clave foránea hacia Manager

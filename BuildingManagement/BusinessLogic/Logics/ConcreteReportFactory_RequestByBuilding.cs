@@ -27,7 +27,7 @@ public class ConcreteReportFactory_RequestByBuilding : IReportLogicByBuilding
             var actualLine = new BuildingReport();
             actualLine.BuildingName = building.Name;
 
-            var apartments = _buildingRepository.getAllApartments(managerId, building.BuildingId);
+            var apartments = _buildingRepository.GetAllApartments(managerId, building.BuildingId);
 
             foreach (var apartment in apartments)
             {
@@ -67,7 +67,7 @@ public class ConcreteReportFactory_RequestByBuilding : IReportLogicByBuilding
         var actualLine = new BuildingReport();
         actualLine.BuildingName = building.Name;
 
-        var apartments = _buildingRepository.getAllApartments(managerId, building.BuildingId);
+        var apartments = _buildingRepository.GetAllApartments(managerId, building.BuildingId);
 
         foreach (var apartment in apartments)
         {

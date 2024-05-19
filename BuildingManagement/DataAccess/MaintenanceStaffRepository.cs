@@ -25,26 +25,33 @@ namespace DataAccess
 
         public IEnumerable<MaintenanceStaff> GetAll(Guid managerId)
         {
-            var buildings = _context.Buildings.Where(b => b.ManagerId == managerId).ToList();
-            var maintenanceStaff = new List<MaintenanceStaff>();
+            List<Building> buildings = _context.Buildings
+                .Include(b => b.MaintenanceStaff)
+                .Where(b => b.ManagerId == managerId)
+                .ToList();
+            List<MaintenanceStaff> maintenanceStaff = new List<MaintenanceStaff>();
 
-            foreach (var building in buildings)
+            foreach (Building building in buildings)
             {
-                var staff = _context.MaintenanceStaff.Where(s => s.BuildingId == building.BuildingId).ToList();
-                maintenanceStaff.AddRange(staff);
+                maintenanceStaff.AddRange(building.MaintenanceStaff);
             }
             return maintenanceStaff;
         }
 
         public MaintenanceStaff GetMaintenanceStaff(Guid managerId, Guid maintenancePersonId)
         {
-            var buildings = _context.Buildings.Where(b => b.ManagerId == managerId).ToList();
-            var maintenanceStaff = _context.MaintenanceStaff.FirstOrDefault(s => s.ID == maintenancePersonId);
+            List<Building> buildings = _context.Buildings
+                .Include(b => b.MaintenanceStaff)
+                .Where(b => b.ManagerId == managerId)
+                .ToList();
+
+            MaintenanceStaff maintenanceStaff = _context.MaintenanceStaff
+                .FirstOrDefault(s => s.ID == maintenancePersonId);
 
             if (maintenanceStaff == null)
                 return null;
 
-            foreach (var building in buildings)
+            foreach (Building building in buildings)
             {
                 if (maintenanceStaff.BuildingId == building.BuildingId)
                     return maintenanceStaff;
@@ -54,7 +61,8 @@ namespace DataAccess
 
         public Guid GetMaintenanceStaff(Guid maintenancePersonId)
         {
-            var maintenanceStaff = _context.MaintenanceStaff.FirstOrDefault(s => s.ID == maintenancePersonId);
+            MaintenanceStaff maintenanceStaff = _context.MaintenanceStaff
+                .FirstOrDefault(s => s.ID == maintenancePersonId);
             return maintenanceStaff?.ID ?? Guid.Empty;
         }
 

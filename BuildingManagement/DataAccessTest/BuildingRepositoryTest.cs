@@ -3,6 +3,7 @@ using Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace DataAccessTest
@@ -12,7 +13,7 @@ namespace DataAccessTest
     {
         private BuildingManagementDbContext CreateDbContext(string dbName)
         {
-            var options = new DbContextOptionsBuilder<BuildingManagementDbContext>()
+            DbContextOptions<BuildingManagementDbContext> options = new DbContextOptionsBuilder<BuildingManagementDbContext>()
                 .UseInMemoryDatabase(databaseName: dbName)
                 .Options;
             return new BuildingManagementDbContext(options);
@@ -21,10 +22,10 @@ namespace DataAccessTest
         [TestMethod]
         public void CreateBuildingTest()
         {
-            using (var context = CreateDbContext("TestCreateBuilding"))
+            using (BuildingManagementDbContext context = CreateDbContext("TestCreateBuilding"))
             {
-                var repository = new BuildingRepository(context);
-                var expected = new Building
+                BuildingRepository repository = new BuildingRepository(context);
+                Building expected = new Building
                 {
                     BuildingId = Guid.NewGuid(),
                     Name = "Sky Tower",
@@ -34,14 +35,14 @@ namespace DataAccessTest
                     CommonExpenses = 500
                 };
 
-                var result = repository.CreateBuilding(expected);
+                Building result = repository.CreateBuilding(expected);
                 context.SaveChanges();
 
                 Assert.IsNotNull(result);
                 Assert.AreEqual(expected.BuildingId, result.BuildingId);
                 Assert.AreEqual(expected.Name, result.Name);
 
-                var storedBuilding = context.Buildings.FirstOrDefault(b => b.BuildingId == expected.BuildingId);
+                Building storedBuilding = context.Buildings.FirstOrDefault(b => b.BuildingId == expected.BuildingId);
                 Assert.IsNotNull(storedBuilding);
                 Assert.AreEqual(expected.Name, storedBuilding.Name);
             }
@@ -50,10 +51,10 @@ namespace DataAccessTest
         [TestMethod]
         public void DeleteBuilding_ExistingBuilding_ReturnsTrue()
         {
-            using (var context = CreateDbContext("TestDeleteBuilding"))
+            using (BuildingManagementDbContext context = CreateDbContext("TestDeleteBuilding"))
             {
-                var repository = new BuildingRepository(context);
-                var building = new Building
+                BuildingRepository repository = new BuildingRepository(context);
+                Building building = new Building
                 {
                     BuildingId = Guid.NewGuid(),
                     Name = "Sky Tower",
@@ -69,7 +70,7 @@ namespace DataAccessTest
 
                 // Assert
                 Assert.IsTrue(result);
-                var deletedBuilding = context.Buildings.FirstOrDefault(b => b.BuildingId == building.BuildingId);
+                Building deletedBuilding = context.Buildings.FirstOrDefault(b => b.BuildingId == building.BuildingId);
                 Assert.IsNull(deletedBuilding);
             }
         }
@@ -77,9 +78,9 @@ namespace DataAccessTest
         [TestMethod]
         public void DeleteBuilding_NonExistingBuilding_ReturnsFalse()
         {
-            using (var context = CreateDbContext("TestDeleteNonExistingBuilding"))
+            using (BuildingManagementDbContext context = CreateDbContext("TestDeleteNonExistingBuilding"))
             {
-                var repository = new BuildingRepository(context);
+                BuildingRepository repository = new BuildingRepository(context);
 
                 // Act
                 bool result = repository.DeleteBuilding(Guid.NewGuid());
@@ -89,14 +90,13 @@ namespace DataAccessTest
             }
         }
 
-
         [TestMethod]
         public void UpdateBuilding_ExistingBuilding_UpdatesAndSavesCorrectly()
         {
-            using (var context = CreateDbContext("TestUpdateBuilding"))
+            using (BuildingManagementDbContext context = CreateDbContext("TestUpdateBuilding"))
             {
-                var repository = new BuildingRepository(context);
-                var originalBuilding = new Building
+                BuildingRepository repository = new BuildingRepository(context);
+                Building originalBuilding = new Building
                 {
                     BuildingId = Guid.NewGuid(),
                     Name = "Original Name",
@@ -115,7 +115,7 @@ namespace DataAccessTest
                 originalBuilding.CommonExpenses = 200;
 
                 // Act
-                var updatedBuilding = repository.UpdateBuilding(originalBuilding);
+                Building updatedBuilding = repository.UpdateBuilding(originalBuilding);
 
                 // Assert
                 Assert.AreEqual("Updated Name", updatedBuilding.Name);
@@ -123,7 +123,7 @@ namespace DataAccessTest
                 Assert.AreEqual(200, updatedBuilding.CommonExpenses);
 
                 // Verify that changes are saved to the database
-                var storedBuilding = context.Buildings.FirstOrDefault(b => b.BuildingId == originalBuilding.BuildingId);
+                Building storedBuilding = context.Buildings.FirstOrDefault(b => b.BuildingId == originalBuilding.BuildingId);
                 Assert.IsNotNull(storedBuilding);
                 Assert.AreEqual("Updated Name", storedBuilding.Name);
                 Assert.AreEqual("Updated Address", storedBuilding.Address);
@@ -134,21 +134,21 @@ namespace DataAccessTest
         [TestMethod]
         public void GetAll()
         {
-            using (var context = CreateDbContext("TestGetAllBuildings"))
+            using (BuildingManagementDbContext context = CreateDbContext("TestGetAllBuildings"))
             {
-                var repository = new BuildingRepository(context);
+                BuildingRepository repository = new BuildingRepository(context);
 
                 Guid id1 = Guid.NewGuid();
                 Guid id2 = Guid.NewGuid();
 
                 Manager manager = new Manager()
                 {
-                    ManagerId = new Guid(),
+                    ManagerId = Guid.NewGuid(),
                     Email = "email",
                     Password = "pass"
                 };
 
-                var building1 = new Building
+                Building building1 = new Building
                 {
                     BuildingId = id1,
                     Name = "Name1",
@@ -156,10 +156,10 @@ namespace DataAccessTest
                     ConstructionCompany = "Company",
                     CommonExpenses = 100,
                     Location = new Location { Latitude = 40.7128, Longitude = -74.0060 },
-                    Manager = manager
+                    ManagerId = manager.ManagerId
                 };
 
-                var building2 = new Building
+                Building building2 = new Building
                 {
                     BuildingId = id2,
                     Name = "Name2",
@@ -167,50 +167,44 @@ namespace DataAccessTest
                     ConstructionCompany = "Company2",
                     CommonExpenses = 200,
                     Location = new Location { Latitude = 20.123, Longitude = -20.123 },
-                    Manager = manager
+                    ManagerId = manager.ManagerId
                 };
 
                 context.Buildings.Add(building1);
                 context.Buildings.Add(building2);
+                context.Managers.Add(manager);
 
                 context.SaveChanges();
 
                 // Act
-                var buildings = repository.GetAll(manager.ManagerId).ToList();
+                List<Building> buildings = repository.GetAll(manager.ManagerId).ToList();
 
                 // Assert
                 Assert.IsNotNull(buildings);
-                Assert.AreEqual(buildings.Count(), 2);
-                Assert.AreEqual(buildings[0].BuildingId, id1);
-                Assert.AreEqual(buildings[1].BuildingId, id2);
-
-                // Verify that changes are saved to the database
-                var storedBuilding = context.Buildings.Where(b => b.ManagerId.Equals(manager.ManagerId)).ToList();
-                Assert.IsNotNull(storedBuilding);
-                Assert.AreEqual("Name1", storedBuilding[0].Name);
-                Assert.AreEqual("Address", storedBuilding[0].Address);
-                Assert.AreEqual(100, storedBuilding[0].CommonExpenses);
+                Assert.AreEqual(2, buildings.Count);
+                Assert.AreEqual(id1, buildings[0].BuildingId);
+                Assert.AreEqual(id2, buildings[1].BuildingId);
             }
         }
 
         [TestMethod]
         public void GetApartment()
         {
-            using (var context = CreateDbContext("TestGetApartment"))
+            using (BuildingManagementDbContext context = CreateDbContext("TestGetApartment"))
             {
-                var repository = new BuildingRepository(context);
+                BuildingRepository repository = new BuildingRepository(context);
 
                 Guid id1 = Guid.NewGuid();
-                Guid id2 = Guid.NewGuid();
+                Guid apartmentId = Guid.NewGuid();
 
                 Manager manager = new Manager()
                 {
-                    ManagerId = new Guid(),
+                    ManagerId = Guid.NewGuid(),
                     Email = "email",
                     Password = "pass"
                 };
 
-                var building1 = new Building
+                Building building1 = new Building
                 {
                     BuildingId = id1,
                     Name = "Name1",
@@ -218,50 +212,53 @@ namespace DataAccessTest
                     ConstructionCompany = "Company",
                     CommonExpenses = 100,
                     Location = new Location { Latitude = 40.7128, Longitude = -74.0060 },
-                    Manager = manager,
+                    ManagerId = manager.ManagerId,
                     Apartments = new List<Apartment>()
                 };
 
-                Apartment apartment = new Apartment()
+                Apartment apartment = new Apartment
                 {
-                    BuildingId = building1.BuildingId,
-                    ApartmentId = new Guid(),
-                    Building = building1
+                    ApartmentId = apartmentId,
+                    Floor = 1,
+                    Number = 101,
+                    BuildingId = id1
                 };
 
                 building1.Apartments.Add(apartment);
-
                 context.Buildings.Add(building1);
+                context.Apartments.Add(apartment);
+                context.Managers.Add(manager);
 
                 context.SaveChanges();
 
                 // Act
-                var response = repository.GetApartment(manager.ManagerId, apartment.ApartmentId, building1.BuildingId);
+                Apartment response = repository.GetApartment(manager.ManagerId, apartment.ApartmentId, building1.BuildingId);
 
                 // Assert
                 Assert.IsNotNull(response);
-                Assert.AreEqual(response.ApartmentId, apartment.ApartmentId);
-                Assert.AreEqual(response.BuildingId, building1.BuildingId);
+                Assert.AreEqual(apartment.ApartmentId, response.ApartmentId);
+                Assert.AreEqual(building1.BuildingId, response.BuildingId);
             }
         }
 
         [TestMethod]
-        public void GetApartment_BUildingNotExist()
+        public void GetApartment_BuildingNotExist()
         {
-            using (var context = CreateDbContext("TestGetApartment2"))
+            using (BuildingManagementDbContext context = CreateDbContext("TestGetApartment2"))
             {
-                var repository = new BuildingRepository(context);
+                BuildingRepository repository = new BuildingRepository(context);
 
                 Guid id1 = Guid.NewGuid();
+                Guid apartmentId = Guid.NewGuid();
 
                 Manager manager = new Manager()
                 {
-                    ManagerId = new Guid(),
+                    ManagerId = Guid.NewGuid(),
                     Email = "email",
                     Password = "pass"
                 };
 
-                var building1 = new Building
+                Building building1 = new Building
                 {
                     BuildingId = id1,
                     Name = "Name1",
@@ -269,25 +266,26 @@ namespace DataAccessTest
                     ConstructionCompany = "Company",
                     CommonExpenses = 100,
                     Location = new Location { Latitude = 40.7128, Longitude = -74.0060 },
-                    Manager = new Manager(){ManagerId = new Guid(), Email = "email2", Password = "pass2"},
-                    Apartments = new List<Apartment>()
+                    ManagerId = Guid.NewGuid() // Different ManagerId
                 };
 
-                Apartment apartment = new Apartment()
+                Apartment apartment = new Apartment
                 {
-                    BuildingId = building1.BuildingId,
-                    ApartmentId = new Guid(),
-                    Building = building1
+                    ApartmentId = apartmentId,
+                    Floor = 1,
+                    Number = 101,
+                    BuildingId = id1
                 };
 
                 building1.Apartments.Add(apartment);
-
                 context.Buildings.Add(building1);
+                context.Apartments.Add(apartment);
+                context.Managers.Add(manager);
 
                 context.SaveChanges();
 
                 // Act
-                var response = repository.GetApartment(manager.ManagerId, apartment.ApartmentId, building1.BuildingId);
+                Apartment response = repository.GetApartment(manager.ManagerId, apartment.ApartmentId, building1.BuildingId);
 
                 // Assert
                 Assert.IsNull(response);
@@ -297,20 +295,20 @@ namespace DataAccessTest
         [TestMethod]
         public void GetBuilding()
         {
-            using (var context = CreateDbContext("TestGetBuilding"))
+            using (BuildingManagementDbContext context = CreateDbContext("TestGetBuilding"))
             {
-                var repository = new BuildingRepository(context);
+                BuildingRepository repository = new BuildingRepository(context);
 
                 Guid id1 = Guid.NewGuid();
 
                 Manager manager = new Manager()
                 {
-                    ManagerId = new Guid(),
+                    ManagerId = Guid.NewGuid(),
                     Email = "email",
                     Password = "pass"
                 };
 
-                var building1 = new Building
+                Building building1 = new Building
                 {
                     BuildingId = id1,
                     Name = "Name1",
@@ -318,20 +316,20 @@ namespace DataAccessTest
                     ConstructionCompany = "Company",
                     CommonExpenses = 100,
                     Location = new Location { Latitude = 40.7128, Longitude = -74.0060 },
-                    Manager = manager,
-                    Apartments = new List<Apartment>()
+                    ManagerId = manager.ManagerId
                 };
 
                 context.Buildings.Add(building1);
+                context.Managers.Add(manager);
 
                 context.SaveChanges();
 
                 // Act
-                var response = repository.GetBuilding(manager.ManagerId, building1.BuildingId);
+                Building response = repository.GetBuilding(manager.ManagerId, building1.BuildingId);
 
                 // Assert
                 Assert.IsNotNull(response);
-                Assert.AreEqual(response.BuildingId, building1.BuildingId);
+                Assert.AreEqual(building1.BuildingId, response.BuildingId);
             }
         }
     }

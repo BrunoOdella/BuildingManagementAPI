@@ -1,6 +1,9 @@
 ﻿using Domain;
 using IDataAccess;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DataAccess
 {
@@ -16,87 +19,42 @@ namespace DataAccess
         public Request_ CreateRequest(Request_ request)
         {
             _context.Requests.Add(request);
-
             _context.SaveChanges();
-
             return request;
         }
 
         public IEnumerable<Request_> GetAllRequest(Guid managerId)
         {
-            var buildings = _context.Buildings.Where(b => b.ManagerId.Equals(managerId)).ToList();
-            List<Apartment> apartments = new List<Apartment>();
-            foreach (var buiding in buildings)
-            {
-                var actualApartments = _context.Apartments.Where(a => a.BuildingId.Equals(buiding.BuildingId)).ToList();
-                apartments.AddRange(actualApartments);
-            }
-
-            var requests = new List<Request_>();
-
-            foreach (var apartment in apartments)
-            {
-                requests.AddRange(_context.Requests.Where(r => r.ApartmentId.Equals(apartment.ApartmentId)).ToList());
-            }
-
+            List<Request_> requests = _context.Requests
+                .Include(r => r.Apartment)
+                .ThenInclude(a => a.Building)
+                .Where(r => r.Apartment.Building.ManagerId == managerId)
+                .ToList();
             return requests;
         }
 
         public IEnumerable<Request_> GetAllRequest(Guid managerId, int category)
         {
-            var buildings = _context.Buildings.Where(b => b.ManagerId.Equals(managerId)).ToList();
-            var requestsResponse = new List<Request_>();
-
-            foreach (var building in buildings)
-            {
-                var apartments = _context.Apartments.Where(a => a.BuildingId.Equals(building.BuildingId)).ToList();
-                foreach (var apartment in apartments)
-                {
-                    var requests = _context.Requests.Where(r => r.ApartmentId.Equals(apartment.ApartmentId)).ToList();
-                    foreach (var request in requests)
-                    {
-                        if (request.CategoryID == category)
-                            requestsResponse.Add(request);
-                    }
-                    
-                }
-            }
-
-            return requestsResponse;
+            List<Request_> requests = _context.Requests
+                .Include(r => r.Apartment)
+                .ThenInclude(a => a.Building)
+                .Where(r => r.Apartment.Building.ManagerId == managerId && r.CategoryID == category)
+                .ToList();
+            return requests;
         }
-
-        //no usada
-        /*
-        public Request_ ActivateRequest(Guid managerId, Guid requestId, DateTime startTime)
-        {
-            throw new NotImplementedException();
-        }
-        */
-
-        //no usada
-        /*
-        public Request_ TerminateRequest(Guid managerId, Guid id, DateTime endTime, float totalCost)
-        {
-            throw new NotImplementedException();
-        }
-        */
-
-        //no usada
-        /*
-        public Request_ AsignMaintenancePerson(Guid managerId, Guid requestGuid, Guid maintenancePersonId)
-        {
-            throw new NotImplementedException();
-        }
-        */
 
         public Request_ GetRequest(Guid managerId, Guid requestId)
         {
-            return _context.Requests.FirstOrDefault(i => i.Id.Equals(requestId));
+            Request_ request = _context.Requests
+                .Include(r => r.Apartment)
+                .ThenInclude(a => a.Building)
+                .FirstOrDefault(r => r.Id == requestId && r.Apartment.Building.ManagerId == managerId);
+            return request;
         }
 
         public void Update(Request_ actualRequest)
         {
-            var request = _context.Requests.FirstOrDefault(i => i.Id.Equals(actualRequest.Id));
+            Request_ request = _context.Requests.FirstOrDefault(i => i.Id.Equals(actualRequest.Id));
             if (request != null)
             {
                 request.Status = actualRequest.Status;
@@ -116,7 +74,11 @@ namespace DataAccess
 
         public IEnumerable<Request_> GetAllRequestStaff(Guid staffID)
         {
-            return _context.Requests.Where(r => r.MaintenanceStaff.ID.Equals(staffID));
+            List<Request_> requests = _context.Requests
+                .Include(r => r.MaintenanceStaff)
+                .Where(r => r.MaintenanceStaff.ID == staffID)
+                .ToList();
+            return requests;
         }
     }
 }

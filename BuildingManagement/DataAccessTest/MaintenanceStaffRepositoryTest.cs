@@ -14,7 +14,7 @@ namespace DataAccessTest
         private BuildingManagementDbContext CreateDbContext(string dbName)
         {
             DbContextOptions<BuildingManagementDbContext> options = new DbContextOptionsBuilder<BuildingManagementDbContext>()
-                .UseInMemoryDatabase(dbName)
+                .UseInMemoryDatabase(databaseName: dbName)
                 .Options;
             return new BuildingManagementDbContext(options);
         }
@@ -30,50 +30,67 @@ namespace DataAccessTest
                     ID = Guid.NewGuid(),
                     Name = "John",
                     LastName = "Doe",
-                    Email = "john.doe@example.com",
-                    Password = "securePassword123",
+                    Email = "johndoe@example.com",
+                    Password = "password",
                     BuildingId = Guid.NewGuid()
                 };
 
                 MaintenanceStaff result = repository.AddMaintenanceStaff(expected);
                 context.SaveChanges();
 
-                Assert.IsNotNull(result);
-                Assert.AreEqual(expected.ID, result.ID);
-                Assert.AreEqual(expected.Email, result.Email);
-
-                MaintenanceStaff storedStaff = context.MaintenanceStaff.FirstOrDefault(s => s.ID == expected.ID);
-                Assert.IsNotNull(storedStaff);
-                Assert.AreEqual(expected.Email, storedStaff.Email);
+                MaintenanceStaff storedMaintenanceStaff = context.MaintenanceStaff.FirstOrDefault(ms => ms.ID == expected.ID);
+                Assert.IsNotNull(storedMaintenanceStaff);
+                Assert.AreEqual(expected.Name, storedMaintenanceStaff.Name);
+                Assert.AreEqual(expected.LastName, storedMaintenanceStaff.LastName);
+                Assert.AreEqual(expected.Email, storedMaintenanceStaff.Email);
+                Assert.AreEqual(expected.Password, storedMaintenanceStaff.Password);
             }
         }
 
         [TestMethod]
-        public void GetAllMaintenanceStaffTest()
+        public void GetAllTest()
         {
             using (BuildingManagementDbContext context = CreateDbContext("TestGetAllMaintenanceStaff"))
             {
-                Guid managerId = Guid.NewGuid();
-                Guid buildingId = Guid.NewGuid();
+                MaintenanceStaffRepository repository = new MaintenanceStaffRepository(context);
 
-                Building building = new Building
+                Manager manager = new Manager
                 {
-                    BuildingId = buildingId,
-                    ManagerId = managerId,
+                    ManagerId = Guid.NewGuid(),
+                    Email = "manager@example.com",
+                    Password = "password"
+                };
+
+                Building building1 = new Building
+                {
+                    BuildingId = Guid.NewGuid(),
                     Name = "Building 1",
                     Address = "123 Main St",
-                    ConstructionCompany = "Company A"
+                    ConstructionCompany = "Company 1",
+                    CommonExpenses = 100,
+                    ManagerId = manager.ManagerId,
+                    MaintenanceStaff = new List<MaintenanceStaff>()
                 };
-                context.Buildings.Add(building);
+
+                Building building2 = new Building
+                {
+                    BuildingId = Guid.NewGuid(),
+                    Name = "Building 2",
+                    Address = "456 Elm St",
+                    ConstructionCompany = "Company 2",
+                    CommonExpenses = 200,
+                    ManagerId = manager.ManagerId,
+                    MaintenanceStaff = new List<MaintenanceStaff>()
+                };
 
                 MaintenanceStaff staff1 = new MaintenanceStaff
                 {
                     ID = Guid.NewGuid(),
                     Name = "John",
                     LastName = "Doe",
-                    Email = "john.doe@example.com",
-                    Password = "securePassword123",
-                    BuildingId = buildingId
+                    Email = "johndoe@example.com",
+                    Password = "password",
+                    BuildingId = building1.BuildingId
                 };
 
                 MaintenanceStaff staff2 = new MaintenanceStaff
@@ -81,20 +98,25 @@ namespace DataAccessTest
                     ID = Guid.NewGuid(),
                     Name = "Jane",
                     LastName = "Doe",
-                    Email = "jane.doe@example.com",
-                    Password = "securePassword123",
-                    BuildingId = buildingId
+                    Email = "janedoe@example.com",
+                    Password = "password",
+                    BuildingId = building2.BuildingId
                 };
 
-                context.MaintenanceStaff.AddRange(staff1, staff2);
+                building1.MaintenanceStaff.Add(staff1);
+                building2.MaintenanceStaff.Add(staff2);
+
+                context.Managers.Add(manager);
+                context.Buildings.Add(building1);
+                context.Buildings.Add(building2);
+                context.MaintenanceStaff.Add(staff1);
+                context.MaintenanceStaff.Add(staff2);
                 context.SaveChanges();
 
-                MaintenanceStaffRepository repository = new MaintenanceStaffRepository(context);
-
-                IEnumerable<MaintenanceStaff> result = repository.GetAll(managerId);
-
-                Assert.IsNotNull(result);
-                Assert.AreEqual(2, result.Count());
+                List<MaintenanceStaff> result = repository.GetAll(manager.ManagerId).ToList();
+                Assert.AreEqual(2, result.Count);
+                Assert.IsTrue(result.Any(ms => ms.ID == staff1.ID));
+                Assert.IsTrue(result.Any(ms => ms.ID == staff2.ID));
             }
         }
 
@@ -103,53 +125,67 @@ namespace DataAccessTest
         {
             using (BuildingManagementDbContext context = CreateDbContext("TestGetMaintenanceStaff"))
             {
-                Guid managerId = Guid.NewGuid();
-                Guid buildingId = Guid.NewGuid();
-                Guid staffId = Guid.NewGuid();
+                MaintenanceStaffRepository repository = new MaintenanceStaffRepository(context);
+
+                Manager manager = new Manager
+                {
+                    ManagerId = Guid.NewGuid(),
+                    Email = "manager@example.com",
+                    Password = "password"
+                };
 
                 Building building = new Building
                 {
-                    BuildingId = buildingId,
-                    ManagerId = managerId,
-                    Name = "Building 1",
+                    BuildingId = Guid.NewGuid(),
+                    Name = "Building",
                     Address = "123 Main St",
-                    ConstructionCompany = "Company A"
+                    ConstructionCompany = "Company",
+                    CommonExpenses = 100,
+                    ManagerId = manager.ManagerId,
+                    MaintenanceStaff = new List<MaintenanceStaff>()
                 };
-                context.Buildings.Add(building);
 
                 MaintenanceStaff staff = new MaintenanceStaff
                 {
-                    ID = staffId,
+                    ID = Guid.NewGuid(),
                     Name = "John",
                     LastName = "Doe",
-                    Email = "john.doe@example.com",
-                    Password = "securePassword123",
-                    BuildingId = buildingId
+                    Email = "johndoe@example.com",
+                    Password = "password",
+                    BuildingId = building.BuildingId
                 };
+
+                building.MaintenanceStaff.Add(staff);
+
+                context.Managers.Add(manager);
+                context.Buildings.Add(building);
                 context.MaintenanceStaff.Add(staff);
                 context.SaveChanges();
 
-                MaintenanceStaffRepository repository = new MaintenanceStaffRepository(context);
-
-                MaintenanceStaff result = repository.GetMaintenanceStaff(managerId, staffId);
-
+                MaintenanceStaff result = repository.GetMaintenanceStaff(manager.ManagerId, staff.ID);
                 Assert.IsNotNull(result);
-                Assert.AreEqual(staffId, result.ID);
+                Assert.AreEqual(staff.ID, result.ID);
             }
         }
 
         [TestMethod]
-        public void GetMaintenanceStaff_NonExistingStaff_ReturnsNull()
+        public void GetMaintenanceStaff_NonExisting_ReturnsNull()
         {
-            using (BuildingManagementDbContext context = CreateDbContext("TestGetNonExistingMaintenanceStaff"))
+            using (BuildingManagementDbContext context = CreateDbContext("TestGetMaintenanceStaff_NonExisting"))
             {
-                Guid managerId = Guid.NewGuid();
-                Guid staffId = Guid.NewGuid();
-
                 MaintenanceStaffRepository repository = new MaintenanceStaffRepository(context);
 
-                MaintenanceStaff result = repository.GetMaintenanceStaff(managerId, staffId);
+                Manager manager = new Manager
+                {
+                    ManagerId = Guid.NewGuid(),
+                    Email = "manager@example.com",
+                    Password = "password"
+                };
 
+                context.Managers.Add(manager);
+                context.SaveChanges();
+
+                MaintenanceStaff result = repository.GetMaintenanceStaff(manager.ManagerId, Guid.NewGuid());
                 Assert.IsNull(result);
             }
         }
@@ -159,77 +195,63 @@ namespace DataAccessTest
         {
             using (BuildingManagementDbContext context = CreateDbContext("TestGetMaintenanceStaffById"))
             {
-                Guid staffId = Guid.NewGuid();
-
-                MaintenanceStaff staff = new MaintenanceStaff
-                {
-                    ID = staffId,
-                    Name = "John",
-                    LastName = "Doe",
-                    Email = "john.doe@example.com",
-                    Password = "securePassword123",
-                    BuildingId = Guid.NewGuid()
-                };
-                context.MaintenanceStaff.Add(staff);
-                context.SaveChanges();
-
                 MaintenanceStaffRepository repository = new MaintenanceStaffRepository(context);
 
-                Guid result = repository.GetMaintenanceStaff(staffId);
+                MaintenanceStaff expected = new MaintenanceStaff
+                {
+                    ID = Guid.NewGuid(),
+                    Name = "John",
+                    LastName = "Doe",
+                    Email = "johndoe@example.com",
+                    Password = "password",
+                    BuildingId = Guid.NewGuid()
+                };
 
-                Assert.AreEqual(staffId, result);
+                context.MaintenanceStaff.Add(expected);
+                context.SaveChanges();
+
+                Guid result = repository.GetMaintenanceStaff(expected.ID);
+                Assert.AreEqual(expected.ID, result);
             }
         }
 
         [TestMethod]
-        public void GetMaintenanceStaffById_NonExistingStaff_ReturnsEmptyGuid()
+        public void GetMaintenanceStaffById_NonExisting_ReturnsEmptyGuid()
         {
-            using (BuildingManagementDbContext context = CreateDbContext("TestGetNonExistingMaintenanceStaffById"))
+            using (BuildingManagementDbContext context = CreateDbContext("TestGetMaintenanceStaffById_NonExisting"))
             {
                 MaintenanceStaffRepository repository = new MaintenanceStaffRepository(context);
 
                 Guid result = repository.GetMaintenanceStaff(Guid.NewGuid());
-
                 Assert.AreEqual(Guid.Empty, result);
             }
         }
 
         [TestMethod]
-        public void EmailExistsInMaintenanceStaff_EmailExists_ReturnsTrue()
+        public void EmailExistsInMaintenanceStaffTest()
         {
-            using (BuildingManagementDbContext context = CreateDbContext("TestEmailExistsInMaintenanceStaff_True"))
+            using (BuildingManagementDbContext context = CreateDbContext("TestEmailExistsInMaintenanceStaff"))
             {
+                MaintenanceStaffRepository repository = new MaintenanceStaffRepository(context);
+
                 MaintenanceStaff staff = new MaintenanceStaff
                 {
                     ID = Guid.NewGuid(),
-                    Email = "test@example.com",
                     Name = "John",
                     LastName = "Doe",
-                    Password = "securePassword123",
+                    Email = "johndoe@example.com",
+                    Password = "password",
                     BuildingId = Guid.NewGuid()
                 };
 
                 context.MaintenanceStaff.Add(staff);
                 context.SaveChanges();
 
-                MaintenanceStaffRepository repository = new MaintenanceStaffRepository(context);
+                bool exists = repository.EmailExistsInMaintenanceStaff(staff.Email);
+                Assert.IsTrue(exists);
 
-                bool result = repository.EmailExistsInMaintenanceStaff("test@example.com");
-
-                Assert.IsTrue(result);
-            }
-        }
-
-        [TestMethod]
-        public void EmailExistsInMaintenanceStaff_EmailNotExists_ReturnsFalse()
-        {
-            using (BuildingManagementDbContext context = CreateDbContext("TestEmailExistsInMaintenanceStaff_False"))
-            {
-                MaintenanceStaffRepository repository = new MaintenanceStaffRepository(context);
-
-                bool result = repository.EmailExistsInMaintenanceStaff("nonexistent.email@example.com");
-
-                Assert.IsFalse(result);
+                bool notExists = repository.EmailExistsInMaintenanceStaff("nonexistent@example.com");
+                Assert.IsFalse(notExists);
             }
         }
     }
