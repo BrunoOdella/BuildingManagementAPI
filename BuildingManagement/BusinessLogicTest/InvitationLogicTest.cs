@@ -34,6 +34,7 @@ namespace BusinessLogicTest
                 _maintenanceStaffRepositoryMock.Object);
         }
 
+
         [TestMethod]
         public void AcceptInvitation_ValidInvitation_UpdatesStatusAndCreatesManager()
         {
@@ -52,7 +53,7 @@ namespace BusinessLogicTest
             _managerRepositoryMock.Setup(repo => repo.CreateManager(It.IsAny<Manager>()));
 
             // Act
-            var result = _invitationLogic.AcceptInvitation(invitationId, "password123");
+            var result = _invitationLogic.AcceptInvitation(invitationId, "test@example.com", "password123");
 
             // Assert
             Assert.IsNotNull(result);
@@ -71,7 +72,7 @@ namespace BusinessLogicTest
             _invitationRepositoryMock.Setup(repo => repo.GetInvitationById(invitationId)).Returns((Invitation)null);
 
             // Act
-            _invitationLogic.AcceptInvitation(invitationId, "password123");
+            _invitationLogic.AcceptInvitation(invitationId, "test@example.com", "password123");
 
             // Assert - Expects InvitationNotFoundException
             _invitationRepositoryMock.VerifyAll();
@@ -86,13 +87,14 @@ namespace BusinessLogicTest
             var invitation = new Invitation
             {
                 InvitationId = invitationId,
+                Email = "test@example.com",
                 Status = "Aceptada"
             };
 
             _invitationRepositoryMock.Setup(repo => repo.GetInvitationById(invitationId)).Returns(invitation);
 
             // Act
-            _invitationLogic.AcceptInvitation(invitationId, "password123");
+            _invitationLogic.AcceptInvitation(invitationId, "test@example.com", "password123");
 
             // Assert - Expects InvitationAlreadyAcceptedException
             _invitationRepositoryMock.VerifyAll();
@@ -107,6 +109,7 @@ namespace BusinessLogicTest
             var invitation = new Invitation
             {
                 InvitationId = invitationId,
+                Email = "test@example.com",
                 Status = "No aceptada",
                 ExpirationDate = DateTime.UtcNow.AddDays(-1)
             };
@@ -114,12 +117,11 @@ namespace BusinessLogicTest
             _invitationRepositoryMock.Setup(repo => repo.GetInvitationById(invitationId)).Returns(invitation);
 
             // Act
-            _invitationLogic.AcceptInvitation(invitationId, "password123");
+            _invitationLogic.AcceptInvitation(invitationId, "test@example.com", "password123");
 
             // Assert - Expects InvitationExpiredException
             _invitationRepositoryMock.VerifyAll();
         }
-
         [TestMethod]
         public void CreateInvitation_ValidatesData_AndCreatesInvitation()
         {

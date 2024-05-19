@@ -26,6 +26,7 @@ namespace DataAccess
         public IEnumerable<Request_> GetAllRequest(Guid managerId)
         {
             List<Request_> requests = _context.Requests
+                .Include(r => r.Category)
                 .Include(r => r.Apartment)
                 .ThenInclude(a => a.Building)
                 .Where(r => r.Apartment.Building.ManagerId == managerId)

@@ -25,7 +25,7 @@ namespace BusinessLogic.Logics
             _maintenanceStaffRepository = maintenanceStaffRepository;
         }
 
-        public Invitation AcceptInvitation(Guid invitationId, string password)
+        public Invitation AcceptInvitation(Guid invitationId, string email, string password)
         {
             var invitation = _invitationRepository.GetInvitationById(invitationId);
             if (invitation == null)
@@ -37,14 +37,19 @@ namespace BusinessLogic.Logics
             if (invitation.ExpirationDate < DateTime.UtcNow)
                 throw new InvitationExpiredException();
 
+            // Verificar que el email de la invitación coincida con el email proporcionado
+            if (invitation.Email != email)
+                throw new UnauthorizedAccessException("Email does not match the invitation.");
+
             invitation.Status = "Aceptada";
             _invitationRepository.UpdateInvitation(invitation);
 
-            var manager = new Manager { Email = invitation.Email, Password = password };
+            var manager = new Manager { Email = email, Password = password };
             _managerRepository.CreateManager(manager);
 
             return invitation;
         }
+
 
         public Invitation CreateInvitation(Invitation invitation)
         {

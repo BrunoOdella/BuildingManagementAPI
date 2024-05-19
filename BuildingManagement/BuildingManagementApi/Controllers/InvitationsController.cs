@@ -42,9 +42,10 @@ namespace BuildingManagementApi.Controllers
         [HttpPut("{InvitationId}")]
         public IActionResult AcceptInvitation([FromRoute] Guid InvitationId, [FromBody] AcceptInvitationRequest acceptRequest)
         {
-            var response = _invitationLogic.AcceptInvitation(InvitationId, acceptRequest.Password);
+            var response = _invitationLogic.AcceptInvitation(InvitationId, acceptRequest.Email, acceptRequest.Password);
             return Ok(new InvitationResponse(response));
         }
+
 
     }
 }

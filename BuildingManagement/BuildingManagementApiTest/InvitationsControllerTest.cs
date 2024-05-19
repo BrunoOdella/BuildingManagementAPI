@@ -109,18 +109,19 @@ namespace BuildingManagementApiTest
             Guid invitationId = Guid.NewGuid();
             AcceptInvitationRequest request = new AcceptInvitationRequest
             {
+                Email = "example@example.com",
                 Password = "123"
             };
 
             Invitation updatedInvitation = new Invitation
             {
                 InvitationId = invitationId,
-                Email = "example@example.com",
+                Email = request.Email,
                 Name = "bruno mateo",
                 Status = "Aceptada"
             };
 
-            _invitationLogicMock.Setup(logic => logic.AcceptInvitation(invitationId, request.Password)).Returns(updatedInvitation);
+            _invitationLogicMock.Setup(logic => logic.AcceptInvitation(invitationId, request.Email, request.Password)).Returns(updatedInvitation);
 
             ObjectResult result = _invitationsController.AcceptInvitation(invitationId, request) as ObjectResult;
 
