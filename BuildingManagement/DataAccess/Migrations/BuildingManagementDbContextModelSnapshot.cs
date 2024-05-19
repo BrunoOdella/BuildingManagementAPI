@@ -305,6 +305,9 @@ namespace DataAccess.Migrations
 
                             b1.HasKey("BuildingId");
 
+                            b1.HasIndex("Latitude", "Longitude")
+                                .IsUnique();
+
                             b1.ToTable("Locations");
 
                             b1.WithOwner()

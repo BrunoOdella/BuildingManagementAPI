@@ -53,6 +53,11 @@ namespace BuildingManagementApi.Filters
                 status = HttpStatusCode.Conflict;
                 message = context.Exception.Message;
             }
+            else if (context.Exception is LocationAlreadyExistsException)
+            {
+                status = HttpStatusCode.Conflict;
+                message = context.Exception.Message;
+            }
 
             context.Result = new ObjectResult(new { message })
             {

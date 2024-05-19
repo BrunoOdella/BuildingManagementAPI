@@ -7,9 +7,10 @@ namespace IDataAccess
         Building CreateBuilding(Building building);
         bool DeleteBuilding(Guid buildingId);
         IEnumerable<Building> GetAll(Guid managerId);
-        Apartment GetApartment(Guid managerId, Guid apartmentId, Guid buildingId);
+        public Apartment GetApartment(Guid managerId, Guid apartmentId);
         List<Apartment> GetAllApartments(Guid managerId, Guid buildingId);
         Building GetBuilding(Guid managerId, Guid buildingId);
         Building UpdateBuilding(Building existingBuilding);
+        public Building GetBuildingByLocation(double latitude, double longitude);
     }
 }

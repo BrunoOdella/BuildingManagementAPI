@@ -29,7 +29,9 @@ namespace DataAccess
         {
             // Configuración de Location como una propiedad compleja de Building
             modelBuilder.Entity<Building>()
-                .OwnsOne(b => b.Location);  // Define Location como una propiedad propia de Building
+                .OwnsOne(b => b.Location)
+                .HasIndex(b => new { b.Latitude, b.Longitude })
+                .IsUnique(); // Establecer restricción única en las coordenadas
 
             modelBuilder.Entity<Manager>()
                 .HasMany(m => m.Buildings)
@@ -74,5 +76,6 @@ namespace DataAccess
                 .HasForeignKey(r => r.CategoryID)  // CategoryId es la clave foránea en Request_
                 .OnDelete(DeleteBehavior.Restrict);  // Configura el comportamiento en caso de eliminación
         }
+
     }
 }

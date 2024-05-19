@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class migration1 : Migration
+    public partial class v1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -220,6 +220,12 @@ namespace DataAccess.Migrations
                 name: "IX_Buildings_ManagerId",
                 table: "Buildings",
                 column: "ManagerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Locations_Latitude_Longitude",
+                table: "Locations",
+                columns: new[] { "Latitude", "Longitude" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_MaintenanceStaff_BuildingId",

@@ -5,6 +5,7 @@ using LogicInterface.Interfaces;
 using IDataAccess;
 using System;
 using BusinessLogic.Logics;
+using CustomExceptions;
 
 namespace BusinessLogicTest
 {
@@ -30,11 +31,13 @@ namespace BusinessLogicTest
             {
                 Name = "Test Building",
                 Address = "123 Test Ave",
+                Location = new Location { Latitude = 40.7128, Longitude = -74.0060 },
                 Apartments = new List<Apartment>()
                 {
                     new Apartment()
                 }
             };
+            _buildingRepositoryMock.Setup(repo => repo.GetBuildingByLocation(40.7128, -74.0060)).Returns((Building)null);
             _buildingRepositoryMock.Setup(repo => repo.CreateBuilding(building)).Returns(building);
 
             // Act
@@ -51,12 +54,32 @@ namespace BusinessLogicTest
         {
             // Arrange
             string invalidManagerId = "invalid-guid";
-            Building building = new Building(); 
+            Building building = new Building();
 
             // Act
             _buildingLogic.CreateBuilding(invalidManagerId, building);
 
-            // no hay hacer ya que ExpectedException
+            // No Assert needed due to ExpectedException
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(LocationAlreadyExistsException))]
+        public void CreateBuilding_WithDuplicateLocation_ThrowsException()
+        {
+            // Arrange
+            string managerId = Guid.NewGuid().ToString();
+            Building building = new Building
+            {
+                Name = "Test Building",
+                Address = "123 Test Ave",
+                Location = new Location { Latitude = 40.7128, Longitude = -74.0060 }
+            };
+            _buildingRepositoryMock.Setup(repo => repo.GetBuildingByLocation(40.7128, -74.0060)).Returns(building);
+
+            // Act
+            _buildingLogic.CreateBuilding(managerId, building);
+
+            // No Assert needed due to ExpectedException
         }
 
 

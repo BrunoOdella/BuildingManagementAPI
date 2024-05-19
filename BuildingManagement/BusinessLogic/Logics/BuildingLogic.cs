@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using CustomExceptions;
+using Domain;
 using IDataAccess;
 using LogicInterface.Interfaces;
 using System;
@@ -26,6 +27,12 @@ namespace BusinessLogic.Logics
             }
             building.ManagerId = parsedManagerId;
 
+            // Verificar si ya existe un edificio con la misma ubicación
+            var existingBuilding = _buildingRepository.GetBuildingByLocation(building.Location.Latitude, building.Location.Longitude);
+            if (existingBuilding != null)
+            {
+                throw new LocationAlreadyExistsException();
+            }
 
             return _buildingRepository.CreateBuilding(building);
         }

@@ -23,7 +23,7 @@ public class RequestLogic : IRequestLogic
     {
         ValidateIncomingRequest(request);
 
-        Apartment actualApartment = _buildingRepository.GetApartment(managerId, request.Apartment.ApartmentId, request.Apartment.BuildingId);
+        Apartment actualApartment = _buildingRepository.GetApartment(managerId, request.Apartment.ApartmentId);
 
         if (actualApartment == null)
         {

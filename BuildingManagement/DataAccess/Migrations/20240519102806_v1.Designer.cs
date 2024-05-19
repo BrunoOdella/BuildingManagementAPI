@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(BuildingManagementDbContext))]
-    [Migration("20240519041917_migration1")]
-    partial class migration1
+    [Migration("20240519102806_v1")]
+    partial class v1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -307,6 +307,9 @@ namespace DataAccess.Migrations
                                 .HasColumnType("float");
 
                             b1.HasKey("BuildingId");
+
+                            b1.HasIndex("Latitude", "Longitude")
+                                .IsUnique();
 
                             b1.ToTable("Locations");
 

@@ -71,7 +71,7 @@ namespace BusinessLogicTest
             
             _requestRepositoryMock.Setup(repository => repository.CreateRequest(It.IsAny<Request_>())).Returns(request);
             _buildingRepositoryMock.Setup(repo => repo.GetBuilding(_managerID, It.IsAny<Guid>())).Returns(building);
-            _buildingRepositoryMock.Setup(repo => repo.GetApartment(_managerID, It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(apartment);
+            _buildingRepositoryMock.Setup(repo => repo.GetApartment(_managerID, It.IsAny<Guid>())).Returns(apartment);
             _staffRepositoryMock.Setup(r => r.GetMaintenanceStaff(_managerID, It.IsAny<Guid>())).Returns(staff);
 
             Request_ result = _requestLogic.CreateRequest(_managerID, request);
@@ -101,7 +101,7 @@ namespace BusinessLogicTest
             };
 
             _buildingRepositoryMock.Setup(repo => repo.GetBuilding(_managerID, It.IsAny<Guid>())).Returns((Building)null);
-            _buildingRepositoryMock.Setup(repo => repo.GetApartment(_managerID, It.IsAny<Guid>(), It.IsAny<Guid>())).Returns((Apartment)null);
+            _buildingRepositoryMock.Setup(repo => repo.GetApartment(_managerID, It.IsAny<Guid>())).Returns((Apartment)null);
             _staffRepositoryMock.Setup(r => r.GetMaintenanceStaff(_managerID, It.IsAny<Guid>())).Returns((MaintenanceStaff) null);
 
 

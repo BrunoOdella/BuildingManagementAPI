@@ -188,7 +188,7 @@ namespace DataAccessTest
         }
 
         [TestMethod]
-        public void GetApartment()
+        public void GetApartment_ShouldReturnApartment_WhenApartmentExistsAndManagerIsAuthorized()
         {
             using (BuildingManagementDbContext context = CreateDbContext("TestGetApartment"))
             {
@@ -232,7 +232,7 @@ namespace DataAccessTest
                 context.SaveChanges();
 
                 // Act
-                Apartment response = repository.GetApartment(manager.ManagerId, apartment.ApartmentId, building1.BuildingId);
+                Apartment response = repository.GetApartment(manager.ManagerId, apartment.ApartmentId);
 
                 // Assert
                 Assert.IsNotNull(response);
@@ -242,9 +242,9 @@ namespace DataAccessTest
         }
 
         [TestMethod]
-        public void GetApartment_BuildingNotExist()
+        public void GetApartment_ShouldReturnNull_WhenManagerIsNotAuthorized()
         {
-            using (BuildingManagementDbContext context = CreateDbContext("TestGetApartment2"))
+            using (BuildingManagementDbContext context = CreateDbContext("TestGetApartmentUnauthorized"))
             {
                 BuildingRepository repository = new BuildingRepository(context);
 
@@ -285,7 +285,49 @@ namespace DataAccessTest
                 context.SaveChanges();
 
                 // Act
-                Apartment response = repository.GetApartment(manager.ManagerId, apartment.ApartmentId, building1.BuildingId);
+                Apartment response = repository.GetApartment(manager.ManagerId, apartment.ApartmentId);
+
+                // Assert
+                Assert.IsNull(response);
+            }
+        }
+
+        [TestMethod]
+        public void GetApartment_ShouldReturnNull_WhenApartmentDoesNotExist()
+        {
+            using (BuildingManagementDbContext context = CreateDbContext("TestGetApartmentNonExistent"))
+            {
+                BuildingRepository repository = new BuildingRepository(context);
+
+                Guid id1 = Guid.NewGuid();
+                Guid apartmentId = Guid.NewGuid();
+
+                Manager manager = new Manager()
+                {
+                    ManagerId = Guid.NewGuid(),
+                    Email = "email",
+                    Password = "pass"
+                };
+
+                Building building1 = new Building
+                {
+                    BuildingId = id1,
+                    Name = "Name1",
+                    Address = "Address",
+                    ConstructionCompany = "Company",
+                    CommonExpenses = 100,
+                    Location = new Location { Latitude = 40.7128, Longitude = -74.0060 },
+                    ManagerId = manager.ManagerId,
+                    Apartments = new List<Apartment>()
+                };
+
+                context.Buildings.Add(building1);
+                context.Managers.Add(manager);
+
+                context.SaveChanges();
+
+                // Act
+                Apartment response = repository.GetApartment(manager.ManagerId, apartmentId);
 
                 // Assert
                 Assert.IsNull(response);
@@ -330,6 +372,52 @@ namespace DataAccessTest
                 // Assert
                 Assert.IsNotNull(response);
                 Assert.AreEqual(building1.BuildingId, response.BuildingId);
+            }
+        }
+
+
+
+        [TestMethod]
+        public void GetBuildingByLocation_ReturnsCorrectBuilding()
+        {
+            using (BuildingManagementDbContext context = CreateDbContext("TestGetBuildingByLocation"))
+            {
+                BuildingRepository repository = new BuildingRepository(context);
+                Building expected = new Building
+                {
+                    BuildingId = Guid.NewGuid(),
+                    Name = "Sky Tower",
+                    ConstructionCompany = "x",
+                    Address = "123 Main St",
+                    Location = new Location { Latitude = 40.7128, Longitude = -74.0060 },
+                    CommonExpenses = 500
+                };
+
+                context.Buildings.Add(expected);
+                context.SaveChanges();
+
+                // Act
+                Building result = repository.GetBuildingByLocation(40.7128, -74.0060);
+
+                // Assert
+                Assert.IsNotNull(result);
+                Assert.AreEqual(expected.BuildingId, result.BuildingId);
+                Assert.AreEqual(expected.Name, result.Name);
+            }
+        }
+
+        [TestMethod]
+        public void GetBuildingByLocation_NoBuildingFound_ReturnsNull()
+        {
+            using (BuildingManagementDbContext context = CreateDbContext("TestGetBuildingByLocation_NoBuildingFound"))
+            {
+                BuildingRepository repository = new BuildingRepository(context);
+
+                // Act
+                Building result = repository.GetBuildingByLocation(40.7128, -74.0060);
+
+                // Assert
+                Assert.IsNull(result);
             }
         }
     }
