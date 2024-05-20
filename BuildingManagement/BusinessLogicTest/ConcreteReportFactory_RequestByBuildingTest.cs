@@ -21,6 +21,7 @@ public class ConcreteReportFactory_RequestByBuildingTest
     public void TestSetup()
     {
         _buildingMock = new Mock<IBuildingRepository>(MockBehavior.Strict);
+        _requestRepositoryMock = new Mock<IRequestRepository>(MockBehavior.Strict);
         _requestByBuilding = new ConcreteReportFactory_RequestByBuilding(_buildingMock.Object, _requestRepositoryMock.Object);
         _managerID = Guid.NewGuid();
     }

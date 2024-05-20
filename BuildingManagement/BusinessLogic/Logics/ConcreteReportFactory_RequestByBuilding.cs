@@ -27,13 +27,9 @@ public class ConcreteReportFactory_RequestByBuilding : IReportLogicByBuilding
             var actualLine = new BuildingReport();
             actualLine.BuildingName = building.Name;
 
-            var apartments = _buildingRepository.GetAllApartments(managerId, building.BuildingId);
-
-            foreach (var apartment in apartments)
+            foreach (var apartment in building.Apartments)
             {
-                var requests = _requestRepository.GetAllRequest(managerId).Where(r => r.ApartmentId.Equals(apartment.ApartmentId)).ToList();
-
-                foreach (var request in requests)
+                foreach (var request in apartment.Requests)
                 {
                     switch (request.Status)
                     {
@@ -67,13 +63,11 @@ public class ConcreteReportFactory_RequestByBuilding : IReportLogicByBuilding
         var actualLine = new BuildingReport();
         actualLine.BuildingName = building.Name;
 
-        var apartments = _buildingRepository.GetAllApartments(managerId, building.BuildingId);
 
-        foreach (var apartment in apartments)
+        foreach (var apartment in building.Apartments)
         {
-            var requests = _requestRepository.GetAllRequest(managerId).Where(r => r.ApartmentId.Equals(apartment.ApartmentId)).ToList();
 
-            foreach (var request in requests)
+            foreach (var request in apartment.Requests)
             {
                 switch (request.Status)
                 {

@@ -27,6 +27,7 @@ namespace DataAccess
         {
             List<Building> buildings = _context.Buildings
                 .Include(b => b.MaintenanceStaff)
+                    .ThenInclude(s => s.Requests)
                 .Where(b => b.ManagerId == managerId)
                 .ToList();
             List<MaintenanceStaff> maintenanceStaff = new List<MaintenanceStaff>();
@@ -42,6 +43,7 @@ namespace DataAccess
         {
             List<Building> buildings = _context.Buildings
                 .Include(b => b.MaintenanceStaff)
+                    .ThenInclude(s => s.Requests)
                 .Where(b => b.ManagerId == managerId)
                 .ToList();
 

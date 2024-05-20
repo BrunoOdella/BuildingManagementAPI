@@ -88,6 +88,8 @@ public class AuthenticationServiceTest
         //_managerRepositoryMock.Setup(r => r.Get(token)).Returns(Guid.Empty);
         //_maintenanceStaffRepositoryMock.Setup(r => r.GetMaintenanceStaff(token)).Returns(token);
 
+        _adminRepositoryMock.Setup(r => r.Get(token)).Returns(token);
+
         Guid response = _authenticationServiceLogic.BuscarToken(token, verbo, uri);
 
         Assert.IsNotNull(response);

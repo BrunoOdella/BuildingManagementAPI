@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using CustomExceptions.CategoryExceptions;
+using Domain;
 using IDataAccess;
 using LogicInterface.Interfaces;
 
@@ -15,6 +16,13 @@ public class CategoriesRequestsLogic : ICategoriesRequestsLogic
 
     public Category CreateCategory(Category category)
     {
-        return _logic.Add(category);
+        if(IsUnique(category))
+            return _logic.Add(category);
+        throw new CategoryAlreadyExistException();
+    }
+
+    private bool IsUnique(Category category)
+    {
+        return !_logic.Exist(category);
     }
 }

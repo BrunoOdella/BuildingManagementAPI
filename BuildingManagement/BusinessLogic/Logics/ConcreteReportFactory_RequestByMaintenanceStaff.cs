@@ -25,12 +25,11 @@ public class ConcreteReportFactory_RequestByMaintenanceStaff : IReportLogicByMai
         
         foreach (MaintenanceStaff person in maintenanceStaff)
         {
-            var requests = _requestRepository.GetAllRequestStaff(person.ID).ToList();
             var actualLine = new MaintenanceStaffReport();
             actualLine.StaffName = person.Name;
             double totalTimeSpend = 0;
             
-            foreach (var request in requests)
+            foreach (var request in person.Requests)
             {
                 switch (request.Status)
                 {
@@ -70,12 +69,11 @@ public class ConcreteReportFactory_RequestByMaintenanceStaff : IReportLogicByMai
         Report report = new Report();
         report.MaintenanceStaffReports = new List<MaintenanceStaffReport>();
 
-        var requests = _requestRepository.GetAllRequestStaff(maintenanceStaff.ID).ToList();
         var actualLine = new MaintenanceStaffReport();
         actualLine.StaffName = maintenanceStaff.Name;
         double totalTimeSpend = 0;
 
-        foreach (var request in requests)
+        foreach (var request in maintenanceStaff.Requests)
         {
             switch (request.Status)
             {

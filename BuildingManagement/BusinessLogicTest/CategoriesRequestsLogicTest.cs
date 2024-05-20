@@ -1,6 +1,8 @@
 ﻿using BusinessLogic.Logics;
+using CustomExceptions.CategoryExceptions;
 using Domain;
 using IDataAccess;
+using LogicInterface.Interfaces;
 using Moq;
 
 namespace BusinessLogicTest;
@@ -27,6 +29,7 @@ public class CategoriesRequestsLogicTest
             Name = "nombre"
         };
 
+        _categoryRepositoryMock.Setup(c => c.Exist(category)).Returns(false);
         _categoryRepositoryMock.Setup(c => c.Add(category)).Returns(category);
 
         Category response = _categoriesRequestsLogic.CreateCategory(category);
@@ -34,6 +37,33 @@ public class CategoriesRequestsLogicTest
         Assert.IsNotNull(response);
         Assert.AreEqual(category.Name, response.Name);
         
+        _categoryRepositoryMock.VerifyAll();
+    }
+
+    [TestMethod]
+    public void CreateCategory_Fail()
+    {
+        Category category = new Category()
+        {
+            Description = "descripcion",
+            Name = "nombre"
+        };
+
+        _categoryRepositoryMock.Setup(c => c.Exist(category)).Returns(true);
+
+        Exception exception = null;
+
+        try
+        {
+            _categoriesRequestsLogic.CreateCategory(category);
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
+
+        Assert.IsInstanceOfType(exception, typeof(CategoryAlreadyExistException));
+        Assert.IsTrue(exception.Message.Equals("Can not create an already existing category."));
         _categoryRepositoryMock.VerifyAll();
     }
 }

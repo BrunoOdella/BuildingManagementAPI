@@ -18,4 +18,10 @@ public class CategoryRepository : ICategoryRepository
         _context.SaveChanges();
         return category;
     }
+
+    public bool Exist(Category category)
+    {
+        var exist = _context.Category.Where(c => c.Name.Equals(category.Name)).ToList();
+        return exist.Count > 0;
+    }
 }

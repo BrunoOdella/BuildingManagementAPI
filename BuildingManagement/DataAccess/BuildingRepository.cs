@@ -27,6 +27,7 @@ namespace DataAccess
         {
             List<Building> buildings = _context.Buildings
                 .Include(b => b.Apartments)
+                    .ThenInclude(a => a.Requests)
                 .Include(b => b.MaintenanceStaff)
                 .Include(b => b.Location)
                 .Where(b => b.ManagerId.Equals(managerId))
