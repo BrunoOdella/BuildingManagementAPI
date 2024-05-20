@@ -3,6 +3,7 @@ using CustomExceptions;
 using CustomExceptions.InvitationExceptions;
 using Domain;
 using IDataAccess;
+using LogicInterface.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -236,6 +237,59 @@ namespace BusinessLogicTest
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(2, result.Count());
+            _invitationRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void DeleteInvitation_InvitationDoesNotExist_ReturnFalse()
+        {
+
+            _invitationRepositoryMock.Setup(repo => repo.GetInvitationById(It.IsAny<Guid>())).Returns((Invitation) null);
+
+            // Act
+            var result = _invitationLogic.DeleteInvitation(Guid.NewGuid());
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(false, result);
+            _invitationRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void AceptInvitation_InvitationEmailDiffersFromSavedOne_ThrowException()
+        {
+            string email1 = "test1@example.com";
+            string email2 = "test2@example.com";
+
+            Guid id = Guid.NewGuid();
+
+            var invitation = new Invitation
+            {
+                InvitationId = id,
+                Status = "No aceptada",
+                Email = email1,
+                ExpirationDate = DateTime.UtcNow.AddDays(1)
+            };
+
+            _invitationRepositoryMock.Setup(repo => repo.GetInvitationById(It.IsAny<Guid>())).Returns(invitation);
+
+            Exception exception = null;
+
+            try
+            {
+                _invitationLogic.AcceptInvitation(id, email2, "password");
+
+            }
+            catch (Exception ex)
+            {
+                exception = ex;
+            }
+
+
+            // Assert
+            Assert.IsInstanceOfType(exception, typeof(UnauthorizedAccessException));
+            Assert.IsTrue(exception.Message.Equals("Email does not match the invitation."));
+
             _invitationRepositoryMock.VerifyAll();
         }
     }

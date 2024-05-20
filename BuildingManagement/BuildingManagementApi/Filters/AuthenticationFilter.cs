@@ -32,7 +32,7 @@ public class AuthenticationFilter : Attribute, IAuthorizationFilter
         {
             try
             {
-                Guid token = Guid.Parse(headerToken);
+                Guid token = Guid.ParseExact(headerToken, "D");
 
                 var verbo = context.HttpContext.Request.Method;
                 var uri = context.HttpContext.Request.Path.ToString();

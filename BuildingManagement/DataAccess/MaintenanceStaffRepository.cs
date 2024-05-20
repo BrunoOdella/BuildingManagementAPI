@@ -63,8 +63,9 @@ namespace DataAccess
 
         public Guid GetMaintenanceStaff(Guid maintenancePersonId)
         {
-            MaintenanceStaff maintenanceStaff = _context.MaintenanceStaff
+            var maintenanceStaff = _context.MaintenanceStaff
                 .FirstOrDefault(s => s.ID == maintenancePersonId);
+
             return maintenanceStaff?.ID ?? Guid.Empty;
         }
 

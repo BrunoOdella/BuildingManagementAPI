@@ -420,5 +420,72 @@ namespace DataAccessTest
                 Assert.IsNull(result);
             }
         }
+
+        [TestMethod]
+        public void GetAllApartment_ShouldReturnApartment_WhenApartmentExistsAndManagerIsAuthorized()
+        {
+            using (BuildingManagementDbContext context = CreateDbContext("TestGetApartment"))
+            {
+                BuildingRepository repository = new BuildingRepository(context);
+
+                Guid id1 = Guid.NewGuid();
+                Guid apartmentId = Guid.NewGuid();
+                Guid apartmentId2 = Guid.NewGuid();
+
+                Manager manager = new Manager()
+                {
+                    ManagerId = Guid.NewGuid(),
+                    Email = "email",
+                    Password = "pass"
+                };
+
+                Building building1 = new Building
+                {
+                    BuildingId = id1,
+                    Name = "Name1",
+                    Address = "Address",
+                    ConstructionCompany = "Company",
+                    CommonExpenses = 100,
+                    Location = new Location { Latitude = 40.7128, Longitude = -74.0060 },
+                    ManagerId = manager.ManagerId,
+                    Apartments = new List<Apartment>()
+                };
+
+                Apartment apartment = new Apartment
+                {
+                    ApartmentId = apartmentId,
+                    Floor = 1,
+                    Number = 101,
+                    BuildingId = id1
+                };
+
+                Apartment apartment2 = new Apartment
+                {
+                    ApartmentId = apartmentId2,
+                    Floor = 2,
+                    Number = 102,
+                    BuildingId = id1
+                };
+
+                building1.Apartments.Add(apartment);
+                building1.Apartments.Add(apartment2);
+                context.Buildings.Add(building1);
+                context.Apartments.Add(apartment);
+                context.Managers.Add(manager);
+
+                context.SaveChanges();
+
+                // Act
+                List<Apartment> response = repository.GetAllApartments(manager.ManagerId, id1);
+
+                // Assert
+                Assert.IsNotNull(response);
+                Assert.AreEqual(2, response.Count);
+                Assert.AreEqual(id1, response[0].BuildingId);
+                Assert.AreEqual(id1, response[1].BuildingId);
+                Assert.AreEqual(apartmentId, response[0].ApartmentId);
+                Assert.AreEqual(apartmentId2, response[1].ApartmentId);
+            }
+        }
     }
 }

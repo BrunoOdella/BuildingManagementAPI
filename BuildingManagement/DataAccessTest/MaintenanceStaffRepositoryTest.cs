@@ -254,5 +254,46 @@ namespace DataAccessTest
                 Assert.IsFalse(notExists);
             }
         }
+
+        [TestMethod]
+        public void GetMaintenanceStaff_NotExistMaintenancePerson_ReturnNull()
+        {
+            using (BuildingManagementDbContext context = CreateDbContext("TestNotExistMaintenancePerson_ReturnNull"))
+            {
+                var manteinanceStaffId = Guid.NewGuid();
+                var managerId = Guid.NewGuid();
+
+                MaintenanceStaff staff = new MaintenanceStaff
+                {
+                    ID = manteinanceStaffId,
+                    Name = "John",
+                    LastName = "Doe",
+                    Email = "johndoe@example.com",
+                    Password = "password",
+                    BuildingId = Guid.NewGuid()
+                };
+
+                Building building = new Building
+                {
+                    BuildingId = Guid.NewGuid(),
+                    Name = "Building",
+                    Address = "123 Main",
+                    ManagerId = managerId,
+                    MaintenanceStaff = new List<MaintenanceStaff>(),
+                    ConstructionCompany = "Company",
+                };
+
+                MaintenanceStaffRepository repository = new MaintenanceStaffRepository(context);
+                BuildingRepository buildingRepository = new BuildingRepository(context);
+
+                context.MaintenanceStaff.Add(staff);
+                context.Buildings.Add(building);
+                context.SaveChanges();
+
+                var result = repository.GetMaintenanceStaff(managerId, manteinanceStaffId);
+
+                Assert.IsNull(result);
+            }
+        }
     }
 }

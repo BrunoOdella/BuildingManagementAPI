@@ -30,6 +30,7 @@ public class CategoriesRequestsLogicTest
         };
 
         _categoryRepositoryMock.Setup(c => c.Exist(category)).Returns(false);
+        _categoryRepositoryMock.Setup(c => c.Count()).Returns(0);
         _categoryRepositoryMock.Setup(c => c.Add(category)).Returns(category);
 
         Category response = _categoriesRequestsLogic.CreateCategory(category);

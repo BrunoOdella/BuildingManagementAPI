@@ -24,4 +24,9 @@ public class CategoryRepository : ICategoryRepository
         var exist = _context.Category.Where(c => c.Name.Equals(category.Name)).ToList();
         return exist.Count > 0;
     }
+
+    public int Count()
+    {
+        return _context.Category.Count();
+    }
 }

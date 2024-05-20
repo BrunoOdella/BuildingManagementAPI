@@ -37,7 +37,6 @@ namespace DataAccess
         public Guid Get(Guid managerID)
         {
             Manager manager = _context.Managers
-                .Include(m => m.Buildings)
                 .FirstOrDefault(m => m.ManagerId.Equals(managerID));
             if (manager == null)
             {

@@ -198,5 +198,91 @@ namespace DataAccessTest
                 Assert.IsFalse(result);
             }
         }
+
+        [TestMethod]
+        public void UpdateInvitation_Success()
+        {
+            using (var context = CreateDbContext("TestUpdateInvitation_Success"))
+            {
+                var repository = new InvitationRepository(context);
+
+                var invitation = new Invitation
+                {
+                    InvitationId = Guid.NewGuid(),
+                    Email = "email@mail.com",
+                    Name = "Test",
+                    ExpirationDate = DateTime.Today.AddDays(-1),
+                    Status = "pendiente"
+                };
+
+                context.Invitations.Add(invitation);
+                context.SaveChanges();
+
+                var updatedInvitation = new Invitation
+                {
+                    InvitationId = invitation.InvitationId,
+                    Email = "email@mail.com",
+                    Name = "Test",
+                    ExpirationDate = DateTime.Today,
+                    Status = "pendiente"
+                };
+
+                repository.UpdateInvitation(updatedInvitation);
+
+                var result = context.Invitations.Find(invitation.InvitationId);
+
+                Assert.AreEqual(updatedInvitation.Status, result.Status);
+                Assert.AreEqual(updatedInvitation.Name, result.Name);
+                Assert.AreEqual(updatedInvitation.ExpirationDate, result.ExpirationDate);
+                Assert.AreEqual(updatedInvitation.Email, result.Email);
+                Assert.AreEqual(updatedInvitation.InvitationId, result.InvitationId);
+            }
+        }
+
+        [TestMethod]
+        public void UpdateInvitation_InvitationNull()
+        {
+            using (var context = CreateDbContext("TestUpdateNullInvitation"))
+            {
+                var repository = new InvitationRepository(context);
+
+                var invitation = new Invitation
+                {
+                    InvitationId = Guid.NewGuid(),
+                    Email = "email@mail.com",
+                    Name = "Test",
+                    ExpirationDate = DateTime.Today.AddDays(-1),
+                    Status = "pendiente"
+                };
+
+                context.Invitations.Add(invitation);
+                context.SaveChanges();
+
+                var updatedInvitation = new Invitation
+                {
+                    InvitationId = Guid.NewGuid(),
+                    Email = "email@mail.com",
+                    Name = "Test",
+                    ExpirationDate = DateTime.Today,
+                    Status = "pendiente"
+                };
+
+                Exception exception = null;
+
+                try
+                {
+                    repository.UpdateInvitation(updatedInvitation);
+                }
+                catch (Exception e)
+                {
+                    exception = e;
+                }
+
+                Assert.IsNotNull(exception);
+                Assert.AreEqual("Invitation not found.", exception.Message);
+                Assert.IsInstanceOfType(exception, typeof(ArgumentException));
+
+            }
+        }
     }
 }

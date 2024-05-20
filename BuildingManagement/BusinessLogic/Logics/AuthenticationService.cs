@@ -94,26 +94,14 @@ public class AuthenticationService : IAuthenticationService
     // mejorar solucion
     private Guid BuscarTokenManagerAndStaff(Guid token)
     {
-        Guid manager = Guid.Empty;
-        try
-        {
-            manager = _managerRepository.Get(token);
-        }
-        catch (Exception e)
-        {
-        }
+        Guid manager = _managerRepository.Get(token);
+        Guid staff = _maintenanceStaffRepository.GetMaintenanceStaff(token);
 
-        Guid staff = Guid.Empty;
-
-        try
-        {
-            staff = _maintenanceStaffRepository.GetMaintenanceStaff(token);
-        }
-        catch (Exception e)
-        {
-        }
         if (manager.Equals(Guid.Empty))
-            return staff;
+            if(staff.Equals(Guid.Empty))
+                throw new ArgumentException("There is no person associated with the token.");
+            else
+                return staff;
         return manager;
     }
 
