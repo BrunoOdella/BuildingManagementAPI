@@ -89,6 +89,9 @@ public class AuthenticationService : IAuthenticationService
         return buscarTokenAdmin(token);
     }
 
+
+
+    // mejorar solucion
     private Guid BuscarTokenManagerAndStaff(Guid token)
     {
         Guid manager = Guid.Empty;

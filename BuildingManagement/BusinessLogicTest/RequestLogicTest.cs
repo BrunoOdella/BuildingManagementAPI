@@ -97,13 +97,10 @@ namespace BusinessLogicTest
                 Status = Status.Finished,
                 TotalCost = 1000,
                 MaintenanceStaff = new MaintenanceStaff(),
-                Apartment = new Apartment() { BuildingId = new Guid()}
+                Apartment = new Apartment() { BuildingId = new Guid(), ApartmentId = new Guid()}
             };
 
-            _buildingRepositoryMock.Setup(repo => repo.GetBuilding(_managerID, It.IsAny<Guid>())).Returns((Building)null);
             _buildingRepositoryMock.Setup(repo => repo.GetApartment(_managerID, It.IsAny<Guid>())).Returns((Apartment)null);
-            _staffRepositoryMock.Setup(r => r.GetMaintenanceStaff(_managerID, It.IsAny<Guid>())).Returns((MaintenanceStaff) null);
-
 
             Exception exception = null;
             // Act
@@ -117,7 +114,7 @@ namespace BusinessLogicTest
             }
 
             Assert.IsInstanceOfType(exception, typeof(InvalidOperationException));
-            Assert.IsTrue(exception.Message.Equals("Building does not exist."));
+            Assert.IsTrue(exception.Message.Equals("Apartment does not exist."));
 
             _requestRepositoryMock.VerifyAll();
         }
