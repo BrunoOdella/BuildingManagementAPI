@@ -1,0 +1,29 @@
+﻿using Domain;
+using IDataAccess;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+
+namespace DataAccess
+{
+    public class ConstructionCompanyRepository : IConstructionCompanyRepository
+    {
+        private readonly BuildingManagementDbContext _context;
+
+        public ConstructionCompanyRepository(BuildingManagementDbContext context)
+        {
+            _context = context;
+        }
+
+        public ConstructionCompany CreateConstructionCompany(ConstructionCompany constructionCompany)
+        {
+            _context.ConstructionCompanies.Add(constructionCompany);
+            _context.SaveChanges();
+            return constructionCompany;
+        }
+
+        public bool NameExists(string name)
+        {
+            return _context.ConstructionCompanies.Any(cc => cc.Name == name);
+        }
+    }
+}

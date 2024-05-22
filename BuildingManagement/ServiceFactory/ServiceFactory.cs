@@ -20,6 +20,7 @@ namespace ServiceFactory
             serviceCollection.AddScoped<IMaintenanceStaffLogic, MaintenanceStaffLogic>();
             serviceCollection.AddScoped<IAuthenticationService, AuthenticationService>();
             serviceCollection.AddScoped<IReportLogicByBuilding, ConcreteReportFactory_RequestByBuilding>();
+            serviceCollection.AddScoped<IConstructionCompanyLogic, ConstructionCompanyLogic>();
             serviceCollection
                 .AddScoped<IReportLogicByMaintenanceStaff, ConcreteReportFactory_RequestByMaintenanceStaff>();
         }
@@ -36,6 +37,8 @@ namespace ServiceFactory
             services.AddScoped<IBuildingRepository, BuildingRepository>();
             services.AddScoped<IMaintenanceStaffRepository, MaintenanceStaffRepository>();
             services.AddScoped<IConstructionCompanyAdminRepository, ConstructionCompanyAdminRepository>();
+            services.AddScoped<IConstructionCompanyRepository, ConstructionCompanyRepository>();
+
         }
     }
 }
