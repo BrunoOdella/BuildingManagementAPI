@@ -19,13 +19,7 @@ namespace BuildingManagementApi.Controllers
         [HttpPost]
         public IActionResult CreateConstructionCompany([FromBody] CreateConstructionCompanyRequest constructionCompanyRequest)
         {
-            ConstructionCompany constructionCompany = new ConstructionCompany
-            {
-                Name = constructionCompanyRequest.Name
-            };
-
-            ConstructionCompany createdCompany = _constructionCompanyLogic.CreateConstructionCompany(constructionCompany);
-
+            ConstructionCompany createdCompany = _constructionCompanyLogic.CreateConstructionCompany(constructionCompanyRequest.ToEntity());
             return StatusCode(201, createdCompany);
         }
     }
