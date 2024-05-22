@@ -1,9 +1,5 @@
 ﻿using Domain;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Models.In
 {
@@ -12,6 +8,7 @@ namespace Models.In
         public string Email { get; set; }
         public string Name { get; set; }
         public DateTime ExpirationDate { get; set; }
+        public string Role { get; set; }
 
         public Invitation ToEntity()
         {
@@ -19,7 +16,8 @@ namespace Models.In
             {
                 Email = Email,
                 Name = Name,
-                ExpirationDate = ExpirationDate
+                ExpirationDate = ExpirationDate,
+                Role = Role 
             };
         }
     }
