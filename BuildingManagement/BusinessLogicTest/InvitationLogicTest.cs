@@ -36,17 +36,19 @@ namespace BusinessLogicTest
         }
 
 
+
         [TestMethod]
         public void AcceptInvitation_ValidInvitation_UpdatesStatusAndCreatesManager()
         {
             // Arrange
-            var invitationId = Guid.NewGuid();
-            var invitation = new Invitation
+            Guid invitationId = Guid.NewGuid();
+            Invitation invitation = new Invitation
             {
                 InvitationId = invitationId,
                 Email = "test@example.com",
                 Status = "No aceptada",
-                ExpirationDate = DateTime.UtcNow.AddDays(1)
+                ExpirationDate = DateTime.UtcNow.AddDays(1),
+                Role = "encargado"
             };
 
             _invitationRepositoryMock.Setup(repo => repo.GetInvitationById(invitationId)).Returns(invitation);
@@ -54,7 +56,7 @@ namespace BusinessLogicTest
             _managerRepositoryMock.Setup(repo => repo.CreateManager(It.IsAny<Manager>()));
 
             // Act
-            var result = _invitationLogic.AcceptInvitation(invitationId, "test@example.com", "password123");
+            Invitation result = _invitationLogic.AcceptInvitation(invitationId, "test@example.com", "password123");
 
             // Assert
             Assert.IsNotNull(result);
@@ -64,11 +66,39 @@ namespace BusinessLogicTest
         }
 
         [TestMethod]
+        public void AcceptInvitation_ValidInvitation_UpdatesStatusAndCreatesAdmin()
+        {
+            // Arrange
+            Guid invitationId = Guid.NewGuid();
+            Invitation invitation = new Invitation
+            {
+                InvitationId = invitationId,
+                Email = "admin@example.com",
+                Status = "No aceptada",
+                ExpirationDate = DateTime.UtcNow.AddDays(1),
+                Role = "admin"
+            };
+
+            _invitationRepositoryMock.Setup(repo => repo.GetInvitationById(invitationId)).Returns(invitation);
+            _invitationRepositoryMock.Setup(repo => repo.UpdateInvitation(It.IsAny<Invitation>()));
+            _adminRepositoryMock.Setup(repo => repo.CreateAdmin(It.IsAny<Admin>()));
+
+            // Act
+            Invitation result = _invitationLogic.AcceptInvitation(invitationId, "admin@example.com", "password123");
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual("Aceptada", result.Status);
+            _invitationRepositoryMock.VerifyAll();
+            _adminRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
         [ExpectedException(typeof(InvitationNotFoundException))]
         public void AcceptInvitation_InvitationNotFound_ThrowsException()
         {
             // Arrange
-            var invitationId = Guid.NewGuid();
+            Guid invitationId = Guid.NewGuid();
 
             _invitationRepositoryMock.Setup(repo => repo.GetInvitationById(invitationId)).Returns((Invitation)null);
 
@@ -84,8 +114,8 @@ namespace BusinessLogicTest
         public void AcceptInvitation_InvitationAlreadyAccepted_ThrowsException()
         {
             // Arrange
-            var invitationId = Guid.NewGuid();
-            var invitation = new Invitation
+            Guid invitationId = Guid.NewGuid();
+            Invitation invitation = new Invitation
             {
                 InvitationId = invitationId,
                 Email = "test@example.com",
@@ -106,8 +136,8 @@ namespace BusinessLogicTest
         public void AcceptInvitation_InvitationExpired_ThrowsException()
         {
             // Arrange
-            var invitationId = Guid.NewGuid();
-            var invitation = new Invitation
+            Guid invitationId = Guid.NewGuid();
+            Invitation invitation = new Invitation
             {
                 InvitationId = invitationId,
                 Email = "test@example.com",
@@ -123,6 +153,7 @@ namespace BusinessLogicTest
             // Assert - Expects InvitationExpiredException
             _invitationRepositoryMock.VerifyAll();
         }
+
         [TestMethod]
         public void CreateInvitation_ValidatesData_AndCreatesInvitation()
         {
