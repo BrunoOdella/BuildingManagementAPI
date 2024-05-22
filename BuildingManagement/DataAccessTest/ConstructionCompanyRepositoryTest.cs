@@ -1,6 +1,5 @@
 ﻿using DataAccess;
 using Domain;
-using IDataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
@@ -27,7 +26,8 @@ namespace DataAccessTest
                 ConstructionCompany expected = new ConstructionCompany
                 {
                     ConstructionCompanyId = Guid.NewGuid(),
-                    Name = "New Construction Company"
+                    Name = "New Construction Company",
+                    ConstructionCompanyAdminId = Guid.NewGuid()
                 };
 
                 ConstructionCompany result = repository.CreateConstructionCompany(expected);
@@ -52,7 +52,8 @@ namespace DataAccessTest
                 ConstructionCompany existingCompany = new ConstructionCompany
                 {
                     ConstructionCompanyId = Guid.NewGuid(),
-                    Name = "Existing Construction Company"
+                    Name = "Existing Construction Company",
+                    ConstructionCompanyAdminId = Guid.NewGuid()
                 };
 
                 context.ConstructionCompanies.Add(existingCompany);
@@ -72,6 +73,47 @@ namespace DataAccessTest
 
                 bool exists = repository.NameExists("Nonexistent Construction Company");
                 Assert.IsFalse(exists);
+            }
+        }
+
+        [TestMethod]
+        public void AdminHasCompany_ShouldReturnTrueIfAdminHasCompany()
+        {
+            using (BuildingManagementDbContext context = CreateDbContext("TestAdminHasCompany_True"))
+            {
+                ConstructionCompanyRepository repository = new ConstructionCompanyRepository(context);
+                ConstructionCompanyAdmin constructionCompanyAdmin = new ConstructionCompanyAdmin
+                {
+                    Id = Guid.NewGuid(),
+                    Email = "admin@example.com",
+                    Password = "password123"
+                };
+                ConstructionCompany company = new ConstructionCompany
+                {
+                    ConstructionCompanyId = Guid.NewGuid(),
+                    Name = "Existing Construction Company",
+                    ConstructionCompanyAdminId = constructionCompanyAdmin.Id,
+                    ConstructionCompanyAdmin = constructionCompanyAdmin
+                };
+
+                context.ConstructionCompanyAdmins.Add(constructionCompanyAdmin);
+                context.ConstructionCompanies.Add(company);
+                context.SaveChanges();
+
+                bool hasCompany = repository.AdminHasCompany(constructionCompanyAdmin.Id);
+                Assert.IsTrue(hasCompany);
+            }
+        }
+
+        [TestMethod]
+        public void AdminHasCompany_ShouldReturnFalseIfAdminHasNoCompany()
+        {
+            using (BuildingManagementDbContext context = CreateDbContext("TestAdminHasCompany_False"))
+            {
+                ConstructionCompanyRepository repository = new ConstructionCompanyRepository(context);
+
+                bool hasCompany = repository.AdminHasCompany(Guid.NewGuid());
+                Assert.IsFalse(hasCompany);
             }
         }
     }

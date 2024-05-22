@@ -77,6 +77,11 @@ namespace DataAccess
                 .WithMany()  // No hay navegación inversa desde Category a Request_
                 .HasForeignKey(r => r.CategoryID)  // CategoryId es la clave foránea en Request_
                 .OnDelete(DeleteBehavior.Restrict);  // Configura el comportamiento en caso de eliminación
+
+            modelBuilder.Entity<ConstructionCompany>()
+                .HasOne(cc => cc.ConstructionCompanyAdmin)
+                .WithOne(admin => admin.ConstructionCompany)
+                .HasForeignKey<ConstructionCompany>(cc => cc.ConstructionCompanyAdminId);
         }
 
 

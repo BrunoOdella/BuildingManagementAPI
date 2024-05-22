@@ -25,5 +25,10 @@ namespace DataAccess
         {
             return _context.ConstructionCompanies.Any(cc => cc.Name == name);
         }
+
+        public bool AdminHasCompany(Guid constructionCompanyAdminId)
+        {
+            return _context.ConstructionCompanies.Any(cc => cc.ConstructionCompanyAdminId == constructionCompanyAdminId);
+        }
     }
 }

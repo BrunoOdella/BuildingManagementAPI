@@ -20,7 +20,12 @@ namespace BusinessLogic.Logics
             {
                 throw new ConstructionCompanyAlreadyExistsException();
             }
-            
+
+            if (_constructionCompanyRepository.AdminHasCompany(constructionCompany.ConstructionCompanyAdminId))
+            {
+                throw new AdminAlreadyHasCompanyException();
+            }
+
             return _constructionCompanyRepository.CreateConstructionCompany(constructionCompany);
         }
     }
