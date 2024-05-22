@@ -16,6 +16,7 @@ namespace BusinessLogicTest
     {
         private Mock<IInvitationRepository> _invitationRepositoryMock;
         private Mock<IManagerRepository> _managerRepositoryMock;
+        private Mock<IConstructionCompanyAdminRepository> _constructionCompanyAdminRepositoryMock;
         private Mock<IAdminRepository> _adminRepositoryMock;
         private Mock<IMaintenanceStaffRepository> _maintenanceStaffRepositoryMock;
         private InvitationLogic _invitationLogic;
@@ -25,17 +26,17 @@ namespace BusinessLogicTest
         {
             _invitationRepositoryMock = new Mock<IInvitationRepository>(MockBehavior.Strict);
             _managerRepositoryMock = new Mock<IManagerRepository>(MockBehavior.Strict);
+            _constructionCompanyAdminRepositoryMock = new Mock<IConstructionCompanyAdminRepository>(MockBehavior.Strict);
             _adminRepositoryMock = new Mock<IAdminRepository>(MockBehavior.Strict);
             _maintenanceStaffRepositoryMock = new Mock<IMaintenanceStaffRepository>(MockBehavior.Strict);
 
             _invitationLogic = new InvitationLogic(
                 _invitationRepositoryMock.Object,
                 _managerRepositoryMock.Object,
+                _constructionCompanyAdminRepositoryMock.Object,
                 _adminRepositoryMock.Object,
                 _maintenanceStaffRepositoryMock.Object);
         }
-
-
 
         [TestMethod]
         public void AcceptInvitation_ValidInvitation_UpdatesStatusAndCreatesManager()
@@ -66,7 +67,7 @@ namespace BusinessLogicTest
         }
 
         [TestMethod]
-        public void AcceptInvitation_ValidInvitation_UpdatesStatusAndCreatesAdmin()
+        public void AcceptInvitation_ValidInvitation_UpdatesStatusAndCreatesConstructionCompanyAdmin()
         {
             // Arrange
             Guid invitationId = Guid.NewGuid();
@@ -76,12 +77,12 @@ namespace BusinessLogicTest
                 Email = "admin@example.com",
                 Status = "No aceptada",
                 ExpirationDate = DateTime.UtcNow.AddDays(1),
-                Role = "admin"
+                Role = "construction_company_admin"
             };
 
             _invitationRepositoryMock.Setup(repo => repo.GetInvitationById(invitationId)).Returns(invitation);
             _invitationRepositoryMock.Setup(repo => repo.UpdateInvitation(It.IsAny<Invitation>()));
-            _adminRepositoryMock.Setup(repo => repo.CreateAdmin(It.IsAny<Admin>()));
+            _constructionCompanyAdminRepositoryMock.Setup(repo => repo.CreateConstructionCompanyAdmin(It.IsAny<ConstructionCompanyAdmin>()));
 
             // Act
             Invitation result = _invitationLogic.AcceptInvitation(invitationId, "admin@example.com", "password123");
@@ -90,7 +91,7 @@ namespace BusinessLogicTest
             Assert.IsNotNull(result);
             Assert.AreEqual("Aceptada", result.Status);
             _invitationRepositoryMock.VerifyAll();
-            _adminRepositoryMock.VerifyAll();
+            _constructionCompanyAdminRepositoryMock.VerifyAll();
         }
 
         [TestMethod]
@@ -158,7 +159,7 @@ namespace BusinessLogicTest
         public void CreateInvitation_ValidatesData_AndCreatesInvitation()
         {
             // Arrange
-            var invitation = new Invitation
+            Invitation invitation = new Invitation
             {
                 Email = "test@example.com",
                 Name = "Test Name",
@@ -166,18 +167,20 @@ namespace BusinessLogicTest
             };
 
             _adminRepositoryMock.Setup(repo => repo.EmailExistsInAdmins(invitation.Email)).Returns(false);
+            _constructionCompanyAdminRepositoryMock.Setup(repo => repo.EmailExistsInConstructionCompanyAdmins(invitation.Email)).Returns(false);
             _managerRepositoryMock.Setup(repo => repo.EmailExistsInManagers(invitation.Email)).Returns(false);
             _maintenanceStaffRepositoryMock.Setup(repo => repo.EmailExistsInMaintenanceStaff(invitation.Email)).Returns(false);
             _invitationRepositoryMock.Setup(repo => repo.EmailExistsInInvitations(invitation.Email)).Returns(false);
             _invitationRepositoryMock.Setup(repo => repo.CreateInvitation(It.IsAny<Invitation>())).Returns(invitation);
 
             // Act
-            var result = _invitationLogic.CreateInvitation(invitation);
+            Invitation result = _invitationLogic.CreateInvitation(invitation);
 
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual("No aceptada", result.Status);
             _adminRepositoryMock.VerifyAll();
+            _constructionCompanyAdminRepositoryMock.VerifyAll();
             _managerRepositoryMock.VerifyAll();
             _maintenanceStaffRepositoryMock.VerifyAll();
             _invitationRepositoryMock.VerifyAll();

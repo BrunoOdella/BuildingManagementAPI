@@ -10,24 +10,27 @@ namespace BusinessLogic.Logics
     {
         private readonly IInvitationRepository _invitationRepository;
         private readonly IManagerRepository _managerRepository;
+        private readonly IConstructionCompanyAdminRepository _constructionCompanyAdminRepository;
         private readonly IAdminRepository _adminRepository;
         private readonly IMaintenanceStaffRepository _maintenanceStaffRepository;
 
         public InvitationLogic(
             IInvitationRepository invitationRepository,
             IManagerRepository managerRepository,
+            IConstructionCompanyAdminRepository constructionCompanyAdminRepository,
             IAdminRepository adminRepository,
             IMaintenanceStaffRepository maintenanceStaffRepository)
         {
             _invitationRepository = invitationRepository;
             _managerRepository = managerRepository;
+            _constructionCompanyAdminRepository = constructionCompanyAdminRepository;
             _adminRepository = adminRepository;
             _maintenanceStaffRepository = maintenanceStaffRepository;
         }
 
         public Invitation AcceptInvitation(Guid invitationId, string email, string password)
         {
-            var invitation = _invitationRepository.GetInvitationById(invitationId);
+            Invitation invitation = _invitationRepository.GetInvitationById(invitationId);
             if (invitation == null)
                 throw new InvitationNotFoundException();
 
@@ -37,15 +40,26 @@ namespace BusinessLogic.Logics
             if (invitation.ExpirationDate < DateTime.UtcNow)
                 throw new InvitationExpiredException();
 
-            // Verificar que el email de la invitación coincida con el email proporcionado
             if (invitation.Email != email)
                 throw new UnauthorizedAccessException("Email does not match the invitation.");
 
             invitation.Status = "Aceptada";
             _invitationRepository.UpdateInvitation(invitation);
 
-            var manager = new Manager { Email = email, Password = password };
-            _managerRepository.CreateManager(manager);
+            if (invitation.Role == "encargado")
+            {
+                Manager manager = new Manager { Email = email, Password = password };
+                _managerRepository.CreateManager(manager);
+            }
+            else if (invitation.Role == "construction_company_admin")
+            {
+                ConstructionCompanyAdmin constructionCompanyAdmin = new ConstructionCompanyAdmin { Email = email, Password = password };
+                _constructionCompanyAdminRepository.CreateConstructionCompanyAdmin(constructionCompanyAdmin);
+            }
+            else
+            {
+                throw new ArgumentException("Invalid role specified.");
+            }
 
             return invitation;
         }
@@ -85,6 +99,7 @@ namespace BusinessLogic.Logics
         private bool EmailExistsInSystem(string email)
         {
             return _adminRepository.EmailExistsInAdmins(email) ||
+                   _constructionCompanyAdminRepository.EmailExistsInConstructionCompanyAdmins(email) ||
                    _managerRepository.EmailExistsInManagers(email) ||
                    _maintenanceStaffRepository.EmailExistsInMaintenanceStaff(email) ||
                    _invitationRepository.EmailExistsInInvitations(email);
