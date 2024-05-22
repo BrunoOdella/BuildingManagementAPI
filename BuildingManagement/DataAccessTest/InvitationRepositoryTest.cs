@@ -31,7 +31,8 @@ namespace DataAccessTest
                     Email = "odella@example.com",
                     Name = "Test",
                     ExpirationDate = DateTime.UtcNow,
-                    Status = "pendiente"
+                    Status = "pendiente",
+                    Role = "manager"
                 };
 
                 var result = repository.CreateInvitation(expected);
@@ -44,6 +45,7 @@ namespace DataAccessTest
                 var storedInvitation = context.Invitations.FirstOrDefault(a => a.InvitationId == expected.InvitationId);
                 Assert.IsNotNull(storedInvitation);
                 Assert.AreEqual(expected.Email, storedInvitation.Email);
+                Assert.AreEqual(expected.Role, storedInvitation.Role);
             }
         }
 
@@ -58,7 +60,8 @@ namespace DataAccessTest
                     Email = "example1@example.com",
                     Name = "Mateo",
                     ExpirationDate = DateTime.UtcNow,
-                    Status = "pendiente"
+                    Status = "pendiente",
+                    Role = "manager"
                 };
                 var expected2 = new Invitation
                 {
@@ -66,7 +69,8 @@ namespace DataAccessTest
                     Email = "example2@example.com",
                     Name = "Joaquin",
                     ExpirationDate = DateTime.UtcNow,
-                    Status = "Aceptada"
+                    Status = "Aceptada",
+                    Role = "construction_company_admin"
                 };
 
                 context.Set<Invitation>().AddRange(expected1, expected2);
@@ -91,7 +95,8 @@ namespace DataAccessTest
                     Email = "odella@example.com",
                     Name = "Test",
                     ExpirationDate = DateTime.UtcNow,
-                    Status = "pendiente"
+                    Status = "pendiente",
+                    Role = "manager"
                 };
 
                 context.Invitations.Add(expected);
@@ -132,7 +137,8 @@ namespace DataAccessTest
                     Email = "test@example.com",
                     Name = "Test",
                     ExpirationDate = DateTime.UtcNow,
-                    Status = "pendiente"
+                    Status = "pendiente",
+                    Role = "manager"
                 };
 
                 context.Invitations.Add(expected);
@@ -145,6 +151,7 @@ namespace DataAccessTest
                 Assert.IsNotNull(result);
                 Assert.AreEqual(expected.InvitationId, result.InvitationId);
                 Assert.AreEqual(expected.Email, result.Email);
+                Assert.AreEqual(expected.Role, result.Role);
             }
         }
 
@@ -172,7 +179,8 @@ namespace DataAccessTest
                     Email = "test@example.com",
                     Name = "Test",
                     ExpirationDate = DateTime.UtcNow,
-                    Status = "pendiente"
+                    Status = "pendiente",
+                    Role = "manager"
                 };
 
                 context.Invitations.Add(invitation);
@@ -212,7 +220,8 @@ namespace DataAccessTest
                     Email = "email@mail.com",
                     Name = "Test",
                     ExpirationDate = DateTime.Today.AddDays(-1),
-                    Status = "pendiente"
+                    Status = "pendiente",
+                    Role = "manager"
                 };
 
                 context.Invitations.Add(invitation);
@@ -224,7 +233,8 @@ namespace DataAccessTest
                     Email = "email@mail.com",
                     Name = "Test",
                     ExpirationDate = DateTime.Today,
-                    Status = "pendiente"
+                    Status = "Aceptada",
+                    Role = "manager"
                 };
 
                 repository.UpdateInvitation(updatedInvitation);
@@ -232,10 +242,6 @@ namespace DataAccessTest
                 var result = context.Invitations.Find(invitation.InvitationId);
 
                 Assert.AreEqual(updatedInvitation.Status, result.Status);
-                Assert.AreEqual(updatedInvitation.Name, result.Name);
-                Assert.AreEqual(updatedInvitation.ExpirationDate, result.ExpirationDate);
-                Assert.AreEqual(updatedInvitation.Email, result.Email);
-                Assert.AreEqual(updatedInvitation.InvitationId, result.InvitationId);
             }
         }
 
@@ -252,7 +258,8 @@ namespace DataAccessTest
                     Email = "email@mail.com",
                     Name = "Test",
                     ExpirationDate = DateTime.Today.AddDays(-1),
-                    Status = "pendiente"
+                    Status = "pendiente",
+                    Role = "manager"
                 };
 
                 context.Invitations.Add(invitation);
@@ -264,7 +271,8 @@ namespace DataAccessTest
                     Email = "email@mail.com",
                     Name = "Test",
                     ExpirationDate = DateTime.Today,
-                    Status = "pendiente"
+                    Status = "Aceptada",
+                    Role = "manager"
                 };
 
                 Exception exception = null;
@@ -281,7 +289,6 @@ namespace DataAccessTest
                 Assert.IsNotNull(exception);
                 Assert.AreEqual("Invitation not found.", exception.Message);
                 Assert.IsInstanceOfType(exception, typeof(ArgumentException));
-
             }
         }
     }

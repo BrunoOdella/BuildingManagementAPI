@@ -52,10 +52,6 @@ namespace DataAccess
             if (invitation != null)
             {
                 invitation.Status = updatedInvitation.Status;
-                invitation.Name = updatedInvitation.Name; 
-                invitation.ExpirationDate = updatedInvitation.ExpirationDate;
-                invitation.Email = updatedInvitation.Email;
-
                 _context.Entry(invitation).State = EntityState.Modified;
                 _context.SaveChanges();
             }
