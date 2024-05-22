@@ -6,6 +6,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Models.In;
 using Models.Out;
 using Moq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BuildingManagementApiTest
 {
@@ -22,7 +25,6 @@ namespace BuildingManagementApiTest
             _invitationsController = new InvitationsController(_invitationLogicMock.Object);
         }
 
-
         [TestMethod]
         public void PostInvitation_ShouldReturnCreatedResponse()
         {
@@ -31,6 +33,7 @@ namespace BuildingManagementApiTest
                 Email = "mairafraga@mail.com",
                 Name = "maira",
                 ExpirationDate = DateTime.UtcNow,
+                Role = "encargado"  // Nuevo campo de rol
             };
 
             Invitation invitationEntity = new Invitation
@@ -39,6 +42,7 @@ namespace BuildingManagementApiTest
                 Email = "mairafraga@mail.com",
                 Name = "maira",
                 ExpirationDate = DateTime.UtcNow,
+                Role = "encargado",  // Nuevo campo de rol
                 Status = "pendiente"
             };
 
@@ -65,6 +69,7 @@ namespace BuildingManagementApiTest
                     Email= "example@.com",
                     Name="mateo",
                     ExpirationDate = DateTime.UtcNow,
+                    Role = "encargado",
                     Status="pendiente"
                 },
                 new Invitation()
@@ -73,6 +78,7 @@ namespace BuildingManagementApiTest
                     Email= "example2@.com",
                     Name="Joaquin",
                     ExpirationDate = DateTime.UtcNow,
+                    Role = "admin",
                     Status="Aceptada"
                 }
             };
@@ -131,9 +137,5 @@ namespace BuildingManagementApiTest
 
             _invitationLogicMock.VerifyAll();
         }
-
-
     }
-
-
 }
