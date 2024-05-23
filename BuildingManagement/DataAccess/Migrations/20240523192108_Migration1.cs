@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class v1 : Migration
+    public partial class Migration1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -41,6 +41,19 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ConstructionCompanyAdmins",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ConstructionCompanyAdmins", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Invitations",
                 columns: table => new
                 {
@@ -48,7 +61,8 @@ namespace DataAccess.Migrations
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -60,6 +74,7 @@ namespace DataAccess.Migrations
                 columns: table => new
                 {
                     ManagerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -69,19 +84,50 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ConstructionCompanies",
+                columns: table => new
+                {
+                    ConstructionCompanyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ConstructionCompanyAdminId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ConstructionCompanies", x => x.ConstructionCompanyId);
+                    table.ForeignKey(
+                        name: "FK_ConstructionCompanies_ConstructionCompanyAdmins_ConstructionCompanyAdminId",
+                        column: x => x.ConstructionCompanyAdminId,
+                        principalTable: "ConstructionCompanyAdmins",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Buildings",
                 columns: table => new
                 {
                     BuildingId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ConstructionCompany = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CommonExpenses = table.Column<int>(type: "int", nullable: false),
-                    ManagerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    ManagerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ConstructionCompanyAdminId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Buildings", x => x.BuildingId);
+                    table.ForeignKey(
+                        name: "FK_Buildings_ConstructionCompanies_ConstructionCompanyAdminId",
+                        column: x => x.ConstructionCompanyAdminId,
+                        principalTable: "ConstructionCompanies",
+                        principalColumn: "ConstructionCompanyId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Buildings_ConstructionCompanyAdmins_ConstructionCompanyAdminId",
+                        column: x => x.ConstructionCompanyAdminId,
+                        principalTable: "ConstructionCompanyAdmins",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Buildings_Managers_ManagerId",
                         column: x => x.ManagerId,
@@ -217,9 +263,20 @@ namespace DataAccess.Migrations
                 column: "BuildingId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Buildings_ConstructionCompanyAdminId",
+                table: "Buildings",
+                column: "ConstructionCompanyAdminId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Buildings_ManagerId",
                 table: "Buildings",
                 column: "ManagerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ConstructionCompanies_ConstructionCompanyAdminId",
+                table: "ConstructionCompanies",
+                column: "ConstructionCompanyAdminId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Locations_Latitude_Longitude",
@@ -279,7 +336,13 @@ namespace DataAccess.Migrations
                 name: "Buildings");
 
             migrationBuilder.DropTable(
+                name: "ConstructionCompanies");
+
+            migrationBuilder.DropTable(
                 name: "Managers");
+
+            migrationBuilder.DropTable(
+                name: "ConstructionCompanyAdmins");
         }
     }
 }

@@ -78,10 +78,26 @@ namespace DataAccess
                 .HasForeignKey(r => r.CategoryID)  // CategoryId es la clave foránea en Request_
                 .OnDelete(DeleteBehavior.Restrict);  // Configura el comportamiento en caso de eliminación
 
+            // Configuración de la relación entre ConstructionCompanyAdmin y ConstructionCompany
             modelBuilder.Entity<ConstructionCompany>()
                 .HasOne(cc => cc.ConstructionCompanyAdmin)
                 .WithOne(admin => admin.ConstructionCompany)
-                .HasForeignKey<ConstructionCompany>(cc => cc.ConstructionCompanyAdminId);
+                .HasForeignKey<ConstructionCompany>(cc => cc.ConstructionCompanyAdminId)
+                .OnDelete(DeleteBehavior.Restrict);  // Restricción en la eliminación de ConstructionCompany
+
+            // Configuración de la relación entre Building y ConstructionCompany
+            modelBuilder.Entity<Building>()
+                .HasOne(b => b.ConstructionCompany)
+                .WithMany()
+                .HasForeignKey(b => b.ConstructionCompanyAdminId)
+                .OnDelete(DeleteBehavior.Restrict);  // Restricción en la eliminación de Building
+
+            // Configuración de la relación entre Building y ConstructionCompanyAdmin
+            modelBuilder.Entity<Building>()
+                .HasOne(b => b.ConstructionCompanyAdmin)
+                .WithMany()
+                .HasForeignKey(b => b.ConstructionCompanyAdminId)
+                .OnDelete(DeleteBehavior.Restrict);  // Restricción en la eliminación de Building
         }
 
 
