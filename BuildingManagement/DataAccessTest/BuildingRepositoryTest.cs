@@ -140,7 +140,7 @@ namespace DataAccessTest
 
                 Manager manager = new Manager()
                 {
-                    ManagerId = Guid.NewGuid(),
+                    ManagerId = Guid.NewGuid(), Name = "Default Manager Name",
                     Email = "email",
                     Password = "pass"
                 };
@@ -194,7 +194,7 @@ namespace DataAccessTest
 
                 Manager manager = new Manager()
                 {
-                    ManagerId = Guid.NewGuid(),
+                    ManagerId = Guid.NewGuid(), Name = "Default Manager Name",
                     Email = "email",
                     Password = "pass"
                 };
@@ -247,7 +247,7 @@ namespace DataAccessTest
 
                 Manager manager = new Manager()
                 {
-                    ManagerId = Guid.NewGuid(),
+                    ManagerId = Guid.NewGuid(), Name = "Default Manager Name",
                     Email = "email",
                     Password = "pass"
                 };
@@ -297,7 +297,7 @@ namespace DataAccessTest
 
                 Manager manager = new Manager()
                 {
-                    ManagerId = Guid.NewGuid(),
+                    ManagerId = Guid.NewGuid(), Name = "Default Manager Name",
                     Email = "email",
                     Password = "pass"
                 };
@@ -337,7 +337,7 @@ namespace DataAccessTest
 
                 Manager manager = new Manager()
                 {
-                    ManagerId = Guid.NewGuid(),
+                    ManagerId = Guid.NewGuid(), Name = "Default Manager Name",
                     Email = "email",
                     Password = "pass"
                 };
@@ -424,7 +424,7 @@ namespace DataAccessTest
 
                 Manager manager = new Manager()
                 {
-                    ManagerId = Guid.NewGuid(),
+                    ManagerId = Guid.NewGuid(), Name = "Default Manager Name",
                     Email = "email",
                     Password = "pass"
                 };
@@ -484,25 +484,31 @@ namespace DataAccessTest
             {
                 var adminId = Guid.NewGuid();
                 var buildings = new List<Building>
-                {
-                    new Building
-                    {
-                        BuildingId = Guid.NewGuid(),
-                        Name = "Building 1",
-                        Address = "123 Main St",
-                        ConstructionCompanyAdminId = adminId
-                    },
-                    new Building
-                    {
-                        BuildingId = Guid.NewGuid(),
-                        Name = "Building 2",
-                        Address = "456 Oak St",
-                        ConstructionCompanyAdminId = adminId
-                    }
-                };
+        {
+            new Building
+            {
+                BuildingId = Guid.NewGuid(),
+                Name = "Building 1",
+                Address = "123 Main St",
+                ConstructionCompanyAdminId = adminId,
+                Manager = new Manager { Name = "Manager 1", Email = "manager1@example.com", Password = "password" }
+            },
+            new Building
+            {
+                BuildingId = Guid.NewGuid(),
+                Name = "Building 2",
+                Address = "456 Oak St",
+                ConstructionCompanyAdminId = adminId,
+                Manager = new Manager { Name = "Manager 2", Email = "manager2@example.com", Password = "password" }
+            }
+        };
 
                 context.Buildings.AddRange(buildings);
                 context.SaveChanges();
+
+                // Verificación adicional
+                var savedBuildings = context.Buildings.ToList();
+                Assert.AreEqual(2, savedBuildings.Count);
 
                 var repository = new BuildingRepository(context);
                 var result = repository.GetBuildingsByConstructionCompanyAdminId(adminId);
@@ -513,5 +519,6 @@ namespace DataAccessTest
                 Assert.IsTrue(result.Any(b => b.Name == "Building 2"));
             }
         }
+
     }
 }

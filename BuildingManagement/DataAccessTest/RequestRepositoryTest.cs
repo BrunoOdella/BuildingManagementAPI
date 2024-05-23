@@ -58,7 +58,7 @@ namespace DataAccessTest
 
                 Manager manager = new Manager
                 {
-                    ManagerId = Guid.NewGuid(),
+                    ManagerId = Guid.NewGuid(), Name = "Default Manager Name",
                     Email = "manager@example.com",
                     Password = "password"
                 };
@@ -115,7 +115,7 @@ namespace DataAccessTest
 
                 Manager manager = new Manager
                 {
-                    ManagerId = Guid.NewGuid(),
+                    ManagerId = Guid.NewGuid(), Name = "Default Manager Name",
                     Email = "manager@example.com",
                     Password = "password"
                 };
@@ -187,7 +187,7 @@ namespace DataAccessTest
 
                 Manager manager = new Manager
                 {
-                    ManagerId = Guid.NewGuid(),
+                    ManagerId = Guid.NewGuid(), Name = "Default Manager Name",
                     Email = "manager@example.com",
                     Password = "password"
                 };

@@ -27,7 +27,7 @@ namespace DataAccessTest
                 ManagerRepository repository = new ManagerRepository(context);
                 Manager expected = new Manager
                 {
-                    ManagerId = Guid.NewGuid(),
+                    ManagerId = Guid.NewGuid(), Name = "Default Manager Name",
                     Email = "manager@example.com",
                     Password = "password"
                 };
@@ -49,7 +49,7 @@ namespace DataAccessTest
                 ManagerRepository repository = new ManagerRepository(context);
                 Manager expected = new Manager
                 {
-                    ManagerId = Guid.NewGuid(),
+                    ManagerId = Guid.NewGuid(), Name = "Default Manager Name",
                     Email = "manager@example.com",
                     Password = "password"
                 };
@@ -72,7 +72,7 @@ namespace DataAccessTest
                 ManagerRepository repository = new ManagerRepository(context);
                 Manager manager = new Manager
                 {
-                    ManagerId = Guid.NewGuid(),
+                    ManagerId = Guid.NewGuid(), Name = "Default Manager Name",
                     Email = "manager@example.com",
                     Password = "password"
                 };
@@ -98,7 +98,7 @@ namespace DataAccessTest
                 ManagerRepository repository = new ManagerRepository(context);
                 Manager expected = new Manager
                 {
-                    ManagerId = Guid.NewGuid(),
+                    ManagerId = Guid.NewGuid(), Name = "Default Manager Name",
                     Email = "manager@example.com",
                     Password = "password"
                 };
@@ -131,7 +131,7 @@ namespace DataAccessTest
                 ManagerRepository repository = new ManagerRepository(context);
                 Manager manager = new Manager
                 {
-                    ManagerId = Guid.NewGuid(),
+                    ManagerId = Guid.NewGuid(), Name = "Default Manager Name",
                     Email = "manager@example.com",
                     Password = "password"
                 };
