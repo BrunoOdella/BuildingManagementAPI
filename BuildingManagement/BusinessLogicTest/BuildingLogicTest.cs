@@ -310,6 +310,38 @@ namespace BusinessLogicTest
             Assert.AreEqual("Old Address", result.Address);  // Should not be updated
         }
 
+        [TestMethod]
+        public void GetBuildingsByConstructionCompanyAdminId_ReturnsBuildings()
+        {
+            Guid adminId = Guid.NewGuid();
+            var buildings = new List<Building>
+            {
+                new Building
+                {
+                    BuildingId = Guid.NewGuid(),
+                    Name = "Building 1",
+                    Address = "123 Main St",
+                    ConstructionCompanyAdminId = adminId
+                },
+                new Building
+                {
+                    BuildingId = Guid.NewGuid(),
+                    Name = "Building 2",
+                    Address = "456 Oak St",
+                    ConstructionCompanyAdminId = adminId
+                }
+            };
 
+            _buildingRepositoryMock.Setup(repo => repo.GetBuildingsByConstructionCompanyAdminId(adminId)).Returns(buildings);
+
+            var result = _buildingLogic.GetBuildingsByAdminId(adminId.ToString());
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(2, result.Count());
+            Assert.IsTrue(result.Any(b => b.Name == "Building 1"));
+            Assert.IsTrue(result.Any(b => b.Name == "Building 2"));
+
+            _buildingRepositoryMock.Verify(repo => repo.GetBuildingsByConstructionCompanyAdminId(adminId), Times.Once);
+        }
     }
 }
