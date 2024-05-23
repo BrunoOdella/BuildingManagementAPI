@@ -103,7 +103,15 @@ namespace BusinessLogic.Logics
             return existingBuilding;
         }
 
+        public IEnumerable<Building> GetBuildingsByConstructionCompanyAdminId(string adminId)
+        {
+            if (!Guid.TryParse(adminId, out Guid parsedAdminId))
+            {
+                throw new ArgumentException("Invalid admin ID");
+            }
 
+            return _buildingRepository.GetBuildingsByConstructionCompanyAdminId(parsedAdminId);
+        }
 
     }
 

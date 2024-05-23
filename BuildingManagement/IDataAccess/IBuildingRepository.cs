@@ -12,5 +12,6 @@ namespace IDataAccess
         Building GetBuilding(Guid managerId, Guid buildingId);
         Building UpdateBuilding(Building existingBuilding);
         public Building GetBuildingByLocation(double latitude, double longitude);
+        IEnumerable<Building> GetBuildingsByConstructionCompanyAdminId(Guid constructionCompanyAdminId);
     }
 }

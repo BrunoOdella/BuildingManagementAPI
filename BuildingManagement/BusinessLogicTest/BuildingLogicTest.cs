@@ -334,7 +334,7 @@ namespace BusinessLogicTest
 
             _buildingRepositoryMock.Setup(repo => repo.GetBuildingsByConstructionCompanyAdminId(adminId)).Returns(buildings);
 
-            var result = _buildingLogic.GetBuildingsByAdminId(adminId.ToString());
+            var result = _buildingLogic.GetBuildingsByConstructionCompanyAdminId(adminId.ToString());
 
             Assert.IsNotNull(result);
             Assert.AreEqual(2, result.Count());
