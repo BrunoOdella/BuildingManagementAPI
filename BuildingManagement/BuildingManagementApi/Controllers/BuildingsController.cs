@@ -48,7 +48,14 @@ namespace BuildingManagementApi.Controllers
             return Ok(new BuildingResponse(updatedBuilding));
         }
 
-
+        [HttpGet]
+        public IActionResult GetBuildings()
+        {
+            string adminId = _httpContextAccessor.HttpContext.Items["userID"] as string;
+            var buildings = _buildingLogic.GetBuildingsByConstructionCompanyAdminId(adminId);
+            var response = buildings.Select(b => new BuildingResponse(b)).ToList();
+            return Ok(response);
+        }
 
     }
 }
