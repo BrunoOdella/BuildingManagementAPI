@@ -112,7 +112,6 @@ namespace BuildingManagementApiTest
             _buildingLogicMock.VerifyAll();
         }
 
-
     }
 
 }
