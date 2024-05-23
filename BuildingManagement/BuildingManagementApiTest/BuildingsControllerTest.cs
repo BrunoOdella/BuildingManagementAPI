@@ -112,6 +112,48 @@ namespace BuildingManagementApiTest
             _buildingLogicMock.VerifyAll();
         }
 
+
+        [TestMethod]
+        public void GetBuildings_ReturnsOkResponse_WithListOfBuildings()
+        {
+            string adminId = Guid.NewGuid().ToString();
+            _httpContextAccessorMock.Setup(a => a.HttpContext.Items["userID"]).Returns(adminId);
+
+            var buildings = new List<Building>
+            {
+                new Building
+                {
+                    BuildingId = Guid.NewGuid(),
+                    Name = "Building 1",
+                    Address = "123 Main St",
+                    Manager = new Manager { Name = "Manager 1" }
+                },
+                new Building
+                {
+                    BuildingId = Guid.NewGuid(),
+                    Name = "Building 2",
+                    Address = "456 Oak St",
+                    Manager = null
+                }
+            };
+
+            _buildingLogicMock.Setup(l => l.GetBuildingsByConstructionCompanyAdminId(adminId)).Returns(buildings);
+
+            var result = _buildingsController.GetBuildings() as OkObjectResult;
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(200, result.StatusCode);
+            var response = result.Value as List<BuildingResponse>;
+            Assert.IsNotNull(response);
+            Assert.AreEqual(2, response.Count);
+            Assert.AreEqual("Building 1", response[0].Name);
+            Assert.AreEqual("Manager 1", response[0].ManagerName);
+            Assert.AreEqual("Building 2", response[1].Name);
+            Assert.AreEqual("No Manager Assigned", response[1].ManagerName);
+
+            _buildingLogicMock.Verify(x => x.GetBuildingsByConstructionCompanyAdminId(adminId), Times.Once);
+            _buildingLogicMock.VerifyAll();
+        }
     }
 
 }

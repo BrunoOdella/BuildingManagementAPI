@@ -10,6 +10,7 @@ namespace Models.Out
         public Location Location { get; set; }
         public string ConstructionCompanyName { get; set; }
         public int CommonExpenses { get; set; }
+        public string ManagerName { get; set; } // Nueva propiedad
 
         public BuildingResponse(Building building)
         {
@@ -19,7 +20,7 @@ namespace Models.Out
             Location = building.Location;
             ConstructionCompanyName = building.ConstructionCompany?.Name ?? "Unknown";
             CommonExpenses = building.CommonExpenses;
+            ManagerName = building.Manager?.Name ?? "No Manager Assigned"; // Asignación del nombre del encargado
         }
     }
-
 }
