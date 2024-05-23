@@ -1,4 +1,6 @@
 ﻿using Domain;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Models.In
 {
@@ -8,7 +10,6 @@ namespace Models.In
         public string Address { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
-        public string ConstructionCompany { get; set; }
         public int CommonExpenses { get; set; }
         public List<ApartmentData> Apartments { get; set; }
 
@@ -19,7 +20,6 @@ namespace Models.In
                 Name = this.Name,
                 Address = this.Address,
                 Location = new Location { Latitude = this.Latitude, Longitude = this.Longitude },
-                ConstructionCompany = this.ConstructionCompany,
                 CommonExpenses = this.CommonExpenses,
                 Apartments = this.Apartments.Select(a => a.ToEntity()).ToList()
             };

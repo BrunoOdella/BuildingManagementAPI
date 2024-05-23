@@ -6,7 +6,7 @@
         public string Name { get; set; }
         public string Address { get; set; }
         public Location Location { get; set; }
-        public string ConstructionCompany { get; set; }
+        public ConstructionCompany ConstructionCompany { get; set; }
         public int CommonExpenses { get; set; }
         public List<Apartment> Apartments { get; set; } = new List<Apartment>();
         public List<MaintenanceStaff> MaintenanceStaff { get; set; }
@@ -15,6 +15,9 @@
         public Guid ManagerId { get; set; }
         // Propiedad de navegación hacia Manager
         public Manager Manager { get; set; }
+
+        public Guid ConstrcutionCompanyAdminId { get; set; }
+        public ConstructionCompanyAdmin ConstructionCompanyAdmin { get; set; }
 
     }
 }
