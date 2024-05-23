@@ -96,5 +96,13 @@ namespace DataAccess
                 .Include(b => b.Location)
                 .FirstOrDefault(b => b.Location.Latitude == latitude && b.Location.Longitude == longitude);
         }
+
+        public IEnumerable<Building> GetBuildingsByConstructionCompanyAdminId(Guid constructionCompanyAdminId)
+        {
+            return _context.Buildings
+                .Include(b => b.Manager)
+                .Where(b => b.ConstructionCompanyAdminId == constructionCompanyAdminId)
+                .ToList();
+        }
     }
 }
