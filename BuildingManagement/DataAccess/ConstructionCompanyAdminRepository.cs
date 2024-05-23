@@ -1,5 +1,6 @@
 ﻿using Domain;
 using IDataAccess;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,13 @@ namespace DataAccess
         public bool EmailExistsInConstructionCompanyAdmins(string email)
         {
             return _context.ConstructionCompanyAdmins.Any(admin => admin.Email == email);
+        }
+
+        public ConstructionCompanyAdmin GetConstructionCompanyAdminById(Guid id)
+        {
+            return _context.ConstructionCompanyAdmins
+                .Include(admin => admin.ConstructionCompany)
+                .FirstOrDefault(admin => admin.Id == id);
         }
     }
 }

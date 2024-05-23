@@ -12,23 +12,40 @@ namespace BusinessLogic.Logics
 {
     public class BuildingLogic : IBuildingLogic
     {
-        private IBuildingRepository _buildingRepository;
+        private readonly IBuildingRepository _buildingRepository;
+        private readonly IConstructionCompanyAdminRepository _constructionCompanyAdminRepository;
 
-        public BuildingLogic(IBuildingRepository buildingRepository)
+        public BuildingLogic(IBuildingRepository buildingRepository, IConstructionCompanyAdminRepository constructionCompanyAdminRepository)
         {
             _buildingRepository = buildingRepository;
+            _constructionCompanyAdminRepository = constructionCompanyAdminRepository;
         }
 
-        public Building CreateBuilding(string managerId, Building building)
+        public Building CreateBuilding(string constructionCompanyAdminId, Building building)
         {
-            if (!Guid.TryParse(managerId, out Guid parsedManagerId))
+            if (!Guid.TryParse(constructionCompanyAdminId, out Guid parsedConstructionCompanyAdminId))
             {
-                throw new ArgumentException("Invalid manager ID");
+                throw new ArgumentException("Invalid construction company admin ID");
             }
-            building.ManagerId = parsedManagerId;
+
+            ConstructionCompanyAdmin constructionCompanyAdmin = _constructionCompanyAdminRepository.GetConstructionCompanyAdminById(parsedConstructionCompanyAdminId);
+            if (constructionCompanyAdmin == null)
+            {
+                throw new UnauthorizedAccessException("Construction company admin not found.");
+            }
+
+            if (constructionCompanyAdmin.ConstructionCompany == null)
+            {
+                throw new InvalidOperationException("Construction company admin does not have an associated construction company.");
+            }
+
+            // Asignar la empresa constructora y el administrador al edificio
+            building.ConstructionCompanyAdminId = parsedConstructionCompanyAdminId;
+            building.ConstructionCompanyAdmin = constructionCompanyAdmin;
+            building.ConstructionCompany = constructionCompanyAdmin.ConstructionCompany;
 
             // Verificar si ya existe un edificio con la misma ubicación
-            var existingBuilding = _buildingRepository.GetBuildingByLocation(building.Location.Latitude, building.Location.Longitude);
+            Building existingBuilding = _buildingRepository.GetBuildingByLocation(building.Location.Latitude, building.Location.Longitude);
             if (existingBuilding != null)
             {
                 throw new LocationAlreadyExistsException();
