@@ -39,7 +39,6 @@ namespace BuildingManagementApiTest
                 Address = "123 Main St",
                 Latitude = 45.0,
                 Longitude = -75.0,
-                ConstructionCompany = "Empresa 1",
                 CommonExpenses = 500,
                 Apartments = new List<ApartmentData>()
             };
@@ -91,7 +90,6 @@ namespace BuildingManagementApiTest
                 Address = "456 New St",
                 Latitude = 40.7128,
                 Longitude = -74.0060,
-                ConstructionCompany = "New Construction Co",
                 CommonExpenses = 750
             };
 

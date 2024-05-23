@@ -68,7 +68,6 @@ namespace DataAccessTest
                     BuildingId = Guid.NewGuid(),
                     Name = "Building",
                     Address = "123 Main St",
-                    ConstructionCompany = "Company",
                     CommonExpenses = 100,
                     ManagerId = manager.ManagerId
                 };
@@ -126,7 +125,6 @@ namespace DataAccessTest
                     BuildingId = Guid.NewGuid(),
                     Name = "Building",
                     Address = "123 Main St",
-                    ConstructionCompany = "Company",
                     CommonExpenses = 100,
                     ManagerId = manager.ManagerId
                 };
@@ -199,7 +197,6 @@ namespace DataAccessTest
                     BuildingId = Guid.NewGuid(),
                     Name = "Building",
                     Address = "123 Main St",
-                    ConstructionCompany = "Company",
                     CommonExpenses = 100,
                     ManagerId = manager.ManagerId
                 };

@@ -63,5 +63,36 @@ namespace DataAccessTest
                 Assert.IsFalse(notExists);
             }
         }
+
+        [TestMethod]
+        public void GetConstructionCompanyAdminByIdTest()
+        {
+            using (BuildingManagementDbContext context = CreateDbContext("TestGetConstructionCompanyAdminById"))
+            {
+                ConstructionCompanyAdminRepository repository = new ConstructionCompanyAdminRepository(context);
+                Guid adminId = Guid.NewGuid();
+                ConstructionCompanyAdmin admin = new ConstructionCompanyAdmin
+                {
+                    Id = adminId,
+                    Email = "admin@example.com",
+                    Password = "password123",
+                    ConstructionCompany = new ConstructionCompany
+                    {
+                        ConstructionCompanyId = Guid.NewGuid(),
+                        Name = "Construction Company"
+                    }
+                };
+
+                context.ConstructionCompanyAdmins.Add(admin);
+                context.SaveChanges();
+
+                ConstructionCompanyAdmin retrievedAdmin = repository.GetConstructionCompanyAdminById(adminId);
+
+                Assert.IsNotNull(retrievedAdmin);
+                Assert.AreEqual(admin.Email, retrievedAdmin.Email);
+                Assert.IsNotNull(retrievedAdmin.ConstructionCompany);
+                Assert.AreEqual(admin.ConstructionCompany.Name, retrievedAdmin.ConstructionCompany.Name);
+            }
+        }
     }
 }

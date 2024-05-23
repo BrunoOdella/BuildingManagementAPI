@@ -12,76 +12,147 @@ namespace BusinessLogicTest
     [TestClass]
     public class BuildingLogicTest
     {
-        private BuildingLogic _buildingLogic;
         private Mock<IBuildingRepository> _buildingRepositoryMock;
+        private Mock<IConstructionCompanyAdminRepository> _constructionCompanyAdminRepositoryMock;
+        private IBuildingLogic _buildingLogic;
 
         [TestInitialize]
-        public void Setup()
+        public void TestSetup()
         {
-            _buildingRepositoryMock = new Mock<IBuildingRepository>();
-            _buildingLogic = new BuildingLogic(_buildingRepositoryMock.Object);
+            _buildingRepositoryMock = new Mock<IBuildingRepository>(MockBehavior.Strict);
+            _constructionCompanyAdminRepositoryMock = new Mock<IConstructionCompanyAdminRepository>(MockBehavior.Strict);
+            _buildingLogic = new BuildingLogic(_buildingRepositoryMock.Object, _constructionCompanyAdminRepositoryMock.Object);
         }
 
         [TestMethod]
-        public void CreateBuilding_WithValidData_ReturnsBuilding()
+        public void CreateBuilding_ShouldCreateBuilding()
         {
             // Arrange
-            string managerId = Guid.NewGuid().ToString();
-            Building building = new Building
+            Guid adminId = Guid.NewGuid();
+            ConstructionCompanyAdmin constructionCompanyAdmin = new ConstructionCompanyAdmin
             {
-                Name = "Test Building",
-                Address = "123 Test Ave",
-                Location = new Location { Latitude = 40.7128, Longitude = -74.0060 },
-                Apartments = new List<Apartment>()
+                Id = adminId,
+                ConstructionCompany = new ConstructionCompany
                 {
-                    new Apartment()
+                    ConstructionCompanyId = Guid.NewGuid(),
+                    Name = "New Construction Company"
                 }
             };
-            _buildingRepositoryMock.Setup(repo => repo.GetBuildingByLocation(40.7128, -74.0060)).Returns((Building)null);
-            _buildingRepositoryMock.Setup(repo => repo.CreateBuilding(building)).Returns(building);
+
+            Building newBuilding = new Building
+            {
+                BuildingId = Guid.NewGuid(),
+                Name = "New Building",
+                Location = new Location { Latitude = 1.0, Longitude = 1.0 },
+                ConstructionCompanyAdminId = adminId
+            };
+
+            _constructionCompanyAdminRepositoryMock.Setup(repo => repo.GetConstructionCompanyAdminById(adminId)).Returns(constructionCompanyAdmin);
+            _buildingRepositoryMock.Setup(repo => repo.GetBuildingByLocation(newBuilding.Location.Latitude, newBuilding.Location.Longitude)).Returns((Building)null);
+            _buildingRepositoryMock.Setup(repo => repo.CreateBuilding(It.IsAny<Building>())).Returns(newBuilding);
 
             // Act
-            Building result = _buildingLogic.CreateBuilding(managerId, building);
+            Building result = _buildingLogic.CreateBuilding(adminId.ToString(), newBuilding);
 
             // Assert
             Assert.IsNotNull(result);
-            _buildingRepositoryMock.Verify(repo => repo.CreateBuilding(It.IsAny<Building>()), Times.Once);
+            Assert.AreEqual(newBuilding.Name, result.Name);
+            _buildingRepositoryMock.VerifyAll();
+            _constructionCompanyAdminRepositoryMock.VerifyAll();
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void CreateBuilding_WithInvalidManagerId_ThrowsException()
+        [ExpectedException(typeof(UnauthorizedAccessException))]
+        public void CreateBuilding_InvalidAdminId_ShouldThrowException()
         {
             // Arrange
-            string invalidManagerId = "invalid-guid";
-            Building building = new Building();
+            Guid invalidAdminId = Guid.NewGuid();
+            Building newBuilding = new Building
+            {
+                BuildingId = Guid.NewGuid(),
+                Name = "New Building",
+                Location = new Location { Latitude = 1.0, Longitude = 1.0 },
+                ConstructionCompanyAdminId = invalidAdminId
+            };
+
+            _constructionCompanyAdminRepositoryMock.Setup(repo => repo.GetConstructionCompanyAdminById(invalidAdminId)).Returns((ConstructionCompanyAdmin)null);
 
             // Act
-            _buildingLogic.CreateBuilding(invalidManagerId, building);
+            _buildingLogic.CreateBuilding(invalidAdminId.ToString(), newBuilding);
 
-            // No Assert needed due to ExpectedException
+            // Assert - Expects UnauthorizedAccessException
+            _constructionCompanyAdminRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void CreateBuilding_AdminWithoutCompany_ShouldThrowException()
+        {
+            // Arrange
+            Guid adminId = Guid.NewGuid();
+            ConstructionCompanyAdmin constructionCompanyAdmin = new ConstructionCompanyAdmin
+            {
+                Id = adminId
+            };
+
+            Building newBuilding = new Building
+            {
+                BuildingId = Guid.NewGuid(),
+                Name = "New Building",
+                Location = new Location { Latitude = 1.0, Longitude = 1.0 },
+                ConstructionCompanyAdminId = adminId
+            };
+
+            _constructionCompanyAdminRepositoryMock.Setup(repo => repo.GetConstructionCompanyAdminById(adminId)).Returns(constructionCompanyAdmin);
+
+            // Act
+            _buildingLogic.CreateBuilding(adminId.ToString(), newBuilding);
+
+            // Assert - Expects InvalidOperationException
+            _constructionCompanyAdminRepositoryMock.VerifyAll();
         }
 
         [TestMethod]
         [ExpectedException(typeof(LocationAlreadyExistsException))]
-        public void CreateBuilding_WithDuplicateLocation_ThrowsException()
+        public void CreateBuilding_LocationAlreadyExists_ShouldThrowException()
         {
             // Arrange
-            string managerId = Guid.NewGuid().ToString();
-            Building building = new Building
+            Guid adminId = Guid.NewGuid();
+            ConstructionCompanyAdmin constructionCompanyAdmin = new ConstructionCompanyAdmin
             {
-                Name = "Test Building",
-                Address = "123 Test Ave",
-                Location = new Location { Latitude = 40.7128, Longitude = -74.0060 }
+                Id = adminId,
+                ConstructionCompany = new ConstructionCompany
+                {
+                    ConstructionCompanyId = Guid.NewGuid(),
+                    Name = "New Construction Company"
+                }
             };
-            _buildingRepositoryMock.Setup(repo => repo.GetBuildingByLocation(40.7128, -74.0060)).Returns(building);
+
+            Building newBuilding = new Building
+            {
+                BuildingId = Guid.NewGuid(),
+                Name = "New Building",
+                Location = new Location { Latitude = 1.0, Longitude = 1.0 },
+                ConstructionCompanyAdminId = adminId
+            };
+
+            Building existingBuilding = new Building
+            {
+                BuildingId = Guid.NewGuid(),
+                Name = "Existing Building",
+                Location = new Location { Latitude = 1.0, Longitude = 1.0 }
+            };
+
+            _constructionCompanyAdminRepositoryMock.Setup(repo => repo.GetConstructionCompanyAdminById(adminId)).Returns(constructionCompanyAdmin);
+            _buildingRepositoryMock.Setup(repo => repo.GetBuildingByLocation(newBuilding.Location.Latitude, newBuilding.Location.Longitude)).Returns(existingBuilding);
 
             // Act
-            _buildingLogic.CreateBuilding(managerId, building);
+            _buildingLogic.CreateBuilding(adminId.ToString(), newBuilding);
 
-            // No Assert needed due to ExpectedException
+            // Assert - Expects LocationAlreadyExistsException
+            _buildingRepositoryMock.VerifyAll();
+            _constructionCompanyAdminRepositoryMock.VerifyAll();
         }
-
 
 
         [TestMethod]
@@ -183,7 +254,6 @@ namespace BusinessLogicTest
                 Name = "Updated Name",
                 Address = "Updated Address",
                 Location = new Location { Latitude = 40.0, Longitude = -74.0 },
-                ConstructionCompany = "New Company",
                 CommonExpenses = 500
             };
 
@@ -205,7 +275,6 @@ namespace BusinessLogicTest
             Assert.AreEqual("Updated Address", result.Address);
             Assert.AreEqual(40.0, result.Location.Latitude);
             Assert.AreEqual(-74.0, result.Location.Longitude);
-            Assert.AreEqual("New Company", result.ConstructionCompany);
             Assert.AreEqual(500, result.CommonExpenses);
         }
 

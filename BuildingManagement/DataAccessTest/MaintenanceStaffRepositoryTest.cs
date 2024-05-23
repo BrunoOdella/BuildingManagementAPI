@@ -66,7 +66,6 @@ namespace DataAccessTest
                     BuildingId = Guid.NewGuid(),
                     Name = "Building 1",
                     Address = "123 Main St",
-                    ConstructionCompany = "Company 1",
                     CommonExpenses = 100,
                     ManagerId = manager.ManagerId,
                     MaintenanceStaff = new List<MaintenanceStaff>()
@@ -77,7 +76,6 @@ namespace DataAccessTest
                     BuildingId = Guid.NewGuid(),
                     Name = "Building 2",
                     Address = "456 Elm St",
-                    ConstructionCompany = "Company 2",
                     CommonExpenses = 200,
                     ManagerId = manager.ManagerId,
                     MaintenanceStaff = new List<MaintenanceStaff>()
@@ -139,7 +137,6 @@ namespace DataAccessTest
                     BuildingId = Guid.NewGuid(),
                     Name = "Building",
                     Address = "123 Main St",
-                    ConstructionCompany = "Company",
                     CommonExpenses = 100,
                     ManagerId = manager.ManagerId,
                     MaintenanceStaff = new List<MaintenanceStaff>()
@@ -280,7 +277,6 @@ namespace DataAccessTest
                     Address = "123 Main",
                     ManagerId = managerId,
                     MaintenanceStaff = new List<MaintenanceStaff>(),
-                    ConstructionCompany = "Company",
                 };
 
                 MaintenanceStaffRepository repository = new MaintenanceStaffRepository(context);

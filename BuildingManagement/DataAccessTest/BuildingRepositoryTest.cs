@@ -29,7 +29,6 @@ namespace DataAccessTest
                 {
                     BuildingId = Guid.NewGuid(),
                     Name = "Sky Tower",
-                    ConstructionCompany = "x",
                     Address = "123 Main St",
                     Location = new Location { Latitude = 40.7128, Longitude = -74.0060 },
                     CommonExpenses = 500
@@ -59,7 +58,6 @@ namespace DataAccessTest
                     BuildingId = Guid.NewGuid(),
                     Name = "Sky Tower",
                     Address = "123 Main St",
-                    ConstructionCompany = "contruction company"
                 };
 
                 context.Buildings.Add(building);
@@ -101,7 +99,6 @@ namespace DataAccessTest
                     BuildingId = Guid.NewGuid(),
                     Name = "Original Name",
                     Address = "Original Address",
-                    ConstructionCompany = "Original Company",
                     CommonExpenses = 100,
                     Location = new Location { Latitude = 40.7128, Longitude = -74.0060 }
                 };
@@ -153,7 +150,6 @@ namespace DataAccessTest
                     BuildingId = id1,
                     Name = "Name1",
                     Address = "Address",
-                    ConstructionCompany = "Company",
                     CommonExpenses = 100,
                     Location = new Location { Latitude = 40.7128, Longitude = -74.0060 },
                     ManagerId = manager.ManagerId
@@ -164,7 +160,6 @@ namespace DataAccessTest
                     BuildingId = id2,
                     Name = "Name2",
                     Address = "Address2",
-                    ConstructionCompany = "Company2",
                     CommonExpenses = 200,
                     Location = new Location { Latitude = 20.123, Longitude = -20.123 },
                     ManagerId = manager.ManagerId
@@ -209,7 +204,6 @@ namespace DataAccessTest
                     BuildingId = id1,
                     Name = "Name1",
                     Address = "Address",
-                    ConstructionCompany = "Company",
                     CommonExpenses = 100,
                     Location = new Location { Latitude = 40.7128, Longitude = -74.0060 },
                     ManagerId = manager.ManagerId,
@@ -263,7 +257,6 @@ namespace DataAccessTest
                     BuildingId = id1,
                     Name = "Name1",
                     Address = "Address",
-                    ConstructionCompany = "Company",
                     CommonExpenses = 100,
                     Location = new Location { Latitude = 40.7128, Longitude = -74.0060 },
                     ManagerId = Guid.NewGuid() // Different ManagerId
@@ -314,7 +307,6 @@ namespace DataAccessTest
                     BuildingId = id1,
                     Name = "Name1",
                     Address = "Address",
-                    ConstructionCompany = "Company",
                     CommonExpenses = 100,
                     Location = new Location { Latitude = 40.7128, Longitude = -74.0060 },
                     ManagerId = manager.ManagerId,
@@ -355,7 +347,6 @@ namespace DataAccessTest
                     BuildingId = id1,
                     Name = "Name1",
                     Address = "Address",
-                    ConstructionCompany = "Company",
                     CommonExpenses = 100,
                     Location = new Location { Latitude = 40.7128, Longitude = -74.0060 },
                     ManagerId = manager.ManagerId
@@ -387,7 +378,6 @@ namespace DataAccessTest
                 {
                     BuildingId = Guid.NewGuid(),
                     Name = "Sky Tower",
-                    ConstructionCompany = "x",
                     Address = "123 Main St",
                     Location = new Location { Latitude = 40.7128, Longitude = -74.0060 },
                     CommonExpenses = 500
@@ -444,7 +434,6 @@ namespace DataAccessTest
                     BuildingId = id1,
                     Name = "Name1",
                     Address = "Address",
-                    ConstructionCompany = "Company",
                     CommonExpenses = 100,
                     Location = new Location { Latitude = 40.7128, Longitude = -74.0060 },
                     ManagerId = manager.ManagerId,
