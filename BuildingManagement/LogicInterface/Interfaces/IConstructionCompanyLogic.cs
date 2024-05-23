@@ -10,5 +10,6 @@ namespace LogicInterface.Interfaces
     public interface IConstructionCompanyLogic
     {
         ConstructionCompany CreateConstructionCompany(ConstructionCompany constructionCompany);
+        ConstructionCompany UpdateConstructionCompany(ConstructionCompany constructionCompany);
     }
 }

@@ -4,6 +4,7 @@ using LogicInterface.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Models.In;
+using Models.Out;
 using Moq;
 using System;
 
@@ -15,13 +16,6 @@ namespace BuildingManagementApiTest
         private Mock<IConstructionCompanyLogic> _constructionCompanyLogicMock;
         private ConstructionCompanyController _constructionCompanyController;
 
-        [TestInitialize]
-        public void TestSetup()
-        {
-            _constructionCompanyLogicMock = new Mock<IConstructionCompanyLogic>(MockBehavior.Strict);
-            _constructionCompanyController = new ConstructionCompanyController(_constructionCompanyLogicMock.Object);
-        }
-
         [TestMethod]
         public void CreateConstructionCompany_ShouldReturnCreatedResponse()
         {
@@ -32,9 +26,10 @@ namespace BuildingManagementApiTest
 
             ConstructionCompany constructionCompanyEntity = new ConstructionCompany
             {
-                ConstructionCompanyId = Guid.NewGuid(),
-                Name = "Example Construction Company"
+                Name = newCreateConstructionCompanyRequest.Name
             };
+
+            ConstructionCompanyResponse response = new ConstructionCompanyResponse(newCreateConstructionCompanyRequest.ToEntity());
 
             _constructionCompanyLogicMock.Setup(logic => logic.CreateConstructionCompany(It.IsAny<ConstructionCompany>())).Returns(constructionCompanyEntity);
 
@@ -42,7 +37,51 @@ namespace BuildingManagementApiTest
 
             Assert.IsNotNull(result);
             Assert.AreEqual(201, result.StatusCode);
-            Assert.AreEqual(constructionCompanyEntity, result.Value);
+            Assert.AreEqual(response, result.Value);
+
+            _constructionCompanyLogicMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void UpdateConstructionCompanyName_ShouldReturnOKResponse()
+        {
+            UpdateConstructionCompanyRequest constructionCompany = new UpdateConstructionCompanyRequest
+            {
+                ActualName = "CompanyName1",
+                NewName = "CompanyName2"
+            };
+
+            ConstructionCompanyResponse response = new ConstructionCompanyResponse(constructionCompany.ToEntity());
+
+            _constructionCompanyLogicMock.Setup(logic => logic.UpdateConstructionCompany(It.IsAny<ConstructionCompany>())).Returns(constructionCompany.ToEntity());
+
+            ObjectResult result = _constructionCompanyController.UpdateConstructionCompany(constructionCompany) as ObjectResult;
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(200, result.StatusCode);
+            Assert.AreEqual(response, result.Value);
+
+            _constructionCompanyLogicMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void UpdateConstructionCompanyAdmin_ShouldReturnOKResponse()
+        {
+            UpdateConstructionCompanyRequest constructionCompany = new UpdateConstructionCompanyRequest
+            {
+                ActualName = "CompanyName1",
+                NewAdminEmail = "adminEmail"
+            };
+
+            ConstructionCompanyResponse response = new ConstructionCompanyResponse(constructionCompany.ToEntity());
+
+            _constructionCompanyLogicMock.Setup(logic => logic.UpdateConstructionCompany(It.IsAny<ConstructionCompany>())).Returns(constructionCompany.ToEntity());
+
+            ObjectResult result = _constructionCompanyController.UpdateConstructionCompany(constructionCompany) as ObjectResult;
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(200, result.StatusCode);
+            Assert.AreEqual(response, result.Value);
 
             _constructionCompanyLogicMock.VerifyAll();
         }

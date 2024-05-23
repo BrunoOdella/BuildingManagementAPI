@@ -28,5 +28,10 @@ namespace BusinessLogic.Logics
 
             return _constructionCompanyRepository.CreateConstructionCompany(constructionCompany);
         }
+
+        public ConstructionCompany UpdateConstructionCompany(ConstructionCompany constructionCompany)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
