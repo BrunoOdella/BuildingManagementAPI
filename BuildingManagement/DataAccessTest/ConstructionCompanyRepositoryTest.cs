@@ -116,5 +116,41 @@ namespace DataAccessTest
                 Assert.IsFalse(hasCompany);
             }
         }
+
+        [TestMethod]
+        public void UpdateConstructionCompanyNameTest()
+        {
+            using (BuildingManagementDbContext context = CreateDbContext("TestUpdateConstructionCompanyName"))
+            {
+                ConstructionCompanyRepository repository = new ConstructionCompanyRepository(context);
+                ConstructionCompany existingCompany = new ConstructionCompany
+                {
+                    ConstructionCompanyId = Guid.NewGuid(),
+                    Name = "Existing Construction Company",
+                    ConstructionCompanyAdminId = Guid.NewGuid()
+                };
+
+                context.ConstructionCompanies.Add(existingCompany);
+                context.SaveChanges();
+
+                ConstructionCompany updatedCompany = new ConstructionCompany
+                {
+                    ConstructionCompanyId = existingCompany.ConstructionCompanyId,
+                    Name = "Updated Construction Company",
+                    ConstructionCompanyAdminId = existingCompany.ConstructionCompanyAdminId
+                };
+
+                ConstructionCompany result = repository.UpdateConstructionCompanyName(updatedCompany, existingCompany.Name);
+                context.SaveChanges();
+
+                Assert.IsNotNull(result);
+                Assert.AreEqual(updatedCompany.ConstructionCompanyId, result.ConstructionCompanyId);
+                Assert.AreEqual(updatedCompany.Name, result.Name);
+
+                ConstructionCompany storedCompany = context.ConstructionCompanies.FirstOrDefault(cc => cc.ConstructionCompanyId == updatedCompany.ConstructionCompanyId);
+                Assert.IsNotNull(storedCompany);
+                Assert.AreEqual(updatedCompany.Name, storedCompany.Name);
+            }
+        }
     }
 }

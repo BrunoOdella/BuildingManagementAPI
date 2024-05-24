@@ -12,5 +12,6 @@ namespace IDataAccess
         ConstructionCompany CreateConstructionCompany(ConstructionCompany constructionCompany);
         bool NameExists(string name);
         public bool AdminHasCompany(Guid constructionCompanyAdminId);
+        ConstructionCompany UpdateConstructionCompanyName(ConstructionCompany company, string actualName);
     }
 }

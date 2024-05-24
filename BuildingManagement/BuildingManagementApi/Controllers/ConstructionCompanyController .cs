@@ -30,7 +30,7 @@ namespace BuildingManagementApi.Controllers
             [FromBody] UpdateConstructionCompanyRequest updateConstructionCompanyRequest)
         {
             var updatedCompany = new ConstructionCompanyResponse(
-                _constructionCompanyLogic.UpdateConstructionCompany(updateConstructionCompanyRequest.ToEntity()));
+                _constructionCompanyLogic.UpdateConstructionCompanyName(updateConstructionCompanyRequest.ToEntity(), updateConstructionCompanyRequest.ActualName));
             return StatusCode(200, updatedCompany);
         }
     }

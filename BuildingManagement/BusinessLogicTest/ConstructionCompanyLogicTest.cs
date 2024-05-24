@@ -14,13 +14,15 @@ namespace BusinessLogicTest
     public class ConstructionCompanyLogicTest
     {
         private Mock<IConstructionCompanyRepository> _constructionCompanyRepositoryMock;
-        private IConstructionCompanyLogic _constructionCompanyLogic;
+        private Mock<IConstructionCompanyAdminRepository> _constructionCompanyAdminRepositoryMock;
+        private ConstructionCompanyLogic _constructionCompanyLogic;
 
         [TestInitialize]
         public void TestSetup()
         {
             _constructionCompanyRepositoryMock = new Mock<IConstructionCompanyRepository>(MockBehavior.Strict);
-            _constructionCompanyLogic = new ConstructionCompanyLogic(_constructionCompanyRepositoryMock.Object);
+            _constructionCompanyAdminRepositoryMock = new Mock<IConstructionCompanyAdminRepository>(MockBehavior.Strict);
+            _constructionCompanyLogic = new ConstructionCompanyLogic(_constructionCompanyRepositoryMock.Object, _constructionCompanyAdminRepositoryMock.Object);
         }
 
         [TestMethod]
@@ -88,6 +90,106 @@ namespace BusinessLogicTest
 
             // Assert - Expects AdminAlreadyHasCompanyException
             _constructionCompanyRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void UpdateConstructionCompanyName_ShouldUpdateCompany()
+        {
+            // Arrange
+            string actualName = "Actual Construction Company";
+
+            ConstructionCompany updatedCompany = new ConstructionCompany
+            {
+                Name = "Updated Construction Company",
+            };
+
+            _constructionCompanyRepositoryMock.Setup(repo => repo.UpdateConstructionCompanyName(It.IsAny<ConstructionCompany>(), actualName)).Returns(updatedCompany);
+            _constructionCompanyRepositoryMock.Setup(repo => repo.NameExists(updatedCompany.Name)).Returns(false);
+            _constructionCompanyRepositoryMock.Setup(repo => repo.NameExists(actualName)).Returns(true);
+
+            // Act
+            ConstructionCompany result = _constructionCompanyLogic.UpdateConstructionCompanyName(updatedCompany, actualName);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(updatedCompany.Name, result.Name);
+            _constructionCompanyRepositoryMock.VerifyAll();
+            _constructionCompanyAdminRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ConstructionCompanyAlreadyExistsException))]
+        public void UpdateConstructionCompanyName_NameAlreadyExists_ShouldThrowException()
+        {
+            // Arrange
+            string actualName = "Actual Construction Company";
+
+            ConstructionCompany updatedCompany = new ConstructionCompany
+            {
+                Name = "Existing Construction Company",
+            };
+
+            _constructionCompanyRepositoryMock.Setup(repo => repo.NameExists(updatedCompany.Name)).Returns(true);
+
+            // Act
+            _constructionCompanyLogic.UpdateConstructionCompanyName(updatedCompany, actualName);
+
+            // Assert - Expects ConstructionCompanyAlreadyExistsException
+            _constructionCompanyRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ConstructionCompanyDoesNotExistException))]
+        public void UpdateConstructionCompanyName_CompanyDoesNotExist_ShouldThrowException()
+        {
+            // Arrange
+            string actualName = "Actual Construction Company";
+
+            ConstructionCompany updatedCompany = new ConstructionCompany
+            {
+                Name = "Updated Construction Company",
+            };
+
+            _constructionCompanyRepositoryMock.Setup(repo => repo.NameExists(updatedCompany.Name)).Returns(false);
+            _constructionCompanyRepositoryMock.Setup(repo => repo.NameExists(actualName)).Returns(false);
+
+            // Act
+            _constructionCompanyLogic.UpdateConstructionCompanyName(updatedCompany, actualName);
+
+            // Assert - Expects ConstructionCompanyDoesNotExistException
+            _constructionCompanyRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ConstructionCompanyNameCanNotBeEmptyException))]
+        public void UpdateConstructionCompanyName_NameIsEmpty_ShouldThrowException()
+        {
+            // Arrange
+            string actualName = "Actual Construction Company";
+
+            ConstructionCompany updatedCompany = new ConstructionCompany
+            {
+                Name = "",
+            };
+
+            // Act
+            _constructionCompanyLogic.UpdateConstructionCompanyName(updatedCompany, actualName);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ConstructionCompanyNameCanNotBeEmptyException))]
+        public void UpdateConstructionCompanyName_NameIsSpaces_ShouldThrowException()
+        {
+            // Arrange
+            string actualName = "Actual Construction Company";
+
+            ConstructionCompany updatedCompany = new ConstructionCompany
+            {
+                Name = "     ",
+            };
+
+            // Act
+            _constructionCompanyLogic.UpdateConstructionCompanyName(updatedCompany, actualName);
         }
     }
 }

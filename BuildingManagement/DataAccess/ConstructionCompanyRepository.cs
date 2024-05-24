@@ -30,5 +30,13 @@ namespace DataAccess
         {
             return _context.ConstructionCompanies.Any(cc => cc.ConstructionCompanyAdminId == constructionCompanyAdminId);
         }
+
+        public ConstructionCompany UpdateConstructionCompanyName(ConstructionCompany company, string actualName)
+        {
+            var constructionCompany = _context.ConstructionCompanies.FirstOrDefault(cc => cc.Name == actualName);
+            constructionCompany.Name = company.Name;
+            _context.SaveChanges();
+            return constructionCompany;
+        }
     }
 }
