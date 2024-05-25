@@ -25,41 +25,18 @@ namespace DataAccess
 
         public IEnumerable<MaintenanceStaff> GetAll(Guid managerId)
         {
-            List<Building> buildings = _context.Buildings
-                .Include(b => b.MaintenanceStaff)
-                    .ThenInclude(s => s.Requests)
-                .Where(b => b.ManagerId == managerId)
+            return _context.MaintenanceStaff
+                .Include(s => s.Requests)
                 .ToList();
-            List<MaintenanceStaff> maintenanceStaff = new List<MaintenanceStaff>();
-
-            foreach (Building building in buildings)
-            {
-                maintenanceStaff.AddRange(building.MaintenanceStaff);
-            }
-            return maintenanceStaff;
         }
 
         public MaintenanceStaff GetMaintenanceStaff(Guid managerId, Guid maintenancePersonId)
         {
-            List<Building> buildings = _context.Buildings
-                .Include(b => b.MaintenanceStaff)
-                    .ThenInclude(s => s.Requests)
-                .Where(b => b.ManagerId == managerId)
-                .ToList();
-
-            MaintenanceStaff maintenanceStaff = _context.MaintenanceStaff
+            return _context.MaintenanceStaff
+                .Include(s => s.Requests)
                 .FirstOrDefault(s => s.ID == maintenancePersonId);
-
-            if (maintenanceStaff == null)
-                return null;
-
-            foreach (Building building in buildings)
-            {
-                if (maintenanceStaff.BuildingId == building.BuildingId)
-                    return maintenanceStaff;
-            }
-            return null;
         }
+
 
         public Guid GetMaintenanceStaff(Guid maintenancePersonId)
         {

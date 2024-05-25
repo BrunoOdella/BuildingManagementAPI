@@ -7,7 +7,7 @@ using Models.Out;
 
 namespace BuildingManagementApi.Controllers
 {
-    [Route("api/v1/buildings/{buildingId}/maintenancestaff")]
+    [Route("api/v1/maintenancestaff")]
     [ApiController]
     [ServiceFilter(typeof(AuthenticationFilter))]
     public class MaintenanceStaffController : ControllerBase
@@ -19,13 +19,14 @@ namespace BuildingManagementApi.Controllers
         {
             _maintenanceStaffLogic = maintenanceStaffLogic;
             _httpContextAccessor = httpContextAccessor;
+
         }
 
         [HttpPost]
         public IActionResult CreateMaintenanceStaff(Guid buildingId, [FromBody] CreateMaintenanceStaffRequest request)
         {
             string managerId = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
-            var maintenanceStaff = request.ToEntity(buildingId);
+            var maintenanceStaff = request.ToEntity();
             var createdStaff = _maintenanceStaffLogic.AddMaintenanceStaff(managerId, maintenanceStaff);
             var response = new CreateMaintenanceStaffResponse(createdStaff);
 

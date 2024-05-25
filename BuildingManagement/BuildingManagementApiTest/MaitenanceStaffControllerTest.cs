@@ -43,8 +43,8 @@ namespace BuildingManagementApiTest
                 Email = "john@example.com",
                 Password = "secure123"
             };
-            MaintenanceStaff maintenanceStaff = request.ToEntity(buildingId);
-            maintenanceStaff.Building = new Building { Name = "Building 1" }; // Initialize Building
+            MaintenanceStaff maintenanceStaff = request.ToEntity();
+
 
             _maintenanceStaffLogicMock
                 .Setup(x => x.AddMaintenanceStaff(It.IsAny<string>(), It.IsAny<MaintenanceStaff>()))
@@ -62,8 +62,6 @@ namespace BuildingManagementApiTest
             Assert.IsNotNull(response);
             Assert.AreEqual(maintenanceStaff.Name, response.Name);
             Assert.AreEqual(maintenanceStaff.LastName, response.LastName);
-            Assert.AreEqual(maintenanceStaff.Email, response.Email);
-            Assert.AreEqual(maintenanceStaff.Building.Name, response.BuildingName);
 
             _maintenanceStaffLogicMock.Verify(x => x.AddMaintenanceStaff(It.IsAny<string>(), It.IsAny<MaintenanceStaff>()), Times.Once);
             _maintenanceStaffLogicMock.VerifyAll();

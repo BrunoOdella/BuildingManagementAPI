@@ -28,7 +28,6 @@ namespace DataAccess
             List<Building> buildings = _context.Buildings
                 .Include(b => b.Apartments)
                     .ThenInclude(a => a.Requests)
-                .Include(b => b.MaintenanceStaff)
                 .Include(b => b.Location)
                 .Where(b => b.ManagerId.Equals(managerId))
                 .ToList();
@@ -77,7 +76,6 @@ namespace DataAccess
         {
             Building building = _context.Buildings
                 .Include(b => b.Apartments)
-                .Include(b => b.MaintenanceStaff)
                 .Include(b => b.Location)
                 .FirstOrDefault(i => i.BuildingId.Equals(buildingId) && i.ManagerId.Equals(managerId));
             return building;

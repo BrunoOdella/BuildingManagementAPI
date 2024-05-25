@@ -34,19 +34,7 @@ namespace BusinessLogic.Logics
             {
                 throw new ArgumentException("Invalid manager ID.");
             }
-
             // Verificar que el edificio existe y está asociado al manager.
-            var building = _buildingRepository.GetBuilding(managerGuid, maintenanceStaff.BuildingId);
-            if (building == null)
-            {
-                throw new InvalidOperationException("Building not found.");
-            }
-
-            if (building.ManagerId != managerGuid)
-            {
-                throw new UnauthorizedAccessException("Manager does not have permission to add staff to this building.");
-            }
-
             if (string.IsNullOrWhiteSpace(maintenanceStaff.Name) || string.IsNullOrWhiteSpace(maintenanceStaff.LastName))
             {
                 throw new ArgumentException("Name and last name are required.");

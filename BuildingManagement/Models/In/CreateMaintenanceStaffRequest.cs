@@ -14,7 +14,7 @@ namespace Models.In
         public string Email { get; set; }
         public string Password { get; set; }
 
-        public MaintenanceStaff ToEntity(Guid buildingId)
+        public MaintenanceStaff ToEntity()
         {
             return new MaintenanceStaff
             {
@@ -22,7 +22,6 @@ namespace Models.In
                 LastName = this.LastName,
                 Email = this.Email,
                 Password = this.Password,
-                BuildingId = buildingId
             };
         }
     }

@@ -18,7 +18,6 @@ public class CreateMaintenanceStaffResponse
         this.LastName = staff.LastName;
         this.Email = staff.Email;
         this.Password = staff.Password;
-        this.BuildingName = staff.Building.Name;
     }
 
 }

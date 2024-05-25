@@ -32,7 +32,6 @@ namespace DataAccessTest
                     LastName = "Doe",
                     Email = "johndoe@example.com",
                     Password = "password",
-                    BuildingId = Guid.NewGuid()
                 };
 
                 MaintenanceStaff result = repository.AddMaintenanceStaff(expected);
@@ -68,7 +67,7 @@ namespace DataAccessTest
                     Address = "123 Main St",
                     CommonExpenses = 100,
                     ManagerId = manager.ManagerId,
-                    MaintenanceStaff = new List<MaintenanceStaff>()
+                    
                 };
 
                 Building building2 = new Building
@@ -78,7 +77,7 @@ namespace DataAccessTest
                     Address = "456 Elm St",
                     CommonExpenses = 200,
                     ManagerId = manager.ManagerId,
-                    MaintenanceStaff = new List<MaintenanceStaff>()
+                    
                 };
 
                 MaintenanceStaff staff1 = new MaintenanceStaff
@@ -88,7 +87,7 @@ namespace DataAccessTest
                     LastName = "Doe",
                     Email = "johndoe@example.com",
                     Password = "password",
-                    BuildingId = building1.BuildingId
+
                 };
 
                 MaintenanceStaff staff2 = new MaintenanceStaff
@@ -98,11 +97,9 @@ namespace DataAccessTest
                     LastName = "Doe",
                     Email = "janedoe@example.com",
                     Password = "password",
-                    BuildingId = building2.BuildingId
+                    
                 };
 
-                building1.MaintenanceStaff.Add(staff1);
-                building2.MaintenanceStaff.Add(staff2);
 
                 context.Managers.Add(manager);
                 context.Buildings.Add(building1);
@@ -139,7 +136,7 @@ namespace DataAccessTest
                     Address = "123 Main St",
                     CommonExpenses = 100,
                     ManagerId = manager.ManagerId,
-                    MaintenanceStaff = new List<MaintenanceStaff>()
+                    
                 };
 
                 MaintenanceStaff staff = new MaintenanceStaff
@@ -149,10 +146,8 @@ namespace DataAccessTest
                     LastName = "Doe",
                     Email = "johndoe@example.com",
                     Password = "password",
-                    BuildingId = building.BuildingId
                 };
 
-                building.MaintenanceStaff.Add(staff);
 
                 context.Managers.Add(manager);
                 context.Buildings.Add(building);
@@ -201,7 +196,6 @@ namespace DataAccessTest
                     LastName = "Doe",
                     Email = "johndoe@example.com",
                     Password = "password",
-                    BuildingId = Guid.NewGuid()
                 };
 
                 context.MaintenanceStaff.Add(expected);
@@ -238,7 +232,6 @@ namespace DataAccessTest
                     LastName = "Doe",
                     Email = "johndoe@example.com",
                     Password = "password",
-                    BuildingId = Guid.NewGuid()
                 };
 
                 context.MaintenanceStaff.Add(staff);
@@ -252,44 +245,5 @@ namespace DataAccessTest
             }
         }
 
-        [TestMethod]
-        public void GetMaintenanceStaff_NotExistMaintenancePerson_ReturnNull()
-        {
-            using (BuildingManagementDbContext context = CreateDbContext("TestNotExistMaintenancePerson_ReturnNull"))
-            {
-                var manteinanceStaffId = Guid.NewGuid();
-                var managerId = Guid.NewGuid();
-
-                MaintenanceStaff staff = new MaintenanceStaff
-                {
-                    ID = manteinanceStaffId,
-                    Name = "John",
-                    LastName = "Doe",
-                    Email = "johndoe@example.com",
-                    Password = "password",
-                    BuildingId = Guid.NewGuid()
-                };
-
-                Building building = new Building
-                {
-                    BuildingId = Guid.NewGuid(),
-                    Name = "Building",
-                    Address = "123 Main",
-                    ManagerId = managerId,
-                    MaintenanceStaff = new List<MaintenanceStaff>(),
-                };
-
-                MaintenanceStaffRepository repository = new MaintenanceStaffRepository(context);
-                BuildingRepository buildingRepository = new BuildingRepository(context);
-
-                context.MaintenanceStaff.Add(staff);
-                context.Buildings.Add(building);
-                context.SaveChanges();
-
-                var result = repository.GetMaintenanceStaff(managerId, manteinanceStaffId);
-
-                Assert.IsNull(result);
-            }
-        }
     }
 }

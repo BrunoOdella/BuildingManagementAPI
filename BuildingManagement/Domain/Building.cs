@@ -9,8 +9,6 @@
         public ConstructionCompany ConstructionCompany { get; set; }
         public int CommonExpenses { get; set; }
         public List<Apartment> Apartments { get; set; } = new List<Apartment>();
-        public List<MaintenanceStaff> MaintenanceStaff { get; set; }
-
         // Clave foránea hacia Manager
         public Guid ManagerId { get; set; }
         // Propiedad de navegación hacia Manager

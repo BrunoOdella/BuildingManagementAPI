@@ -285,7 +285,6 @@ namespace DataAccessTest
                     LastName = "Doe",
                     Email = "johndoe@example.com",
                     Password = "password",
-                    BuildingId = Guid.NewGuid()
                 };
 
                 Request_ request1 = new Request_

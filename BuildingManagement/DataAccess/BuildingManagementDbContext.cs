@@ -51,13 +51,7 @@ namespace DataAccess
                 .HasMany(a => a.Requests)
                 .WithOne(r => r.Apartment)
                 .HasForeignKey(r => r.ApartmentId)
-                .OnDelete(DeleteBehavior.Cascade);  // Cascada en la eliminación de Requests cuando se elimina Apartment
-
-            modelBuilder.Entity<Building>()
-                .HasMany(b => b.MaintenanceStaff)
-                .WithOne(ms => ms.Building)
-                .HasForeignKey(ms => ms.BuildingId)
-                .OnDelete(DeleteBehavior.Cascade);  // Cascada en la eliminación de MaintenanceStaff cuando se elimina Building
+                .OnDelete(DeleteBehavior.Cascade);  // Cascada en la eliminación de Requests cuando se elimina Apartment    
 
             modelBuilder.Entity<MaintenanceStaff>()
                 .HasMany(ms => ms.Requests)

@@ -206,9 +206,6 @@ namespace DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("BuildingId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -226,8 +223,6 @@ namespace DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("BuildingId");
 
                     b.ToTable("MaintenanceStaff");
                 });
@@ -396,17 +391,6 @@ namespace DataAccess.Migrations
                     b.Navigation("ConstructionCompanyAdmin");
                 });
 
-            modelBuilder.Entity("Domain.MaintenanceStaff", b =>
-                {
-                    b.HasOne("Domain.Building", "Building")
-                        .WithMany("MaintenanceStaff")
-                        .HasForeignKey("BuildingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Building");
-                });
-
             modelBuilder.Entity("Domain.Owner", b =>
                 {
                     b.HasOne("Apartment", null)
@@ -453,8 +437,6 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Domain.Building", b =>
                 {
                     b.Navigation("Apartments");
-
-                    b.Navigation("MaintenanceStaff");
                 });
 
             modelBuilder.Entity("Domain.ConstructionCompanyAdmin", b =>
