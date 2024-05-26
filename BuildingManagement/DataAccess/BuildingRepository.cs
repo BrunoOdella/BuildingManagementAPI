@@ -83,6 +83,11 @@ namespace DataAccess
             return building;
         }
 
+        public Building GetBuildingByAdmin(Guid adminId, Guid buildingId)
+        {
+            throw new NotImplementedException();
+        }
+
         public Building UpdateBuilding(Building existingBuilding)
         {
             _context.Entry(existingBuilding).State = EntityState.Modified;

@@ -8,13 +8,16 @@ public class AuthenticationService : IAuthenticationService
     private readonly IManagerRepository _managerRepository;
     private readonly IMaintenanceStaffRepository _maintenanceStaffRepository;
     private readonly IAdminRepository _adminRepository;
+    private readonly IConstructionCompanyAdminRepository _constructionCompanyAdminRepository;
 
 
-    public AuthenticationService(IManagerRepository managerRepository, IMaintenanceStaffRepository maintenanceStaffRepository, IAdminRepository adminRepository)
+    public AuthenticationService(IManagerRepository managerRepository, IMaintenanceStaffRepository maintenanceStaffRepository, IAdminRepository adminRepository, IConstructionCompanyAdminRepository constructionCompanyAdminRepository)
     {
         _managerRepository = managerRepository;
         _maintenanceStaffRepository =maintenanceStaffRepository;
         _adminRepository =adminRepository;
+        _constructionCompanyAdminRepository = constructionCompanyAdminRepository;
+
     }
 
     public Guid BuscarToken(Guid token, string verbo, string uri)
@@ -43,7 +46,30 @@ public class AuthenticationService : IAuthenticationService
 
     private Guid BuscarTokenBuilding(Guid token, string verbo)
     {
+        if(verbo == "PUT") //manager o constructionCompanyAdmin
+            return BuscarTokenManagerAndCCAdmin(token);
         return BuscarTokenManager(token);
+    }
+
+    private Guid BuscarTokenManagerAndCCAdmin(Guid token)
+    {
+        var manager = BuscarTokenManager(token);
+        var ccAdmin = BuscarTokenCCAdmin(token);
+
+        if (manager.Equals(Guid.Empty))
+            if(ccAdmin.Equals(Guid.Empty))
+                throw new ArgumentException("There is no person associated with the token.");
+            else
+                return ccAdmin;
+        return manager;
+    }
+
+    private Guid BuscarTokenCCAdmin(Guid token)
+    {
+        var ccAdmin = _constructionCompanyAdminRepository.GetConstructionCompanyAdminById(token);
+        if (ccAdmin == null)
+            return Guid.Empty;
+        return ccAdmin.Id;
     }
 
     private Guid BuscarTokenAdmin(Guid token, string verbo)
@@ -91,7 +117,6 @@ public class AuthenticationService : IAuthenticationService
 
 
 
-    // mejorar solucion
     private Guid BuscarTokenManagerAndStaff(Guid token)
     {
         Guid manager = _managerRepository.Get(token);

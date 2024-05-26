@@ -11,6 +11,7 @@ public class AuthenticationServiceTest
     private Mock<IManagerRepository> _managerRepositoryMock;
     private Mock<IMaintenanceStaffRepository> _maintenanceStaffRepositoryMock;
     private Mock<IAdminRepository> _adminRepositoryMock;
+    private Mock<IConstructionCompanyAdminRepository> _constructionCompanyAdminRepositoryMock;
     private AuthenticationService _authenticationServiceLogic;
 
     [TestInitialize]
@@ -19,7 +20,10 @@ public class AuthenticationServiceTest
         _managerRepositoryMock = new Mock<IManagerRepository>(MockBehavior.Strict);
         _maintenanceStaffRepositoryMock = new Mock<IMaintenanceStaffRepository>(MockBehavior.Strict);
         _adminRepositoryMock = new Mock<IAdminRepository>(MockBehavior.Strict);
-        _authenticationServiceLogic = new AuthenticationService(_managerRepositoryMock.Object, _maintenanceStaffRepositoryMock.Object, _adminRepositoryMock.Object);
+        _constructionCompanyAdminRepositoryMock = new Mock<IConstructionCompanyAdminRepository>(MockBehavior.Strict);
+        _authenticationServiceLogic = new AuthenticationService(_managerRepositoryMock.Object, 
+            _maintenanceStaffRepositoryMock.Object, _adminRepositoryMock.Object, 
+            _constructionCompanyAdminRepositoryMock.Object);
     }
 
     [TestMethod]

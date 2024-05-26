@@ -90,7 +90,8 @@ namespace BuildingManagementApiTest
                 Address = "456 New St",
                 Latitude = 40.7128,
                 Longitude = -74.0060,
-                CommonExpenses = 750
+                CommonExpenses = 750,
+                ManagerEmail = "newManager"
             };
 
             var building = request.ToEntity();

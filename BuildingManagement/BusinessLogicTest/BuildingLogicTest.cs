@@ -14,6 +14,7 @@ namespace BusinessLogicTest
     {
         private Mock<IBuildingRepository> _buildingRepositoryMock;
         private Mock<IConstructionCompanyAdminRepository> _constructionCompanyAdminRepositoryMock;
+        private Mock<IManagerRepository> _managerRepositoryMock;
         private IBuildingLogic _buildingLogic;
 
         [TestInitialize]
@@ -21,7 +22,8 @@ namespace BusinessLogicTest
         {
             _buildingRepositoryMock = new Mock<IBuildingRepository>(MockBehavior.Strict);
             _constructionCompanyAdminRepositoryMock = new Mock<IConstructionCompanyAdminRepository>(MockBehavior.Strict);
-            _buildingLogic = new BuildingLogic(_buildingRepositoryMock.Object, _constructionCompanyAdminRepositoryMock.Object);
+            _managerRepositoryMock = new Mock<IManagerRepository>(MockBehavior.Strict);
+            _buildingLogic = new BuildingLogic(_buildingRepositoryMock.Object, _constructionCompanyAdminRepositoryMock.Object, _managerRepositoryMock.Object);
         }
 
         [TestMethod]
@@ -342,6 +344,38 @@ namespace BusinessLogicTest
             Assert.IsTrue(result.Any(b => b.Name == "Building 2"));
 
             _buildingRepositoryMock.Verify(repo => repo.GetBuildingsByConstructionCompanyAdminId(adminId), Times.Once);
+        }
+
+
+        [TestMethod]
+        public void UpdateManager_BuildingWithManager_UpdatesManager()
+        {
+            // Arrange
+            string adminId = Guid.NewGuid().ToString();
+            Building building = new Building
+            {
+                BuildingId = Guid.NewGuid(),
+                Manager = new Manager { Email = "manager1" }
+            };
+
+            Building updatedBuilding = new Building
+            {
+                BuildingId = building.BuildingId,
+                Manager = new Manager { Email = "manager2" }
+            };
+
+            _buildingRepositoryMock.Setup(r => r.GetBuildingByAdmin(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(building);
+            _managerRepositoryMock.Setup(r => r.GetManagerByEmail("manager2")).Returns(new Manager { Email = "manager2" });
+            _buildingRepositoryMock.Setup(r => r.UpdateBuilding(It.IsAny<Building>())).Returns(updatedBuilding);
+
+            // Act
+            var result = _buildingLogic.UpdateBuilding(adminId, updatedBuilding);
+
+            // Assert
+            Assert.AreEqual("manager2", result.Manager.Email);
+            
+            _buildingRepositoryMock.VerifyAll();
+            _managerRepositoryMock.VerifyAll();
         }
     }
 }
