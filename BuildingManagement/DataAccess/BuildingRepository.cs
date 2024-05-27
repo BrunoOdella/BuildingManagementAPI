@@ -85,7 +85,6 @@ namespace DataAccess
         {
             Building building = _context.Buildings
                 .Include(b => b.Apartments)
-                .Include(b => b.MaintenanceStaff)
                 .Include(b => b.Location)
                 .FirstOrDefault(b => b.ConstructionCompanyAdminId.Equals(adminId) && b.BuildingId.Equals(buildingId));
             return building;
