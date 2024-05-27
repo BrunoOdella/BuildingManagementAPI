@@ -482,3 +482,38 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+
+# Angular related
+node_modules/
+dist/
+build/
+.angular/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Compiled output
+lib/
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# IDE specific files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Miscellaneous
+/.env
+/.npm
+
