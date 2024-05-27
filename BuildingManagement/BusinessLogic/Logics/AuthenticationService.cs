@@ -1,4 +1,5 @@
 ﻿using CustomExceptions;
+using Domain;
 using IDataAccess;
 using LogicInterface.Interfaces;
 using System.Security.Authentication;
@@ -147,30 +148,30 @@ public class AuthenticationService : IAuthenticationService
         return _managerRepository.Get(token);
     }
 
-    public string Authenticate(string email, string password)
+    public AuthenticationResult Authenticate(string email, string password)
     {
         var admin = _adminRepository.GetByEmailAndPassword(email, password);
         if (admin != null)
         {
-            return admin.AdminID.ToString();
+            return new AuthenticationResult { UserID = admin.AdminID, UserType = "Admin" };
         }
 
         var constructionCompanyAdmin = _constructionCompanyAdminRepository.GetByEmailAndPassword(email, password);
         if (constructionCompanyAdmin != null)
         {
-            return constructionCompanyAdmin.Id.ToString();
+            return new AuthenticationResult { UserID = constructionCompanyAdmin.Id, UserType = "ConstructionCompanyAdmin" };
         }
 
         var maintenanceStaff = _maintenanceStaffRepository.GetByEmailAndPassword(email, password);
         if (maintenanceStaff != null)
         {
-            return maintenanceStaff.ID.ToString();
+            return new AuthenticationResult { UserID = maintenanceStaff.ID, UserType = "MaintenanceStaff" };
         }
 
         var manager = _managerRepository.GetByEmailAndPassword(email, password);
         if (manager != null)
         {
-            return manager.ManagerId.ToString();
+            return new AuthenticationResult { UserID = manager.ManagerId, UserType = "Manager" };
         }
 
         throw new InvalidCredentialsException();
