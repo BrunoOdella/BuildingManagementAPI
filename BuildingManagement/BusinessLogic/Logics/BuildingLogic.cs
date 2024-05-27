@@ -14,11 +14,13 @@ namespace BusinessLogic.Logics
     {
         private readonly IBuildingRepository _buildingRepository;
         private readonly IConstructionCompanyAdminRepository _constructionCompanyAdminRepository;
+        private readonly IManagerRepository _managerRepository;
 
-        public BuildingLogic(IBuildingRepository buildingRepository, IConstructionCompanyAdminRepository constructionCompanyAdminRepository)
+        public BuildingLogic(IBuildingRepository buildingRepository, IConstructionCompanyAdminRepository constructionCompanyAdminRepository, IManagerRepository managerRepository)
         {
             _buildingRepository = buildingRepository;
             _constructionCompanyAdminRepository = constructionCompanyAdminRepository;
+            _managerRepository = managerRepository;
         }
 
         public Building CreateBuilding(string constructionCompanyAdminId, Building building)
@@ -75,32 +77,47 @@ namespace BusinessLogic.Logics
             }
         }
 
-
         public Building UpdateBuilding(string managerId, Building building)
         {
             if (!Guid.TryParse(managerId, out Guid parsedManagerId))
                 throw new ArgumentException("Invalid manager ID format.");
 
-            // Usar GetBuilding en lugar de GetBuildingById
-            var existingBuilding = _buildingRepository.GetBuilding(parsedManagerId, building.BuildingId);
-            if (existingBuilding == null)
-                throw new InvalidOperationException("Building not found or manager does not have permission to update this building.");
-
-            // No es necesario verificar el ManagerId aquí ya que GetBuilding debería manejarlo
-            if (building.Name != null)
-                existingBuilding.Name = building.Name;
-            if (building.Address != null)
-                existingBuilding.Address = building.Address;
-            if (building.Location != null)
+            if (building.Manager is null || string.IsNullOrWhiteSpace(building.Manager.Email))
             {
-                existingBuilding.Location.Latitude = building.Location.Latitude;
-                existingBuilding.Location.Longitude = building.Location.Longitude;
-            }
-            existingBuilding.ConstructionCompany = building.ConstructionCompany;
-            existingBuilding.CommonExpenses = building.CommonExpenses;
+                // Ahora no solo es un manager quien puede modificar un edificio, sino que también un administrador de la empresa constructora
+                var existingBuilding = _buildingRepository.GetBuilding(parsedManagerId, building.BuildingId);
+                if (existingBuilding == null)
+                    throw new InvalidOperationException("Bui" +
+                                                        "lding not found or manager does not have permission to update this building.");
 
-            _buildingRepository.UpdateBuilding(existingBuilding);
-            return existingBuilding;
+                // No es necesario verificar el ManagerId aquí ya que GetBuilding debería manejarlo
+                if (building.Name != null)
+                    existingBuilding.Name = building.Name;
+                if (building.Address != null)
+                    existingBuilding.Address = building.Address;
+                if (building.Location != null)
+                {
+                    existingBuilding.Location.Latitude = building.Location.Latitude;
+                    existingBuilding.Location.Longitude = building.Location.Longitude;
+                }
+                existingBuilding.ConstructionCompany = building.ConstructionCompany;
+                existingBuilding.CommonExpenses = building.CommonExpenses;
+
+                _buildingRepository.UpdateBuilding(existingBuilding);
+                return existingBuilding;
+            }
+            else
+            {
+                var existingBuilding = _buildingRepository.GetBuildingByAdmin(parsedManagerId, building.BuildingId);
+
+                var manager = _managerRepository.GetManagerByEmail(building.Manager.Email);
+                if (manager == null)
+                    throw new InvalidOperationException("Manager not found.");
+                existingBuilding.Manager = manager;
+                
+                _buildingRepository.UpdateBuilding(existingBuilding);
+                return existingBuilding;
+            }
         }
 
         public IEnumerable<Building> GetBuildingsByConstructionCompanyAdminId(string adminId)

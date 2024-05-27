@@ -14,6 +14,7 @@ namespace Models.In
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public int CommonExpenses { get; set; }
+        public string ManagerEmail { get; set; }
 
         public Building ToEntity()
         {
@@ -26,7 +27,11 @@ namespace Models.In
                     Latitude = this.Latitude,
                     Longitude = this.Longitude
                 },
-                CommonExpenses = this.CommonExpenses
+                CommonExpenses = this.CommonExpenses,
+                Manager = new Manager()
+                {
+                    Email = this.ManagerEmail
+                }
             };
         }
     }

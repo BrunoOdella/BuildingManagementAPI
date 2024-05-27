@@ -10,6 +10,7 @@ namespace IDataAccess
         public Apartment GetApartment(Guid managerId, Guid apartmentId);
         List<Apartment> GetAllApartments(Guid managerId, Guid buildingId);
         Building GetBuilding(Guid managerId, Guid buildingId);
+        Building GetBuildingByAdmin(Guid adminId, Guid buildingId);
         Building UpdateBuilding(Building existingBuilding);
         public Building GetBuildingByLocation(double latitude, double longitude);
         IEnumerable<Building> GetBuildingsByConstructionCompanyAdminId(Guid constructionCompanyAdminId);

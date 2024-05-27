@@ -520,5 +520,32 @@ namespace DataAccessTest
             }
         }
 
+        [TestMethod]
+        public void GetBuildingByAdminIdAndBuildingId_Succes()
+        {
+            using (var context = CreateDbContext("TestGetBuildingByAdminIdAndBuildingId"))
+            {
+                var adminId = Guid.NewGuid();
+                var buildingId = Guid.NewGuid();
+                var building = new Building
+                {
+                    BuildingId = buildingId,
+                    Name = "Building 1",
+                    Address = "123 Main St",
+                    ConstructionCompanyAdminId = adminId,
+                    Manager = new Manager { Name = "Manager 1", Email = "email", Password = "pass"}
+                };
+
+                context.Buildings.Add(building);
+                context.SaveChanges();
+
+                var repository = new BuildingRepository(context);
+                var result = repository.GetBuildingByAdmin(adminId, buildingId);
+
+                Assert.IsNotNull(result);
+                Assert.AreEqual(buildingId, result.BuildingId);
+                Assert.AreEqual("Building 1", result.Name);
+            }
+        }
     }
 }
