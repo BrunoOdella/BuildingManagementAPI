@@ -82,7 +82,7 @@ namespace BusinessLogic.Logics
             if (!Guid.TryParse(managerId, out Guid parsedManagerId))
                 throw new ArgumentException("Invalid manager ID format.");
 
-            if (string.IsNullOrWhiteSpace(building.Manager.Email))
+            if (building.Manager is null || string.IsNullOrWhiteSpace(building.Manager.Email))
             {
                 // Ahora no solo es un manager quien puede modificar un edificio, sino que también un administrador de la empresa constructora
                 var existingBuilding = _buildingRepository.GetBuilding(parsedManagerId, building.BuildingId);

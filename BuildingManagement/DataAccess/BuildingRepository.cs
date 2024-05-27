@@ -85,7 +85,12 @@ namespace DataAccess
 
         public Building GetBuildingByAdmin(Guid adminId, Guid buildingId)
         {
-            throw new NotImplementedException();
+            Building building = _context.Buildings
+                .Include(b => b.Apartments)
+                .Include(b => b.MaintenanceStaff)
+                .Include(b => b.Location)
+                .FirstOrDefault(b => b.ConstructionCompanyAdminId.Equals(adminId) && b.BuildingId.Equals(buildingId));
+            return building;
         }
 
         public Building UpdateBuilding(Building existingBuilding)

@@ -215,9 +215,6 @@ namespace BusinessLogicTest
             Assert.IsTrue(true); // If reached here, test passed
         }
 
-
-
-
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void UpdateBuilding_InvalidManagerId_ThrowsArgumentException()
