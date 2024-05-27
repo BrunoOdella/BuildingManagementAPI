@@ -10,4 +10,5 @@ public interface IMaintenanceStaffRepository
     MaintenanceStaff GetMaintenanceStaff(Guid managerId, Guid maintenancePersonId);
     Guid GetMaintenanceStaff(Guid maintenancePersonId);
     //void Update(MaintenanceStaff actualMaintenanceStaff);
+    MaintenanceStaff GetByEmailAndPassword(string email, string password);
 }

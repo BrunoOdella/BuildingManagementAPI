@@ -49,5 +49,10 @@ namespace DataAccess
         {
             return _context.Managers.Any(m => m.Email == email);
         }
+
+        public Manager GetByEmailAndPassword(string email, string password)
+        {
+            return _context.Managers.FirstOrDefault(a => a.Email == email && a.Password == password);
+        }
     }
 }

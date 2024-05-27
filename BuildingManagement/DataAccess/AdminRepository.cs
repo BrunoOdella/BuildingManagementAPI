@@ -35,6 +35,11 @@ namespace DataAccess
         {
             return _context.Admins.Any(a => a.Email == email);
         }
+
+        public Admin GetByEmailAndPassword(string email, string password)
+        {
+            return _context.Admins.FirstOrDefault(a => a.Email == email && a.Password == password);
+        }
     }
 
 }

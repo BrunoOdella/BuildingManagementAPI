@@ -1,5 +1,7 @@
-﻿using IDataAccess;
+﻿using CustomExceptions;
+using IDataAccess;
 using LogicInterface.Interfaces;
+using System.Security.Authentication;
 
 namespace BusinessLogic.Logics;
 
@@ -144,4 +146,34 @@ public class AuthenticationService : IAuthenticationService
     {
         return _managerRepository.Get(token);
     }
+
+    public string Authenticate(string email, string password)
+    {
+        var admin = _adminRepository.GetByEmailAndPassword(email, password);
+        if (admin != null)
+        {
+            return admin.AdminID.ToString();
+        }
+
+        var constructionCompanyAdmin = _constructionCompanyAdminRepository.GetByEmailAndPassword(email, password);
+        if (constructionCompanyAdmin != null)
+        {
+            return constructionCompanyAdmin.Id.ToString();
+        }
+
+        var maintenanceStaff = _maintenanceStaffRepository.GetByEmailAndPassword(email, password);
+        if (maintenanceStaff != null)
+        {
+            return maintenanceStaff.ID.ToString();
+        }
+
+        var manager = _managerRepository.GetByEmailAndPassword(email, password);
+        if (manager != null)
+        {
+            return manager.ManagerId.ToString();
+        }
+
+        throw new InvalidCredentialsException();
+    }
+
 }

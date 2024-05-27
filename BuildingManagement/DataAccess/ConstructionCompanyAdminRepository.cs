@@ -35,5 +35,10 @@ namespace DataAccess
                 .Include(admin => admin.ConstructionCompany)
                 .FirstOrDefault(admin => admin.Id == id);
         }
+
+        public ConstructionCompanyAdmin GetByEmailAndPassword(string email, string password)
+        {
+            return _context.ConstructionCompanyAdmins.FirstOrDefault(a => a.Email == email && a.Password == password);
+        }
     }
 }
