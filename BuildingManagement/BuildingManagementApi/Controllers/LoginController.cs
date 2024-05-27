@@ -5,6 +5,7 @@ using Models.In;
 using CustomExceptions;
 using Microsoft.AspNetCore.Identity.Data;
 using System.Security.Authentication;
+using Models.Out;
 
 namespace BuildingManagementApi.Controllers
 {
@@ -20,10 +21,10 @@ namespace BuildingManagementApi.Controllers
         }
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginRequest loginRequest)
+        public IActionResult Login([FromBody] Models.In.LoginRequest loginRequest)
         {
             var token = _authenticationService.Authenticate(loginRequest.Email, loginRequest.Password);
-            return Ok(new { Token = token });
+            return Ok(new LoginResponse(token));
 
         }
     }
