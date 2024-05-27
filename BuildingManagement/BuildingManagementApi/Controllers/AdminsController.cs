@@ -7,7 +7,7 @@ using Models.Out;
 
 namespace BuildingManagementApi.Controllers
 {
-    [Route("api/v1/admins")]
+    [Route("api/v2/admins")]
     [ApiController]
     public class AdminsController : ControllerBase
     {

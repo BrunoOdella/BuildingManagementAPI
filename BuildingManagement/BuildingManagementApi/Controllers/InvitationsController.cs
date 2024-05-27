@@ -9,7 +9,7 @@ using Models.Out;
 
 namespace BuildingManagementApi.Controllers
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/v2/[controller]")]
     [ApiController]
     public class InvitationsController : ControllerBase
     {

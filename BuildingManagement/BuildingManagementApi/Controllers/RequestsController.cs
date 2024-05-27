@@ -10,7 +10,7 @@ using Models.Out;
 
 namespace BuildingManagementApi.Controllers
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/v2/[controller]")]
     [ApiController]
     [ServiceFilter(typeof(AuthenticationFilter))]
     public class RequestsController : ControllerBase

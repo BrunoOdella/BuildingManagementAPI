@@ -9,7 +9,7 @@ using Models.Out;
 
 namespace BuildingManagementApi.Controllers
 {
-    [Route("api/v2/")]
+    [Route("api/v2")]
     [ApiController]
     public class LoginController : ControllerBase
     {
@@ -23,8 +23,8 @@ namespace BuildingManagementApi.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] Models.In.LoginRequest loginRequest)
         {
-            var token = _authenticationService.Authenticate(loginRequest.Email, loginRequest.Password);
-            return Ok(new LoginResponse(token));
+            var authResult = _authenticationService.Authenticate(loginRequest.Email, loginRequest.Password);
+            return Ok(new LoginResponse(authResult.UserID.ToString(), authResult.UserType));
 
         }
     }

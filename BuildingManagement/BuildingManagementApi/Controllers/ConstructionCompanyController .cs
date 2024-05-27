@@ -8,7 +8,7 @@ using Models.Out;
 namespace BuildingManagementApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/v2/[controller]")]
     public class ConstructionCompanyController : ControllerBase
     {
         private readonly IConstructionCompanyLogic _constructionCompanyLogic;
