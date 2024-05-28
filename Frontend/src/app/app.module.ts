@@ -1,6 +1,7 @@
+// src/app/app.module.ts
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -12,6 +13,7 @@ import { MaintenanceStaffDashboardComponent } from './maintenance-staff-dashboar
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from './guards/auth.guard';
 import { ToggleThemeComponent } from './toggle-theme/toggle-theme.component';
+import { CreateAdminComponent } from './create-admin/create-admin.component';
 
 @NgModule({
   declarations: [
@@ -21,12 +23,14 @@ import { ToggleThemeComponent } from './toggle-theme/toggle-theme.component';
     ConstructionCompanyAdminDashboardComponent,
     ManagerDashboardComponent,
     MaintenanceStaffDashboardComponent,
-    ToggleThemeComponent
+    ToggleThemeComponent,
+    CreateAdminComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule
   ],
   providers: [AuthService, AuthGuard],

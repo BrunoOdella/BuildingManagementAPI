@@ -1,0 +1,22 @@
+<div class="form-container">
+    <h2>Create Admin</h2>
+    <form [formGroup]="createAdminForm" (ngSubmit)="onSubmit()">
+      <label for="firstName">First Name:</label>
+      <input id="firstName" formControlName="firstName" required>
+      
+      <label for="lastName">Last Name:</label>
+      <input id="lastName" formControlName="lastName" required>
+      
+      <label for="email">Email:</label>
+      <input id="email" formControlName="email" type="email" required>
+      
+      <label for="password">Password:</label>
+      <input id="password" formControlName="password" type="password" required>
+      
+      <button type="submit" class="primary">Create Admin</button>
+      
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+      <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+    </form>
+  </div>
+  
