@@ -19,6 +19,17 @@ builder.Services.AddBusinessLogicServices();
 builder.Services.AddDataAccessServices(builder.Configuration.GetConnectionString("DefaultConnection"));
 builder.Services.AddScoped<BuildingManagementApi.Filters.AuthenticationFilter>();
 
+// Configuración de CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+        });
+});
 
 var app = builder.Build();
 
@@ -39,14 +50,15 @@ var app = builder.Build();
 ////}
 // fin DE Seed data, BORRAR CUANDO ENTREGUEMOSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS!!!!!!!!!!!!!!!!!!!!!!!!!
 
-
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// Aplicar política de CORS
+app.UseCors("AllowAll");
 
 app.UseAuthorization();
 

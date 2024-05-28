@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -9,18 +10,30 @@ import { AuthService } from '../auth.service';
 export class LoginComponent {
   email: string = '';
   password: string = '';
+  errorMessage: string = '';
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private router: Router) {}
 
-  onSubmit() {
-    this.authService.login(this.email, this.password).subscribe(
+  login(): void {
+    this.authService.login({ email: this.email, password: this.password }).subscribe(
       response => {
-        console.log('Login successful', response);
-        // Guardar el token en el almacenamiento local o en cookies
-        localStorage.setItem('authToken', response.token);
+        switch (response.userType) {
+          case 'Admin':
+            this.router.navigate(['/admin']);
+            break;
+          case 'ConstructionCompanyAdmin':
+            this.router.navigate(['/construction-company-admin']);
+            break;
+          case 'Manager':
+            this.router.navigate(['/manager']);
+            break;
+          case 'MaintenanceStaff':
+            this.router.navigate(['/maintenance-staff']);
+            break;
+        }
       },
       error => {
-        console.error('Login failed', error);
+        this.errorMessage = error;
       }
     );
   }
