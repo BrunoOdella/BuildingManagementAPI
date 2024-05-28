@@ -1,3 +1,4 @@
+
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
@@ -8,11 +9,12 @@ import { MaintenanceStaffDashboardComponent } from './maintenance-staff-dashboar
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
-  { path: '', component: LoginComponent },
-  { path: 'admin', component: AdminDashboardComponent, canActivate: [AuthGuard], data: { role: 'Admin' } },
-  { path: 'construction-company-admin', component: ConstructionCompanyAdminDashboardComponent, canActivate: [AuthGuard], data: { role: 'ConstructionCompanyAdmin' } },
-  { path: 'manager', component: ManagerDashboardComponent, canActivate: [AuthGuard], data: { role: 'Manager' } },
-  { path: 'maintenance-staff', component: MaintenanceStaffDashboardComponent, canActivate: [AuthGuard], data: { role: 'MaintenanceStaff' } },
+  { path: 'api/v2/login', component: LoginComponent },
+  { path: 'api/v2/admin', component: AdminDashboardComponent, canActivate: [AuthGuard], data: { role: 'Admin' } },
+  { path: 'api/v2/construction-company-admin', component: ConstructionCompanyAdminDashboardComponent, canActivate: [AuthGuard], data: { role: 'ConstructionCompanyAdmin' } },
+  { path: 'api/v2/manager', component: ManagerDashboardComponent, canActivate: [AuthGuard], data: { role: 'Manager' } },
+  { path: 'api/v2/maintenance-staff', component: MaintenanceStaffDashboardComponent, canActivate: [AuthGuard], data: { role: 'MaintenanceStaff' } },
+  { path: '**', redirectTo: 'api/v2/login' } // Redirigir cualquier ruta no encontrada al login
 ];
 
 @NgModule({

@@ -1,3 +1,4 @@
+// src/app/login/login.component.ts
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
@@ -19,16 +20,16 @@ export class LoginComponent {
       response => {
         switch (response.userType) {
           case 'Admin':
-            this.router.navigate(['/admin']);
+            this.router.navigate(['api/v2/admin']);
             break;
           case 'ConstructionCompanyAdmin':
-            this.router.navigate(['/construction-company-admin']);
+            this.router.navigate(['api/v2/construction-company-admin']);
             break;
           case 'Manager':
-            this.router.navigate(['/manager']);
+            this.router.navigate(['api/v2/manager']);
             break;
           case 'MaintenanceStaff':
-            this.router.navigate(['/maintenance-staff']);
+            this.router.navigate(['api/v2/maintenance-staff']);
             break;
         }
       },
