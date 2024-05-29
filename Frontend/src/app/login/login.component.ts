@@ -1,4 +1,3 @@
-// src/app/login/login.component.ts
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
@@ -18,6 +17,7 @@ export class LoginComponent {
   login(): void {
     this.authService.login({ email: this.email, password: this.password }).subscribe(
       response => {
+        // Redireccionar basado en el tipo de usuario
         switch (response.userType) {
           case 'Admin':
             this.router.navigate(['admin-dashboard']);
@@ -37,5 +37,9 @@ export class LoginComponent {
         this.errorMessage = error;
       }
     );
+  }
+
+  navigateToAcceptInvitation(): void {
+    this.router.navigate(['accept-invitation']);
   }
 }

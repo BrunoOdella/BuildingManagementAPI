@@ -27,7 +27,7 @@ export class CreateCategoryComponent {
   onSubmit(): void {
     if (this.createCategoryForm.valid) {
       this.http.post('http://localhost:5154/api/v2/CategoriesRequests', this.createCategoryForm.value).subscribe(
-        (response: any) => {
+        response => {
           this.successMessage = 'Category created successfully!';
           this.errorMessage = '';
         },

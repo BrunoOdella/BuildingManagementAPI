@@ -18,7 +18,6 @@ public class CategoriesRequestsLogic : ICategoriesRequestsLogic
     {
         if (IsUnique(category))
         {
-            category.ID = _logic.Count() + 1;
             return _logic.Add(category);
         }
         throw new CategoryAlreadyExistException();

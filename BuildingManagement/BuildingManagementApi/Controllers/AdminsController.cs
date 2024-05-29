@@ -1,4 +1,5 @@
-﻿using LogicInterface.Interfaces;
+﻿using BuildingManagementApi.Filters;
+using LogicInterface.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models.In;
@@ -9,6 +10,7 @@ namespace BuildingManagementApi.Controllers
 {
     [Route("api/v2/admins")]
     [ApiController]
+    [ServiceFilter(typeof(AuthenticationFilter))]
     public class AdminsController : ControllerBase
     {
         private readonly IAdminLogic _adminLogic;

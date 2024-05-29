@@ -1,0 +1,14 @@
+<div class="form-container">
+    <h2>Create Construction Company</h2>
+    <form [formGroup]="createCompanyForm" (ngSubmit)="onSubmit()">
+      <label for="name">Name:</label>
+      <input id="name" formControlName="name" required>
+      
+      <button type="submit" class="primary">Create Company</button>
+      <button type="button" class="secondary" (click)="navigateToDashboard()">Back to Dashboard</button>
+      
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+      <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+    </form>
+  </div>
+  

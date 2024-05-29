@@ -51,7 +51,7 @@ namespace BusinessLogic.Logics
                 Manager manager = new Manager { Email = email, Password = password };
                 _managerRepository.CreateManager(manager);
             }
-            else if (invitation.Role == "construction_company_admin")
+            else if (invitation.Role == "constructioncompanyadmin")
             {
                 ConstructionCompanyAdmin constructionCompanyAdmin = new ConstructionCompanyAdmin { Email = email, Password = password };
                 _constructionCompanyAdminRepository.CreateConstructionCompanyAdmin(constructionCompanyAdmin);

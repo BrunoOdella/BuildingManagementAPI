@@ -1,0 +1,20 @@
+<div class="form-container">
+    <h2>Accept Invitation</h2>
+    <form [formGroup]="acceptInvitationForm" (ngSubmit)="onSubmit()">
+      <label for="invitationId">Invitation ID:</label>
+      <input id="invitationId" formControlName="invitationId" required>
+      
+      <label for="email">Email:</label>
+      <input id="email" formControlName="email" type="email" required>
+      
+      <label for="password">Password:</label>
+      <input id="password" formControlName="password" type="password" required>
+      
+      <button type="submit" class="primary">Accept Invitation</button>
+      <button type="button" class="secondary" (click)="navigateToLogin()">Back to Login</button>
+      
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+      <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+    </form>
+  </div>
+  

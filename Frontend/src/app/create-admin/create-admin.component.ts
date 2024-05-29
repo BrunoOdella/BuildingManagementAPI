@@ -29,7 +29,7 @@ export class CreateAdminComponent {
   onSubmit(): void {
     if (this.createAdminForm.valid) {
       this.http.post('http://localhost:5154/api/v2/admins', this.createAdminForm.value).subscribe(
-        (response: any) => {
+        response=> {
           this.successMessage = 'Admin created successfully!';
           this.errorMessage = '';
         },

@@ -29,7 +29,7 @@ export class ViewInvitationsComponent implements OnInit {
 
   deleteInvitation(invitationId: string): void {
     this.http.delete(`http://localhost:5154/api/v2/invitations/${invitationId}`).subscribe(
-      () => {
+      response => {
         this.invitations = this.invitations.filter(inv => inv.invitationId !== invitationId);
       },
       (error) => console.error(error)

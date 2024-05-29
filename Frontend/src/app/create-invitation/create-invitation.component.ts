@@ -1,4 +1,3 @@
-// src/app/create-invitation/create-invitation.component.ts
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
@@ -35,7 +34,7 @@ export class CreateInvitationComponent {
   onSubmit(): void {
     if (this.createInvitationForm.valid) {
       this.http.post('http://localhost:5154/api/v2/invitations', this.createInvitationForm.value).subscribe(
-        (response: any) => {
+        response => {
           this.successMessage = 'Invitation created successfully!';
           this.errorMessage = '';
         },

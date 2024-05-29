@@ -18,6 +18,8 @@ import { CreateAdminComponent } from './create-admin/create-admin.component';
 import { CreateInvitationComponent } from './create-invitation/create-invitation.component';
 import { ViewInvitationsComponent } from './view-invitations/view-invitations.component';
 import { CreateCategoryComponent } from './create-category/create-category.component';
+import { CreateConstructionCompanyComponent } from './create-construction-company/create-construction-company.component';
+import { AcceptInvitationComponent } from './accept-invitation/accept-invitation.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +34,8 @@ import { CreateCategoryComponent } from './create-category/create-category.compo
     CreateInvitationComponent,
     ViewInvitationsComponent,
     CreateCategoryComponent,
+    CreateConstructionCompanyComponent,
+    AcceptInvitationComponent,
   ],
   imports: [
     BrowserModule,
