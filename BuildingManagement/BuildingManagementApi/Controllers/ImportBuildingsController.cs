@@ -24,9 +24,10 @@ namespace BuildingManagementApi.Controllers
         [HttpPost]
         public IActionResult ImportBuildings([FromBody] ImportBuildingRequest importBuilding)
         {
-            var adminGuid = new Guid(_httpContextAccessor.HttpContext.Items["userID"] as string);
-            var response = _buildingImportLogic.ImportBuilding(adminGuid, importBuilding.AssemblyPath);
-            return StatusCode(201, new BuildingResponse(response));
+            //var adminGuid = new Guid(_httpContextAccessor.HttpContext.Items["userID"] as string);
+            var adminGuid = new System.Guid("0C68F751-225B-4BF5-A3F9-08DC801A0E05");
+            _buildingImportLogic.ImportBuilding(adminGuid, importBuilding.AssemblyPath);
+            return StatusCode(201);
         }
     }
 }

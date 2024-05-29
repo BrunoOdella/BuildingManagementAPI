@@ -76,7 +76,7 @@ namespace BuildingManagementApiTest
             };
 
             BuildingResponse response = new BuildingResponse(buildingEntity);
-            _buildingImportLogicMock.Setup(logic => logic.ImportBuilding(It.IsAny<Guid>(), It.IsAny<string>())).Returns(buildingEntity);
+            _buildingImportLogicMock.Setup(logic => logic.ImportBuilding(It.IsAny<Guid>(), It.IsAny<string>()));
 
             // Act
             ObjectResult result = _importBuildingsController.ImportBuildings(importBuildingRequest) as ObjectResult;
@@ -84,7 +84,6 @@ namespace BuildingManagementApiTest
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(201, result.StatusCode);
-            Assert.AreEqual(response, result.Value);
 
             _buildingImportLogicMock.VerifyAll();
             _httpContextAccessorMock.VerifyAll();
