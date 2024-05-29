@@ -90,6 +90,8 @@ public class AuthenticationService : IAuthenticationService
                 return buscarTokenAdmin(token);
             case "DELETE":
                 return buscarTokenAdmin(token);
+            case "GET":
+                return buscarTokenAdmin(token);
             default:
                 throw new NotImplementedException();
         }
