@@ -1,0 +1,17 @@
+<div class="form-container">
+    <h2>Create Category</h2>
+    <form [formGroup]="createCategoryForm" (ngSubmit)="onSubmit()">
+      <label for="name">Name:</label>
+      <input id="name" formControlName="name" required>
+      
+      <label for="description">Description:</label>
+      <input id="description" formControlName="description" required>
+      
+      <button type="submit" class="primary">Create Category</button>
+      <button type="button" class="secondary" (click)="navigateToDashboard()">Back to Dashboard</button>
+      
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+      <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+    </form>
+  </div>
+  

@@ -11,11 +11,19 @@ export class AdminDashboardComponent {
   constructor(private router: Router, private authService: AuthService) {}
 
   navigateToCreateAdmin(): void {
-    this.router.navigate(['admins']);
+    this.router.navigate(['create-admin']);
   }
 
   navigateToCreateInvitation(): void {
-    this.router.navigate(['invitations']);
+    this.router.navigate(['create-invitation']);
+  }
+
+  navigateToViewInvitations(): void {
+    this.router.navigate(['view-invitations']);
+  }
+
+  navigateToCreateCategory(): void {
+    this.router.navigate(['create-category']);
   }
 
   logout(): void {

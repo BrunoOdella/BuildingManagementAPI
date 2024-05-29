@@ -16,6 +16,8 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { ToggleThemeComponent } from './toggle-theme/toggle-theme.component';
 import { CreateAdminComponent } from './create-admin/create-admin.component';
 import { CreateInvitationComponent } from './create-invitation/create-invitation.component';
+import { ViewInvitationsComponent } from './view-invitations/view-invitations.component';
+import { CreateCategoryComponent } from './create-category/create-category.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { CreateInvitationComponent } from './create-invitation/create-invitation
     MaintenanceStaffDashboardComponent,
     ToggleThemeComponent,
     CreateAdminComponent,
-    CreateInvitationComponent
+    CreateInvitationComponent,
+    ViewInvitationsComponent,
+    CreateCategoryComponent,
   ],
   imports: [
     BrowserModule,

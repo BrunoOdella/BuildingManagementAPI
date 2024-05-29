@@ -1,0 +1,11 @@
+<!-- src/app/view-invitations/view-invitations.component.html -->
+<div class="container">
+  <h2>Invitations</h2>
+  <ul>
+    <li *ngFor="let invitation of invitations">
+      {{ invitation.email }} - {{ invitation.name }} - {{ invitation.expirationDate }} - {{ invitation.status }}
+      <button class="delete" (click)="deleteInvitation(invitation.invitationId)">Delete</button>
+    </li>
+  </ul>
+  <button class="secondary" (click)="navigateToDashboard()">Back to Dashboard</button>
+</div>
