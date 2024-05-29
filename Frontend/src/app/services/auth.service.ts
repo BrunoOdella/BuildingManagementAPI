@@ -1,5 +1,6 @@
+// src/app/services/auth.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
@@ -31,18 +32,6 @@ export class AuthService {
     );
   }
 
-  private handleError(error: HttpErrorResponse) {
-    let errorMessage = 'An unknown error occurred!';
-    if (error.error instanceof ErrorEvent) {
-      // Client-side or network error
-      errorMessage = `Error: ${error.error.message}`;
-    } else {
-      // Server-side error
-      errorMessage = `Error ${error.status}: ${error.error.message}`;
-    }
-    return throwError(errorMessage);
-  }
-
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('userType');
@@ -54,5 +43,24 @@ export class AuthService {
 
   getUserType(): string | null {
     return localStorage.getItem('userType');
+  }
+
+  getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    return new HttpHeaders({
+      'Authorization': token || ''
+    });
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    let errorMessage = 'An unknown error occurred!';
+    if (error.error instanceof ErrorEvent) {
+      // Client-side or network error
+      errorMessage = `Error: ${error.error.message}`;
+    } else {
+      // Server-side error
+      errorMessage = `Error ${error.status}: ${error.error.message}`;
+    }
+    return throwError(errorMessage);
   }
 }

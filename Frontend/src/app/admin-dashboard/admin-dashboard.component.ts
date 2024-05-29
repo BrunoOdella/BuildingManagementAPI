@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -7,9 +8,14 @@ import { Router } from '@angular/router';
   styleUrls: ['./admin-dashboard.component.css']
 })
 export class AdminDashboardComponent {
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   navigateToCreateAdmin(): void {
     this.router.navigate(['api/v2/admins']);
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['api/v2/login']);
   }
 }

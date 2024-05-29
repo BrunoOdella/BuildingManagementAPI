@@ -1,4 +1,3 @@
-// src/app/create-admin/create-admin.component.ts
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
@@ -40,5 +39,9 @@ export class CreateAdminComponent {
         }
       );
     }
+  }
+
+  navigateToDashboard(): void {
+    this.router.navigate(['api/v2/admin-dashboard']);
   }
 }
