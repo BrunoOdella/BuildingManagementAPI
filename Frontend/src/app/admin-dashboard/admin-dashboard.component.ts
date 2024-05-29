@@ -11,11 +11,15 @@ export class AdminDashboardComponent {
   constructor(private router: Router, private authService: AuthService) {}
 
   navigateToCreateAdmin(): void {
-    this.router.navigate(['api/v2/admins']);
+    this.router.navigate(['admins']);
+  }
+
+  navigateToCreateInvitation(): void {
+    this.router.navigate(['invitations']);
   }
 
   logout(): void {
     this.authService.logout();
-    this.router.navigate(['api/v2/login']);
+    this.router.navigate(['login']);
   }
 }

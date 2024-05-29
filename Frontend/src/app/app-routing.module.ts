@@ -8,15 +8,22 @@ import { ManagerDashboardComponent } from './manager-dashboard/manager-dashboard
 import { MaintenanceStaffDashboardComponent } from './maintenance-staff-dashboard/maintenance-staff-dashboard.component';
 import { AuthGuard } from './guards/auth.guard';
 import { CreateAdminComponent } from './create-admin/create-admin.component';
+import { CreateInvitationComponent } from './create-invitation/create-invitation.component';
 
 const routes: Routes = [
-  { path: 'api/v2/login', component: LoginComponent },
-  { path: 'api/v2/admin-dashboard', component: AdminDashboardComponent, canActivate: [AuthGuard], data: { role: 'Admin' } },
-  { path: 'api/v2/admins', component: CreateAdminComponent, canActivate: [AuthGuard], data: { role: 'Admin' } },
-  { path: 'api/v2/construction-company-admin-dashboard', component: ConstructionCompanyAdminDashboardComponent, canActivate: [AuthGuard], data: { role: 'ConstructionCompanyAdmin' } },
-  { path: 'api/v2/manager-dashboard', component: ManagerDashboardComponent, canActivate: [AuthGuard], data: { role: 'Manager' } },
-  { path: 'api/v2/maintenance-staff-dashboard', component: MaintenanceStaffDashboardComponent, canActivate: [AuthGuard], data: { role: 'MaintenanceStaff' } },
-  { path: '**', redirectTo: 'api/v2/login' }
+  { path: 'login', component: LoginComponent },
+
+  { path: 'admin-dashboard', component: AdminDashboardComponent, canActivate: [AuthGuard], data: { role: 'Admin' } },
+  { path: 'admins', component: CreateAdminComponent, canActivate: [AuthGuard], data: { role: 'Admin' } },
+  { path: 'invitations', component: CreateInvitationComponent, canActivate: [AuthGuard], data: { role: 'Admin' } },
+
+  { path: 'construction-company-admin-dashboard', component: ConstructionCompanyAdminDashboardComponent, canActivate: [AuthGuard], data: { role: 'ConstructionCompanyAdmin' } },
+  
+  { path: 'manager-dashboard', component: ManagerDashboardComponent, canActivate: [AuthGuard], data: { role: 'Manager' } },
+  
+  { path: 'maintenance-staff-dashboard', component: MaintenanceStaffDashboardComponent, canActivate: [AuthGuard], data: { role: 'MaintenanceStaff' } },
+ 
+  { path: '**', redirectTo: 'login' }
 ];
 
 @NgModule({

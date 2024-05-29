@@ -20,16 +20,16 @@ export class LoginComponent {
       response => {
         switch (response.userType) {
           case 'Admin':
-            this.router.navigate(['api/v2/admin-dashboard']);
+            this.router.navigate(['admin-dashboard']);
             break;
           case 'ConstructionCompanyAdmin':
-            this.router.navigate(['api/v2/construction-company-admin-dashboard']);
+            this.router.navigate(['construction-company-admin-dashboard']);
             break;
           case 'Manager':
-            this.router.navigate(['api/v2/manager-dashboard']);
+            this.router.navigate(['manager-dashboard']);
             break;
           case 'MaintenanceStaff':
-            this.router.navigate(['api/v2/maintenance-staff-dashboard']);
+            this.router.navigate(['maintenance-staff-dashboard']);
             break;
         }
       },

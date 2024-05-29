@@ -42,6 +42,6 @@ export class CreateAdminComponent {
   }
 
   navigateToDashboard(): void {
-    this.router.navigate(['api/v2/admin-dashboard']);
+    this.router.navigate(['admin-dashboard']);
   }
 }

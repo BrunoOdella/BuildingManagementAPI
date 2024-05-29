@@ -15,6 +15,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { ToggleThemeComponent } from './toggle-theme/toggle-theme.component';
 import { CreateAdminComponent } from './create-admin/create-admin.component';
+import { CreateInvitationComponent } from './create-invitation/create-invitation.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { CreateAdminComponent } from './create-admin/create-admin.component';
     ManagerDashboardComponent,
     MaintenanceStaffDashboardComponent,
     ToggleThemeComponent,
-    CreateAdminComponent
+    CreateAdminComponent,
+    CreateInvitationComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,26 @@
+<!-- src/app/create-invitation/create-invitation.component.html -->
+<div class="form-container">
+    <h2>Create Invitation</h2>
+    <form [formGroup]="createInvitationForm" (ngSubmit)="onSubmit()">
+      <label for="email">Email:</label>
+      <input id="email" formControlName="email" type="email" required>
+      
+      <label for="name">Name:</label>
+      <input id="name" formControlName="name" required>
+      
+      <label for="expirationDate">Expiration Date:</label>
+      <input id="expirationDate" formControlName="expirationDate" type="date" required>
+      
+      <label for="role">Role:</label>
+      <select id="role" formControlName="role" required>
+        <option *ngFor="let role of roles" [value]="role.value">{{ role.label }}</option>
+      </select>
+      
+      <button type="submit" class="primary">Create Invitation</button>
+      <button type="button" class="secondary" (click)="navigateToDashboard()">Back to Dashboard</button>
+      
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+      <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+    </form>
+  </div>
+  
