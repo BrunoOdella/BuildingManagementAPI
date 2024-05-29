@@ -13,7 +13,6 @@
         public Guid ManagerId { get; set; }
         // Propiedad de navegación hacia Manager
         public Manager Manager { get; set; }
-
         public Guid ConstructionCompanyAdminId { get; set; }
         public ConstructionCompanyAdmin ConstructionCompanyAdmin { get; set; }
 
