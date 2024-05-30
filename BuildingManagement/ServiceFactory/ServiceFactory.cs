@@ -23,6 +23,7 @@ namespace ServiceFactory
             serviceCollection.AddScoped<IConstructionCompanyLogic, ConstructionCompanyLogic>();
             serviceCollection
                 .AddScoped<IReportLogicByMaintenanceStaff, ConcreteReportFactory_RequestByMaintenanceStaff>();
+            serviceCollection.AddScoped<IBuildingImportLogic, BuildingImportLogic>();
         }
         public static void AddDataAccessServices(this IServiceCollection services, string connectionString)
         {

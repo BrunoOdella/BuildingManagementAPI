@@ -7,10 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CustomExceptions\CustomExceptions.csproj" />
-    <ProjectReference Include="..\IDataAccess\IDataAccess.csproj" />
     <ProjectReference Include="..\ImporterInterface\ImporterInterface.csproj" />
-    <ProjectReference Include="..\LogicInterface\LogicInterface.csproj" />
   </ItemGroup>
 
 </Project>

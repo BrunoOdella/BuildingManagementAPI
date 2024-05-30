@@ -44,9 +44,19 @@ namespace BusinessLogic.Logics
             building.ConstructionCompanyId = constructionCompanyAdmin.ConstructionCompany.ConstructionCompanyId;
             building.ConstructionCompany = constructionCompanyAdmin.ConstructionCompany;
 
-            building.ManagerId = null;
-            building.Manager = null;
+            // Verificar si tiene un manager asignado
+            if (building.Manager != null && !string.IsNullOrWhiteSpace(building.Manager.Email))
+            {
+                Manager manager = _managerRepository.GetManagerByEmail(building.Manager.Email);
+                if (manager == null)
+                {
+                    throw new InvalidOperationException("Manager not found.");
+                }
+                building.Manager = manager;
+                building.ManagerId = manager.ManagerId;
+            }
 
+            // Verificar si ya existe un edificio con la misma ubicación
             Building existingBuilding = _buildingRepository.GetBuildingByLocation(building.Location.Latitude, building.Location.Longitude);
             if (existingBuilding != null)
             {

@@ -24,5 +24,11 @@ namespace Models.Out
             CommonExpenses = building.CommonExpenses;
             ManagerName = building.Manager?.Name ?? "No Manager Assigned"; // Asignación del nombre del encargado
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is BuildingResponse response &&
+                   BuildingId == response.BuildingId;
+        }
     }
 }

@@ -33,6 +33,8 @@ public class AuthenticationService : IAuthenticationService
             return BuscarTokenInvitation(token, verbo);
         if (uri.ToLower().Contains("categoriesrequests"))
             return BuscarTokenCreateCategory(token, verbo);
+        if (uri.ToLower().Contains("importbuildings"))
+            return BuscarTokenCCAdmin(token);
         if (uri.ToLower().Contains("admins".ToLower()))
             return BuscarTokenAdmin(token, verbo);
         if (uri.ToLower().Contains("buildings".ToLower()))

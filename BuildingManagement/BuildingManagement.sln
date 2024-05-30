@@ -25,7 +25,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\Da
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessTest", "DataAccessTest\DataAccessTest.csproj", "{25461CE7-373F-4407-A6DD-F42786BA8EE2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomExceptions", "CustomExceptions\CustomExceptions.csproj", "{205A5D2B-1C71-4478-8228-3BF9EB0E29D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomExceptions", "CustomExceptions\CustomExceptions.csproj", "{205A5D2B-1C71-4478-8228-3BF9EB0E29D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonImporter", "JsonImporter\JsonImporter.csproj", "{610790AF-4684-4293-B89D-91D7A92F8520}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImporterInterface", "ImporterInterface\ImporterInterface.csproj", "{00533C4D-63AE-434E-9994-EE70259A9287}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +85,14 @@ Global
 		{205A5D2B-1C71-4478-8228-3BF9EB0E29D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{205A5D2B-1C71-4478-8228-3BF9EB0E29D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{205A5D2B-1C71-4478-8228-3BF9EB0E29D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{610790AF-4684-4293-B89D-91D7A92F8520}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{610790AF-4684-4293-B89D-91D7A92F8520}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{610790AF-4684-4293-B89D-91D7A92F8520}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{610790AF-4684-4293-B89D-91D7A92F8520}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00533C4D-63AE-434E-9994-EE70259A9287}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00533C4D-63AE-434E-9994-EE70259A9287}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00533C4D-63AE-434E-9994-EE70259A9287}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00533C4D-63AE-434E-9994-EE70259A9287}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
