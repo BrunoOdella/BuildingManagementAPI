@@ -46,7 +46,7 @@ namespace BusinessLogicTest
                 BuildingId = Guid.NewGuid(),
                 Name = "New Building",
                 Location = new Location { Latitude = 1.0, Longitude = 1.0 },
-                ConstructionCompanyAdminId = adminId
+              //  ConstructionCompanyAdminId = adminId
             };
 
             _constructionCompanyAdminRepositoryMock.Setup(repo => repo.GetConstructionCompanyAdminById(adminId)).Returns(constructionCompanyAdmin);
@@ -74,7 +74,7 @@ namespace BusinessLogicTest
                 BuildingId = Guid.NewGuid(),
                 Name = "New Building",
                 Location = new Location { Latitude = 1.0, Longitude = 1.0 },
-                ConstructionCompanyAdminId = invalidAdminId
+                //ConstructionCompanyAdminId = invalidAdminId
             };
 
             _constructionCompanyAdminRepositoryMock.Setup(repo => repo.GetConstructionCompanyAdminById(invalidAdminId)).Returns((ConstructionCompanyAdmin)null);
@@ -102,7 +102,7 @@ namespace BusinessLogicTest
                 BuildingId = Guid.NewGuid(),
                 Name = "New Building",
                 Location = new Location { Latitude = 1.0, Longitude = 1.0 },
-                ConstructionCompanyAdminId = adminId
+              //  ConstructionCompanyAdminId = adminId
             };
 
             _constructionCompanyAdminRepositoryMock.Setup(repo => repo.GetConstructionCompanyAdminById(adminId)).Returns(constructionCompanyAdmin);
@@ -135,7 +135,7 @@ namespace BusinessLogicTest
                 BuildingId = Guid.NewGuid(),
                 Name = "New Building",
                 Location = new Location { Latitude = 1.0, Longitude = 1.0 },
-                ConstructionCompanyAdminId = adminId
+            //    ConstructionCompanyAdminId = adminId
             };
 
             Building existingBuilding = new Building
@@ -320,14 +320,14 @@ namespace BusinessLogicTest
                     BuildingId = Guid.NewGuid(),
                     Name = "Building 1",
                     Address = "123 Main St",
-                    ConstructionCompanyAdminId = adminId
+           //         ConstructionCompanyAdminId = adminId
                 },
                 new Building
                 {
                     BuildingId = Guid.NewGuid(),
                     Name = "Building 2",
                     Address = "456 Oak St",
-                    ConstructionCompanyAdminId = adminId
+                //    ConstructionCompanyAdminId = adminId
                 }
             };
 

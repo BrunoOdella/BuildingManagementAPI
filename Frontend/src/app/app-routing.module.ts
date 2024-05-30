@@ -13,6 +13,7 @@ import { ViewInvitationsComponent } from './view-invitations/view-invitations.co
 import { CreateCategoryComponent } from './create-category/create-category.component';
 import { CreateConstructionCompanyComponent } from './create-construction-company/create-construction-company.component';
 import { AcceptInvitationComponent } from './accept-invitation/accept-invitation.component';
+import { CreateBuildingComponent } from './create-building/create-building.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -26,6 +27,7 @@ const routes: Routes = [
 
   { path: 'construction-company-admin-dashboard', component: ConstructionCompanyAdminDashboardComponent, canActivate: [AuthGuard], data: { role: 'ConstructionCompanyAdmin' } },
   { path: 'create-construction-company', component: CreateConstructionCompanyComponent, canActivate: [AuthGuard], data: { role: 'ConstructionCompanyAdmin' }},
+  { path: 'create-building', component: CreateBuildingComponent, canActivate: [AuthGuard], data: { role: 'ConstructionCompanyAdmin' }},
 
   { path: 'manager-dashboard', component: ManagerDashboardComponent, canActivate: [AuthGuard], data: { role: 'Manager' } },
  

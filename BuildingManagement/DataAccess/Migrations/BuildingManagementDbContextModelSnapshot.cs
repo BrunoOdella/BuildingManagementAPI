@@ -50,6 +50,38 @@ namespace DataAccess.Migrations
                     b.ToTable("Apartments");
                 });
 
+            modelBuilder.Entity("Building", b =>
+                {
+                    b.Property<Guid>("BuildingId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CommonExpenses")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ConstructionCompanyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ManagerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("BuildingId");
+
+                    b.HasIndex("ConstructionCompanyId");
+
+                    b.HasIndex("ManagerId");
+
+                    b.ToTable("Buildings");
+                });
+
             modelBuilder.Entity("Domain.Admin", b =>
                 {
                     b.Property<Guid>("AdminID")
@@ -75,38 +107,6 @@ namespace DataAccess.Migrations
                     b.HasKey("AdminID");
 
                     b.ToTable("Admins");
-                });
-
-            modelBuilder.Entity("Domain.Building", b =>
-                {
-                    b.Property<Guid>("BuildingId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CommonExpenses")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("ConstructionCompanyAdminId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ManagerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("BuildingId");
-
-                    b.HasIndex("ConstructionCompanyAdminId");
-
-                    b.HasIndex("ManagerId");
-
-                    b.ToTable("Buildings");
                 });
 
             modelBuilder.Entity("Domain.Category", b =>
@@ -319,7 +319,7 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Apartment", b =>
                 {
-                    b.HasOne("Domain.Building", "Building")
+                    b.HasOne("Building", "Building")
                         .WithMany("Apartments")
                         .HasForeignKey("BuildingId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -328,25 +328,18 @@ namespace DataAccess.Migrations
                     b.Navigation("Building");
                 });
 
-            modelBuilder.Entity("Domain.Building", b =>
+            modelBuilder.Entity("Building", b =>
                 {
                     b.HasOne("Domain.ConstructionCompany", "ConstructionCompany")
-                        .WithMany()
-                        .HasForeignKey("ConstructionCompanyAdminId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Domain.ConstructionCompanyAdmin", "ConstructionCompanyAdmin")
-                        .WithMany()
-                        .HasForeignKey("ConstructionCompanyAdminId")
+                        .WithMany("Buildings")
+                        .HasForeignKey("ConstructionCompanyId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Domain.Manager", "Manager")
                         .WithMany("Buildings")
                         .HasForeignKey("ManagerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.OwnsOne("Domain.Location", "Location", b1 =>
                         {
@@ -371,8 +364,6 @@ namespace DataAccess.Migrations
                         });
 
                     b.Navigation("ConstructionCompany");
-
-                    b.Navigation("ConstructionCompanyAdmin");
 
                     b.Navigation("Location")
                         .IsRequired();
@@ -434,9 +425,14 @@ namespace DataAccess.Migrations
                     b.Navigation("Requests");
                 });
 
-            modelBuilder.Entity("Domain.Building", b =>
+            modelBuilder.Entity("Building", b =>
                 {
                     b.Navigation("Apartments");
+                });
+
+            modelBuilder.Entity("Domain.ConstructionCompany", b =>
+                {
+                    b.Navigation("Buildings");
                 });
 
             modelBuilder.Entity("Domain.ConstructionCompanyAdmin", b =>

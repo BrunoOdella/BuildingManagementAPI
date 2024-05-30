@@ -14,6 +14,10 @@ export class ConstructionCompanyAdminDashboardComponent {
     this.router.navigate(['create-construction-company']);
   }
 
+  navigateToCreateBuilding(): void {
+    this.router.navigate(['create-building']);
+  }
+
   logout(): void {
     this.authService.logout();
     this.router.navigate(['login']);

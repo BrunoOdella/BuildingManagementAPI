@@ -20,6 +20,7 @@ import { ViewInvitationsComponent } from './view-invitations/view-invitations.co
 import { CreateCategoryComponent } from './create-category/create-category.component';
 import { CreateConstructionCompanyComponent } from './create-construction-company/create-construction-company.component';
 import { AcceptInvitationComponent } from './accept-invitation/accept-invitation.component';
+import { CreateBuildingComponent } from './create-building/create-building.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { AcceptInvitationComponent } from './accept-invitation/accept-invitation
     CreateCategoryComponent,
     CreateConstructionCompanyComponent,
     AcceptInvitationComponent,
+    CreateBuildingComponent,
   ],
   imports: [
     BrowserModule,

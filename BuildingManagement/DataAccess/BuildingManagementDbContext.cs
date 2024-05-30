@@ -29,69 +29,59 @@ namespace DataAccess
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Configuración de Location como una propiedad compleja de Building
+
             modelBuilder.Entity<Building>()
                 .OwnsOne(b => b.Location)
                 .HasIndex(b => new { b.Latitude, b.Longitude })
-                .IsUnique(); // Establecer restricción única en las coordenadas
+                .IsUnique();
 
             modelBuilder.Entity<Manager>()
                 .HasMany(m => m.Buildings)
                 .WithOne(b => b.Manager)
                 .HasForeignKey(b => b.ManagerId)
-                .OnDelete(DeleteBehavior.Cascade);  // Cascada en la eliminación de Manager
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Building>()
                 .HasMany(b => b.Apartments)
                 .WithOne(a => a.Building)
                 .HasForeignKey(a => a.BuildingId)
-                .OnDelete(DeleteBehavior.Cascade);  // Cascada en la eliminación de Building
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Apartment>()
                 .HasMany(a => a.Requests)
                 .WithOne(r => r.Apartment)
                 .HasForeignKey(r => r.ApartmentId)
-                .OnDelete(DeleteBehavior.Cascade);  // Cascada en la eliminación de Requests cuando se elimina Apartment    
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<MaintenanceStaff>()
                 .HasMany(ms => ms.Requests)
                 .WithOne(r => r.MaintenanceStaff)
                 .HasForeignKey(r => r.MaintenanceStaffId)
-                .OnDelete(DeleteBehavior.Restrict);  // No se eliminan las Requests al eliminar MaintenanceStaff
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Apartment>()
                 .HasOne(a => a.Owner)
                 .WithOne()
                 .HasForeignKey<Owner>(o => o.OwnerId)
-                .OnDelete(DeleteBehavior.Cascade);  // Cascada en la eliminación de Owner
+                .OnDelete(DeleteBehavior.Cascade);
 
-            // Configuración de la relación unidireccional entre Request_ y Category
             modelBuilder.Entity<Request_>()
-                .HasOne(r => r.Category)  // Request_ tiene una Category
-                .WithMany()  // No hay navegación inversa desde Category a Request_
-                .HasForeignKey(r => r.CategoryID)  // CategoryId es la clave foránea en Request_
-                .OnDelete(DeleteBehavior.Restrict);  // Configura el comportamiento en caso de eliminación
+                .HasOne(r => r.Category)
+                .WithMany()
+                .HasForeignKey(r => r.CategoryID)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            // Configuración de la relación entre ConstructionCompanyAdmin y ConstructionCompany
             modelBuilder.Entity<ConstructionCompany>()
                 .HasOne(cc => cc.ConstructionCompanyAdmin)
                 .WithOne(admin => admin.ConstructionCompany)
                 .HasForeignKey<ConstructionCompany>(cc => cc.ConstructionCompanyAdminId)
-                .OnDelete(DeleteBehavior.Restrict);  // Restricción en la eliminación de ConstructionCompany
+                .OnDelete(DeleteBehavior.Restrict);
 
-            // Configuración de la relación entre Building y ConstructionCompany
-            modelBuilder.Entity<Building>()
-                .HasOne(b => b.ConstructionCompany)
-                .WithMany()
-                .HasForeignKey(b => b.ConstructionCompanyAdminId)
-                .OnDelete(DeleteBehavior.Restrict);  // Restricción en la eliminación de Building
-
-            // Configuración de la relación entre Building y ConstructionCompanyAdmin
-            modelBuilder.Entity<Building>()
-                .HasOne(b => b.ConstructionCompanyAdmin)
-                .WithMany()
-                .HasForeignKey(b => b.ConstructionCompanyAdminId)
-                .OnDelete(DeleteBehavior.Restrict);  // Restricción en la eliminación de Building
+            modelBuilder.Entity<ConstructionCompany>()
+                .HasMany(cc => cc.Buildings)
+                .WithOne(b => b.ConstructionCompany)
+                .HasForeignKey(b => b.ConstructionCompanyId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
 
 

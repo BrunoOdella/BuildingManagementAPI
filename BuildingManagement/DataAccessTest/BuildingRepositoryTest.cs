@@ -490,7 +490,7 @@ namespace DataAccessTest
                 BuildingId = Guid.NewGuid(),
                 Name = "Building 1",
                 Address = "123 Main St",
-                ConstructionCompanyAdminId = adminId,
+//                ConstructionCompanyAdminId = adminId,
                 Manager = new Manager { Name = "Manager 1", Email = "manager1@example.com", Password = "password" }
             },
             new Building
@@ -498,8 +498,7 @@ namespace DataAccessTest
                 BuildingId = Guid.NewGuid(),
                 Name = "Building 2",
                 Address = "456 Oak St",
-                ConstructionCompanyAdminId = adminId,
-                Manager = new Manager { Name = "Manager 2", Email = "manager2@example.com", Password = "password" }
+//Manager = new Manager { Name = "Manager 2", Email = "manager2@example.com", Password = "password" }
             }
         };
 
@@ -532,7 +531,7 @@ namespace DataAccessTest
                     BuildingId = buildingId,
                     Name = "Building 1",
                     Address = "123 Main St",
-                    ConstructionCompanyAdminId = adminId,
+ //                   ConstructionCompanyAdminId = adminId,
                     Manager = new Manager { Name = "Manager 1", Email = "email", Password = "pass"}
                 };
 

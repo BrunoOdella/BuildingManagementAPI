@@ -1,0 +1,58 @@
+<div class="form-container">
+    <h2>Create Building</h2>
+    <form [formGroup]="createBuildingForm" (ngSubmit)="onSubmit()">
+      <label for="name">Name:</label>
+      <input id="name" formControlName="name" required>
+      
+      <label for="address">Address:</label>
+      <input id="address" formControlName="address" required>
+      
+      <label for="latitude">Latitude:</label>
+      <input id="latitude" formControlName="latitude" required>
+      
+      <label for="longitude">Longitude:</label>
+      <input id="longitude" formControlName="longitude" required>
+      
+      <label for="commonExpenses">Common Expenses:</label>
+      <input id="commonExpenses" formControlName="commonExpenses" required>
+      
+      <div formArrayName="apartments">
+        <div *ngFor="let apartment of apartments.controls; let i = index" [formGroupName]="i">
+          <h3>Apartment {{ i + 1 }}</h3>
+          <label for="floor-{{i}}">Floor:</label>
+          <input id="floor-{{i}}" formControlName="floor" required>
+          
+          <label for="number-{{i}}">Number:</label>
+          <input id="number-{{i}}" formControlName="number" required>
+          
+          <div formGroupName="owner">
+            <h4>Owner</h4>
+            <label for="firstName-{{i}}">First Name:</label>
+            <input id="firstName-{{i}}" formControlName="firstName" required>
+            
+            <label for="lastName-{{i}}">Last Name:</label>
+            <input id="lastName-{{i}}" formControlName="lastName" required>
+            
+            <label for="email-{{i}}">Email:</label>
+            <input id="email-{{i}}" formControlName="email" type="email" required>
+          </div>
+          
+          <label for="numberOfBathrooms-{{i}}">Number of Bathrooms:</label>
+          <input id="numberOfBathrooms-{{i}}" formControlName="numberOfBathrooms" required>
+          
+          <label for="hasTerrace-{{i}}">Has Terrace:</label>
+          <input id="hasTerrace-{{i}}" type="checkbox" formControlName="hasTerrace">
+          
+          <button type="button" class="secondary" (click)="removeApartment(i)">Remove Apartment</button>
+        </div>
+        <button type="button" class="primary" (click)="addApartment()">Add Apartment</button>
+      </div>
+      
+      <button type="submit" class="primary">Create Building</button>
+      <button type="button" class="secondary" (click)="navigateToDashboard()">Back to Dashboard</button>
+      
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+      <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+    </form>
+  </div>
+  

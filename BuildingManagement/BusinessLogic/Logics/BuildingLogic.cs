@@ -41,12 +41,12 @@ namespace BusinessLogic.Logics
                 throw new InvalidOperationException("Construction company admin does not have an associated construction company.");
             }
 
-            // Asignar la empresa constructora y el administrador al edificio
-            building.ConstructionCompanyAdminId = parsedConstructionCompanyAdminId;
-            building.ConstructionCompanyAdmin = constructionCompanyAdmin;
+            building.ConstructionCompanyId = constructionCompanyAdmin.ConstructionCompany.ConstructionCompanyId;
             building.ConstructionCompany = constructionCompanyAdmin.ConstructionCompany;
 
-            // Verificar si ya existe un edificio con la misma ubicación
+            building.ManagerId = null;
+            building.Manager = null;
+
             Building existingBuilding = _buildingRepository.GetBuildingByLocation(building.Location.Latitude, building.Location.Longitude);
             if (existingBuilding != null)
             {
@@ -55,6 +55,9 @@ namespace BusinessLogic.Logics
 
             return _buildingRepository.CreateBuilding(building);
         }
+
+
+
 
 
         public void DeleteBuilding(string managerId, Guid buildingId)

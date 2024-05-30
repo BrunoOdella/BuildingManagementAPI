@@ -86,9 +86,11 @@ namespace DataAccess
             Building building = _context.Buildings
                 .Include(b => b.Apartments)
                 .Include(b => b.Location)
-                .FirstOrDefault(b => b.ConstructionCompanyAdminId.Equals(adminId) && b.BuildingId.Equals(buildingId));
+                .Include(b => b.ConstructionCompany)
+                .FirstOrDefault(b => b.ConstructionCompany.ConstructionCompanyAdminId.Equals(adminId) && b.BuildingId.Equals(buildingId));
             return building;
         }
+
 
         public Building UpdateBuilding(Building existingBuilding)
         {
@@ -108,8 +110,10 @@ namespace DataAccess
         {
             return _context.Buildings
                 .Include(b => b.Manager)
-                .Where(b => b.ConstructionCompanyAdminId == constructionCompanyAdminId)
+                .Include(b => b.ConstructionCompany)
+                .Where(b => b.ConstructionCompany.ConstructionCompanyAdminId == constructionCompanyAdminId)
                 .ToList();
         }
+
     }
 }

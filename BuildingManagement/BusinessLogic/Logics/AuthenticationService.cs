@@ -59,6 +59,8 @@ public class AuthenticationService : IAuthenticationService
     {
         if(verbo == "PUT") //manager o constructionCompanyAdmin
             return BuscarTokenManagerAndCCAdmin(token);
+        if (verbo == "POST")
+            return BuscarTokenCCAdmin(token);
         return BuscarTokenManager(token);
     }
 

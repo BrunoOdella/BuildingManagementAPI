@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class v1 : Migration
+    public partial class v2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -124,24 +124,18 @@ namespace DataAccess.Migrations
                     BuildingId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ConstructionCompanyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CommonExpenses = table.Column<int>(type: "int", nullable: false),
-                    ManagerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ConstructionCompanyAdminId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    ManagerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Buildings", x => x.BuildingId);
                     table.ForeignKey(
-                        name: "FK_Buildings_ConstructionCompanies_ConstructionCompanyAdminId",
-                        column: x => x.ConstructionCompanyAdminId,
+                        name: "FK_Buildings_ConstructionCompanies_ConstructionCompanyId",
+                        column: x => x.ConstructionCompanyId,
                         principalTable: "ConstructionCompanies",
                         principalColumn: "ConstructionCompanyId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Buildings_ConstructionCompanyAdmins_ConstructionCompanyAdminId",
-                        column: x => x.ConstructionCompanyAdminId,
-                        principalTable: "ConstructionCompanyAdmins",
-                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Buildings_Managers_ManagerId",
@@ -256,9 +250,9 @@ namespace DataAccess.Migrations
                 column: "BuildingId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Buildings_ConstructionCompanyAdminId",
+                name: "IX_Buildings_ConstructionCompanyId",
                 table: "Buildings",
-                column: "ConstructionCompanyAdminId");
+                column: "ConstructionCompanyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Buildings_ManagerId",
