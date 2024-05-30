@@ -1,16 +1,15 @@
-﻿using Domain;
-using System.Text.Json;
+﻿using System.Text.Json;
 using ImporterInterface;
 
 namespace JsonImporter;
 
 public class JsonImporter : IBuildingImporter
 {
-    public List<Building> ImportBuilding()
+    public List<BuildingDTO> ImportBuilding()
     {
         string path = @"D:\Ort\DA2\Buildings.json"; // Ruta del archivo //"D:\Ort\DA2\Buildings.json"
 
-        List<Building> buildings = new List<Building>();
+        List<BuildingDTO> buildings = new List<BuildingDTO>();
 
         try
         {
@@ -30,29 +29,30 @@ public class JsonImporter : IBuildingImporter
                 {
                     Console.WriteLine($"Nombre del Edificio: {edificio.Nombre}");
 
-                    Building building = new Building
+                    BuildingDTO buildingDto = new BuildingDTO
                     {
                         Name = edificio.Nombre,
                         Address = $"{edificio.Direccion.CallePrincipal} {edificio.Direccion.NumeroPuerta}, {edificio.Direccion.CalleSecundaria}",
-                        Location = new Location
+                        Location = new LocationDTO
                         {
                             Latitude = edificio.Gps.Latitud,
                             Longitude = edificio.Gps.Longitud
                         },
                         CommonExpenses = edificio.GastosComunes,
-                        Apartments = edificio.Departamentos.Select(d => new Apartment
+                        Apartments = edificio.Departamentos.Select(d => new ApartmentDTO
                         {
                             Floor = d.Piso,
                             Number = d.NumeroPuerta,
                             HasTerrace = d.ConTerraza,
                             NumberOfBathrooms = d.Baños,
-                            Owner = new Owner() { Email = d.PropietarioEmail },
-
+                            NumberOfRooms = d.Habitaciones,
+                            Owner = new OwnerDTO { Email = d.PropietarioEmail }
                         }).ToList(),
-                        Manager = new Manager() { Email = edificio.Encargado },
+                        Manager = new ManagerDTO { Email = edificio.Encargado }
                     };
 
-                    buildings.Add(building);
+
+                    buildings.Add(buildingDto);
                     Console.WriteLine(edificio.Nombre);
                 }
             }

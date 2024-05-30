@@ -10,14 +10,20 @@ public class BuildingImportLogic : IBuildingImportLogic
 {
     private readonly IBuildingLogic _buildingLogic;
 
+    public BuildingImportLogic(IBuildingLogic buildingLogic)
+    {
+        _buildingLogic = buildingLogic;
+    }
+
     public void ImportBuilding(Guid adminGuid, string assemblyPath)
     {
         var importer = LoadImporter(assemblyPath);
-        List<Building> request = importer.ImportBuilding();
+        var request = importer.ImportBuilding();
 
-        foreach (var building in request)
+        foreach (var buildingDto in request)
         {
-            building.ConstructionCompanyAdminId = adminGuid;
+            Building building = CreateBuilding(adminGuid.ToString(), buildingDto);
+
             _buildingLogic.CreateBuilding(adminGuid.ToString(), building);
         }
     }
@@ -25,6 +31,7 @@ public class BuildingImportLogic : IBuildingImportLogic
     private IBuildingImporter LoadImporter(string assemblyPath)
     {
         Assembly assembly = Assembly.LoadFrom(assemblyPath);
+
         foreach (Type type in assembly.GetTypes())
         {
             if (typeof(IBuildingImporter).IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract)
@@ -32,6 +39,32 @@ public class BuildingImportLogic : IBuildingImportLogic
                 return (IBuildingImporter)Activator.CreateInstance(type);
             }
         }
+
         throw new InvalidOperationException("No valid importer found in assembly.");
+    }
+
+    private Building CreateBuilding(string adminGuid, BuildingDTO building)
+    {
+        return new Building
+        {
+            Name = building.Name,
+            Address = building.Address,
+            Location = new Location()
+            {
+                Latitude = building.Location.Latitude,
+                Longitude = building.Location.Longitude
+            },
+            CommonExpenses = building.CommonExpenses,
+            Apartments = building.Apartments.Select(a => new Apartment
+            {
+                Floor = a.Floor,
+                Number = a.Number,
+                HasTerrace = a.HasTerrace,
+                NumberOfBathrooms = a.NumberOfBathrooms,
+                Owner = new Owner { Email = a.Owner.Email }
+            }).ToList(),
+            Manager = new Manager { Email = building.Manager.Email },
+            ConstructionCompanyAdminId = Guid.Parse(adminGuid)
+        };
     }
 }
