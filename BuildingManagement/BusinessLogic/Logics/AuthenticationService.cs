@@ -41,7 +41,16 @@ public class AuthenticationService : IAuthenticationService
             return BuscarTokenReport(token, verbo);
         if (uri.ToLower().Contains("constructioncompany".ToLower()))
             return BuscarTokenConstructionCompany(token, verbo);
+        if (uri.ToLower().Contains("maintenancestaff".ToLower()))
+            return BuscarTokenMaintenanceStaff(token, verbo);
         throw new NotImplementedException();
+    }
+
+    private Guid BuscarTokenMaintenanceStaff(Guid token, string verbo)
+    {
+        if (verbo == "POST")
+            return BuscarTokenManager(token);
+        return BuscarTokenManager(token);
     }
 
     private Guid BuscarTokenReport(Guid token, string verbo)

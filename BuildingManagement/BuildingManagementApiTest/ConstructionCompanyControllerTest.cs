@@ -57,7 +57,7 @@ namespace BuildingManagementApiTest
         {
             UpdateConstructionCompanyRequest constructionCompany = new UpdateConstructionCompanyRequest
             {
-                ActualName = "CompanyName1",
+                //ActualName = "CompanyName1",
                 NewName = "CompanyName2"
             };
 

@@ -46,14 +46,14 @@ namespace BusinessLogic.Logics
             invitation.Status = "Aceptada";
             _invitationRepository.UpdateInvitation(invitation);
 
-            if (invitation.Role == "encargado")
+            if (invitation.Role == "manager")
             {
-                Manager manager = new Manager { Email = email, Password = password };
+                Manager manager = new Manager { Email = email, Password = password, Name=invitation.Name };
                 _managerRepository.CreateManager(manager);
             }
             else if (invitation.Role == "constructioncompanyadmin")
             {
-                ConstructionCompanyAdmin constructionCompanyAdmin = new ConstructionCompanyAdmin { Email = email, Password = password };
+                ConstructionCompanyAdmin constructionCompanyAdmin = new ConstructionCompanyAdmin { Email = email, Password = password,Name = invitation.Name };
                 _constructionCompanyAdminRepository.CreateConstructionCompanyAdmin(constructionCompanyAdmin);
             }
             else
