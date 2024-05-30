@@ -28,7 +28,7 @@ namespace BuildingManagementApi.Controllers
         public IActionResult CreateConstructionCompany([FromBody] CreateConstructionCompanyRequest constructionCompanyRequest)
         {
             string ConsCompanyAdminId = _httpContextAccessor.HttpContext.Items["userID"] as string;
-            var createdCompany = new ConstructionCompanyResponse(_constructionCompanyLogic.CreateConstructionCompany(constructionCompanyRequest.ToEntity(), ConsCompanyAdminId));
+            ConstructionCompanyResponse createdCompany = new ConstructionCompanyResponse(_constructionCompanyLogic.CreateConstructionCompany(constructionCompanyRequest.ToEntity(), ConsCompanyAdminId));
             return StatusCode(201, createdCompany);
         }
 
@@ -36,8 +36,9 @@ namespace BuildingManagementApi.Controllers
         public IActionResult UpdateConstructionCompany(
             [FromBody] UpdateConstructionCompanyRequest updateConstructionCompanyRequest)
         {
-            var updatedCompany = new ConstructionCompanyResponse(
-                _constructionCompanyLogic.UpdateConstructionCompanyName(updateConstructionCompanyRequest.ToEntity(), updateConstructionCompanyRequest.ActualName));
+            string ConsCompanyAdminId = _httpContextAccessor.HttpContext.Items["userID"] as string;
+            ConstructionCompanyResponse updatedCompany = new ConstructionCompanyResponse(
+                _constructionCompanyLogic.UpdateConstructionCompanyName(updateConstructionCompanyRequest.ToEntity(), ConsCompanyAdminId));
             return StatusCode(200, updatedCompany);
         }
     }

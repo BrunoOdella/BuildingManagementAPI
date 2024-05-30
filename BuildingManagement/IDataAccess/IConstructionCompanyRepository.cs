@@ -14,5 +14,8 @@ namespace IDataAccess
         public bool AdminHasCompany(Guid constructionCompanyAdminId);
         ConstructionCompany UpdateConstructionCompanyName(ConstructionCompany company, string actualName);
         ConstructionCompanyAdmin GetConstructionCompanyAdminById(string constructionCompanyAdminId);
+        ConstructionCompany GetCompanyByAdminId(Guid adminId);
+        void UpdateConstructionCompany(ConstructionCompany constructionCompany);
+
     }
 }

@@ -47,18 +47,26 @@ namespace BusinessLogic.Logics
         }
 
 
-        public ConstructionCompany UpdateConstructionCompanyName(ConstructionCompany constructionCompany, string actualName)
+        public ConstructionCompany UpdateConstructionCompanyName(ConstructionCompany constructionCompany, string constructionCompanyAdminId)
         {
-            if (string.IsNullOrWhiteSpace(constructionCompany.Name))
-                throw new ConstructionCompanyNameCanNotBeEmptyException();
+            var admin = _constructionCompanyRepository.GetConstructionCompanyAdminById(constructionCompanyAdminId);
+            if (admin == null)
+            {
+                throw new ConstructionCompanyAdminNotFoundException();
+            }
 
-            if (_constructionCompanyRepository.NameExists(constructionCompany.Name))
-                throw new ConstructionCompanyAlreadyExistsException();
+            var existingCompany = _constructionCompanyRepository.GetCompanyByAdminId(admin.Id);
+            if (existingCompany == null)
+            {
+                throw new ConstructionCompanyNotFoundException();
+            }
 
-            if (!_constructionCompanyRepository.NameExists(actualName))
-                throw new ConstructionCompanyDoesNotExistException();
+            existingCompany.Name = constructionCompany.Name;
 
-            return _constructionCompanyRepository.UpdateConstructionCompanyName(constructionCompany, actualName);
+            _constructionCompanyRepository.UpdateConstructionCompany(existingCompany);
+
+            return existingCompany;
         }
+
     }
 }

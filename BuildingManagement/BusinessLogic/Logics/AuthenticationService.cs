@@ -61,6 +61,8 @@ public class AuthenticationService : IAuthenticationService
             return BuscarTokenManagerAndCCAdmin(token);
         if (verbo == "POST")
             return BuscarTokenCCAdmin(token);
+        if (verbo == "GET")
+            return BuscarTokenCCAdmin(token);
         return BuscarTokenManager(token);
     }
 

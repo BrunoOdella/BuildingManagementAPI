@@ -43,5 +43,15 @@ namespace DataAccess
         {
             return _context.ConstructionCompanyAdmins.Find(new Guid(adminId));
         }
+        public void UpdateConstructionCompany(ConstructionCompany constructionCompany)
+        {
+            _context.ConstructionCompanies.Update(constructionCompany);
+            _context.SaveChanges();
+        }
+
+        public ConstructionCompany GetCompanyByAdminId(Guid adminId)
+        {
+            return _context.ConstructionCompanies.FirstOrDefault(cc => cc.ConstructionCompanyAdminId == adminId);
+        }
     }
 }
