@@ -1,0 +1,23 @@
+<div class="form-container">
+    <h2>Create Maintenance Staff</h2>
+    <form [formGroup]="createMaintenanceStaffForm" (ngSubmit)="onSubmit()">
+      <label for="name">Name:</label>
+      <input id="name" formControlName="name" required>
+      
+      <label for="lastName">Last Name:</label>
+      <input id="lastName" formControlName="lastName" required>
+      
+      <label for="email">Email:</label>
+      <input id="email" formControlName="email" required>
+      
+      <label for="password">Password:</label>
+      <input id="password" type="password" formControlName="password" required>
+      
+      <button type="submit" class="primary">Create Maintenance Staff</button>
+      <button type="button" class="secondary" (click)="navigateToDashboard()">Back to Dashboard</button>
+      
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+      <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+    </form>
+  </div>
+  

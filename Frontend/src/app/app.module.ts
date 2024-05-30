@@ -23,6 +23,7 @@ import { AcceptInvitationComponent } from './accept-invitation/accept-invitation
 import { CreateBuildingComponent } from './create-building/create-building.component';
 import { ListBuildingsComponent } from './list-buildings/list-buildings.component';
 import { UpdateCompanyNameComponent } from './update-company-name/update-company-name.component';
+import { CreateMaintenanceStaffComponent } from './create-maintenance-staff/create-maintenance-staff.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { UpdateCompanyNameComponent } from './update-company-name/update-company
     CreateBuildingComponent,
     ListBuildingsComponent,
     UpdateCompanyNameComponent,
+    CreateMaintenanceStaffComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,3 @@
-// src/app/app-routing.module.ts
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
@@ -16,6 +15,7 @@ import { AcceptInvitationComponent } from './accept-invitation/accept-invitation
 import { CreateBuildingComponent } from './create-building/create-building.component';
 import { ListBuildingsComponent } from './list-buildings/list-buildings.component';
 import { UpdateCompanyNameComponent } from './update-company-name/update-company-name.component';
+import { CreateMaintenanceStaffComponent } from './create-maintenance-staff/create-maintenance-staff.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -34,6 +34,7 @@ const routes: Routes = [
   { path: 'update-company-name', component: UpdateCompanyNameComponent, canActivate: [AuthGuard], data: { role: 'ConstructionCompanyAdmin' } },
 
   { path: 'manager-dashboard', component: ManagerDashboardComponent, canActivate: [AuthGuard], data: { role: 'Manager' } },
+  { path: 'create-maintenance-staff', component: CreateMaintenanceStaffComponent, canActivate: [AuthGuard], data: { role: 'Manager' } },
  
   { path: 'maintenance-staff-dashboard', component: MaintenanceStaffDashboardComponent, canActivate: [AuthGuard], data: { role: 'MaintenanceStaff' } },
  
