@@ -1,0 +1,14 @@
+<div class="form-container">
+    <h2>Update Company Name</h2>
+    <form [formGroup]="updateCompanyNameForm" (ngSubmit)="onSubmit()">
+      <label for="newName">New Name:</label>
+      <input id="newName" formControlName="newName" required>
+      
+      <button type="submit" class="primary">Update Name</button>
+      <button type="button" class="secondary" (click)="navigateToDashboard()">Back to Dashboard</button>
+      
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+      <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+    </form>
+  </div>
+  

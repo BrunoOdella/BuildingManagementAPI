@@ -18,6 +18,14 @@ export class ConstructionCompanyAdminDashboardComponent {
     this.router.navigate(['create-building']);
   }
 
+  navigateToListBuildings(): void {
+    this.router.navigate(['list-buildings']);
+  }
+
+  navigateToUpdateCompanyName(): void {
+    this.router.navigate(['update-company-name']);
+  }
+
   logout(): void {
     this.authService.logout();
     this.router.navigate(['login']);

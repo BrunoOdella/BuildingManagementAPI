@@ -21,6 +21,8 @@ import { CreateCategoryComponent } from './create-category/create-category.compo
 import { CreateConstructionCompanyComponent } from './create-construction-company/create-construction-company.component';
 import { AcceptInvitationComponent } from './accept-invitation/accept-invitation.component';
 import { CreateBuildingComponent } from './create-building/create-building.component';
+import { ListBuildingsComponent } from './list-buildings/list-buildings.component';
+import { UpdateCompanyNameComponent } from './update-company-name/update-company-name.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +40,8 @@ import { CreateBuildingComponent } from './create-building/create-building.compo
     CreateConstructionCompanyComponent,
     AcceptInvitationComponent,
     CreateBuildingComponent,
+    ListBuildingsComponent,
+    UpdateCompanyNameComponent,
   ],
   imports: [
     BrowserModule,
