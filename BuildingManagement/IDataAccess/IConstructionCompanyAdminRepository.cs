@@ -12,6 +12,7 @@ namespace IDataAccess
         void CreateConstructionCompanyAdmin(ConstructionCompanyAdmin constructionCompanyAdmin);
         bool EmailExistsInConstructionCompanyAdmins(string email);
         ConstructionCompanyAdmin GetConstructionCompanyAdminById(Guid id);
+        Guid Get(Guid Id);
         ConstructionCompanyAdmin GetByEmailAndPassword(string email, string password);
     }
 }

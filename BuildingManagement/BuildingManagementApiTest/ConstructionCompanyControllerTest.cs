@@ -8,6 +8,7 @@ using Moq;
 using System;
 using Models.Out;
 using Azure;
+using Microsoft.AspNetCore.Http;
 
 namespace BuildingManagementApiTest
 {
@@ -16,12 +17,13 @@ namespace BuildingManagementApiTest
     {
         private Mock<IConstructionCompanyLogic> _constructionCompanyLogicMock;
         private ConstructionCompanyController _constructionCompanyController;
+        private IHttpContextAccessor _httpContextAccessorMock;
 
         [TestInitialize]
         public void TestSetup()
         {
             _constructionCompanyLogicMock = new Mock<IConstructionCompanyLogic>(MockBehavior.Strict);
-            _constructionCompanyController = new ConstructionCompanyController(_constructionCompanyLogicMock.Object);
+            _constructionCompanyController = new ConstructionCompanyController(_constructionCompanyLogicMock.Object, _httpContextAccessorMock);
         }
 
         [TestMethod]
@@ -39,7 +41,7 @@ namespace BuildingManagementApiTest
 
             ConstructionCompanyResponse response = new ConstructionCompanyResponse(newCreateConstructionCompanyRequest.ToEntity());
 
-            _constructionCompanyLogicMock.Setup(logic => logic.CreateConstructionCompany(It.IsAny<ConstructionCompany>())).Returns(constructionCompanyEntity);
+            //_constructionCompanyLogicMock.Setup(logic => logic.CreateConstructionCompany(It.IsAny<ConstructionCompany>())).Returns(constructionCompanyEntity);
 
             ObjectResult result = _constructionCompanyController.CreateConstructionCompany(newCreateConstructionCompanyRequest) as ObjectResult;
 

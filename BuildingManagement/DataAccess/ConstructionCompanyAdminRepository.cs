@@ -36,6 +36,16 @@ namespace DataAccess
                 .FirstOrDefault(admin => admin.Id == id);
         }
 
+        public Guid Get(Guid ID)
+        {
+            ConstructionCompanyAdmin admin = _context.ConstructionCompanyAdmins
+                .FirstOrDefault(m => m.Id.Equals(ID));
+            if (admin == null)
+            {
+                return Guid.Empty;
+            }
+            return admin.Id;
+        }
         public ConstructionCompanyAdmin GetByEmailAndPassword(string email, string password)
         {
             return _context.ConstructionCompanyAdmins.FirstOrDefault(a => a.Email == email && a.Password == password);

@@ -17,20 +17,35 @@ namespace BusinessLogic.Logics
             _constructionCompanyAdminRepository = constructionCompanyAdminRepository;
         }
 
-        public ConstructionCompany CreateConstructionCompany(ConstructionCompany constructionCompany)
+        public ConstructionCompany CreateConstructionCompany(ConstructionCompany constructionCompany, string constructionCompanyAdminId)
         {
+            // Check if the ConstructionCompanyAdmin exists
+            var admin = _constructionCompanyRepository.GetConstructionCompanyAdminById(constructionCompanyAdminId);
+            if (admin == null)
+            {
+                throw new ConstructionCompanyAdminNotFoundException();
+            }
+
+            // Check if the ConstructionCompany name already exists
             if (_constructionCompanyRepository.NameExists(constructionCompany.Name))
             {
                 throw new ConstructionCompanyAlreadyExistsException();
             }
 
-            if (_constructionCompanyRepository.AdminHasCompany(constructionCompany.ConstructionCompanyAdminId))
+            // Check if the ConstructionCompanyAdmin already has a company
+            if (_constructionCompanyRepository.AdminHasCompany(admin.Id))
             {
                 throw new AdminAlreadyHasCompanyException();
             }
 
+            // Assign the existing admin's ID to the ConstructionCompany
+            constructionCompany.ConstructionCompanyAdminId = admin.Id;
+            constructionCompany.ConstructionCompanyAdmin = admin;
+
+            // Create the ConstructionCompany
             return _constructionCompanyRepository.CreateConstructionCompany(constructionCompany);
         }
+
 
         public ConstructionCompany UpdateConstructionCompanyName(ConstructionCompany constructionCompany, string actualName)
         {

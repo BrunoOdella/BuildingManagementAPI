@@ -10,7 +10,7 @@ namespace BuildingManagementApi.Controllers
 {
     [Route("api/v2/admins")]
     [ApiController]
-    [ServiceFilter(typeof(AuthenticationFilter))]
+    //[ServiceFilter(typeof(AuthenticationFilter))]
     public class AdminsController : ControllerBase
     {
         private readonly IAdminLogic _adminLogic;

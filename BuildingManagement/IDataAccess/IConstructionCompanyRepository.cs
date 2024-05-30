@@ -13,5 +13,6 @@ namespace IDataAccess
         bool NameExists(string name);
         public bool AdminHasCompany(Guid constructionCompanyAdminId);
         ConstructionCompany UpdateConstructionCompanyName(ConstructionCompany company, string actualName);
+        ConstructionCompanyAdmin GetConstructionCompanyAdminById(string constructionCompanyAdminId);
     }
 }

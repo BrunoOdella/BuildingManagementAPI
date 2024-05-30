@@ -38,5 +38,10 @@ namespace DataAccess
             _context.SaveChanges();
             return constructionCompany;
         }
+
+        public ConstructionCompanyAdmin GetConstructionCompanyAdminById(string adminId)
+        {
+            return _context.ConstructionCompanyAdmins.Find(new Guid(adminId));
+        }
     }
 }
