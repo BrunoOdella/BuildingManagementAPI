@@ -28,7 +28,7 @@ namespace BuildingManagementApi.Controllers
         {
             var adminGuid = new Guid(_httpContextAccessor.HttpContext.Items["userID"] as string);
             _buildingImportLogic.ImportBuilding(adminGuid, importBuilding.AssemblyPath);
-            return StatusCode(201);
+            return StatusCode(201, "Buildings Created");
         }
     }
 }

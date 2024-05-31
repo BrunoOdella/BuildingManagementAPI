@@ -65,7 +65,6 @@ public class AuthenticationService : IAuthenticationService
         return BuscarTokenConstructionCompanyAdmin(token);
     }
 
-
     private Guid BuscarTokenBuilding(Guid token, string verbo)
     {
         if(verbo == "PUT") //manager o constructionCompanyAdmin
