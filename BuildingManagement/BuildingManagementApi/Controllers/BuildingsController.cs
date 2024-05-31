@@ -52,8 +52,17 @@ namespace BuildingManagementApi.Controllers
         public IActionResult GetBuildings()
         {
             string adminId = _httpContextAccessor.HttpContext.Items["userID"] as string;
-            var buildings = _buildingLogic.GetBuildingsByConstructionCompanyAdminId(adminId);
+            var buildings = _buildingLogic.GetBuildings(adminId);
             var response = buildings.Select(b => new BuildingResponse(b)).ToList();
+            return Ok(response);
+        }
+
+        [HttpGet("{buildingId}/apartments")]
+        public IActionResult GetApartments(Guid buildingId)
+        {
+            string managerId = _httpContextAccessor.HttpContext.Items["userID"] as string;
+            var apartments = _buildingLogic.GetApartments(managerId, buildingId);
+            var response = apartments.Select(b => new ApartmentResponse(b)).ToList();
             return Ok(response);
         }
 

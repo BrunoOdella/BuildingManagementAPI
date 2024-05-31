@@ -133,14 +133,35 @@ namespace BusinessLogic.Logics
             }
         }
 
-        public IEnumerable<Building> GetBuildingsByConstructionCompanyAdminId(string adminId)
+        public IEnumerable<Building> GetBuildings(string adminId)
         {
             if (!Guid.TryParse(adminId, out Guid parsedAdminId))
             {
                 throw new ArgumentException("Invalid admin ID");
             }
+            parsedAdminId = Guid.Parse(adminId);
+            if (_managerRepository.Get(parsedAdminId) != null)
+            {
+                return _buildingRepository.GetBuildingsByConstructionCompanyAdminId(parsedAdminId);
+            }
+            if (_constructionCompanyAdminRepository.Get(parsedAdminId) != null)
+            {
+                return _buildingRepository.GetBuildingsByManagerId(parsedAdminId);
+            }
+                throw new ArgumentException("Not buildings found");
+        }
 
-            return _buildingRepository.GetBuildingsByConstructionCompanyAdminId(parsedAdminId);
+        public IEnumerable<Apartment> GetApartments(string managerId, Guid buildingId)
+        {
+            if (!Guid.TryParse(managerId, out Guid parsedAdminId))
+            {
+                throw new ArgumentException("Invalid manager ID");
+            }
+            if (_buildingRepository.GetAllApartments(parsedAdminId, buildingId) == null)
+            {
+                throw new ArgumentException("Not apartments found");
+            }
+            return _buildingRepository.GetAllApartments(parsedAdminId, buildingId);
         }
 
     }

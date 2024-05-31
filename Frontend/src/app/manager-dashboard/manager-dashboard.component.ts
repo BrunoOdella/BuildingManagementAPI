@@ -14,6 +14,10 @@ export class ManagerDashboardComponent {
     this.router.navigate(['create-maintenance-staff']);
   }
 
+  navigateToAddRequest(): void {
+    this.router.navigate(['select-building']);
+  }
+
   logout(): void {
     this.authService.logout();
     this.router.navigate(['login']);

@@ -115,5 +115,14 @@ namespace DataAccess
                 .ToList();
         }
 
+        public IEnumerable<Building> GetBuildingsByManagerId(Guid managerId)
+        {
+            return _context.Buildings
+                .Include(b => b.Manager)
+                .Include(b => b.ConstructionCompany)
+                .Where(b => b.Manager.ManagerId == managerId)
+                .ToList();
+        }
+
     }
 }

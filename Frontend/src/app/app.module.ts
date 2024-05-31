@@ -24,6 +24,8 @@ import { CreateBuildingComponent } from './create-building/create-building.compo
 import { ListBuildingsComponent } from './list-buildings/list-buildings.component';
 import { UpdateCompanyNameComponent } from './update-company-name/update-company-name.component';
 import { CreateMaintenanceStaffComponent } from './create-maintenance-staff/create-maintenance-staff.component';
+import { SelectBuildingComponent } from './select-building/select-building.component';
+import { SelectApartmentComponent } from './select-apartment/select-apartment.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +46,8 @@ import { CreateMaintenanceStaffComponent } from './create-maintenance-staff/crea
     ListBuildingsComponent,
     UpdateCompanyNameComponent,
     CreateMaintenanceStaffComponent,
+    SelectBuildingComponent,
+    SelectApartmentComponent,
   ],
   imports: [
     BrowserModule,
