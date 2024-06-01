@@ -1,21 +1,32 @@
 <div class="container">
-    <h2>Buildings</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Address</th>
-          <th>Manager</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let building of buildings">
-          <td>{{ building.name }}</td>
-          <td>{{ building.address }}</td>
-          <td>{{ building.managerName ? building.managerName : 'No Manager' }}</td>
-        </tr>
-      </tbody>
-    </table>
-    <button class="secondary" (click)="navigateToDashboard()">Back to Dashboard</button>
-  </div>
-  
+  <h2>Buildings</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Manager</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let building of buildings">
+        <td>{{ building.name }}</td>
+        <td>{{ building.address }}</td>
+        <td>
+          <div *ngIf="building.managerName !== 'No Manager Assigned'; else noManager">
+            {{ building.managerName }}
+          </div>
+          <ng-template #noManager>
+            <form [formGroup]="managerForms[building.buildingId]">
+              <select formControlName="manager">
+                <option *ngFor="let manager of managers" [value]="manager.managerId">{{ manager.email }}</option>
+              </select>
+              <button type="button" (click)="updateBuilding(building)">Assign</button>
+            </form>
+          </ng-template>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <button class="secondary" (click)="navigateToDashboard()">Back to Dashboard</button>
+</div>
