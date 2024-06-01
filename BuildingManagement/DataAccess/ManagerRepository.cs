@@ -54,5 +54,17 @@ namespace DataAccess
         {
             return _context.Managers.FirstOrDefault(a => a.Email == email && a.Password == password);
         }
+
+        public IEnumerable<Manager> GetAll()
+        {
+            return _context.Managers.ToList();
+        }
+
+        public Manager GetManagerById(Guid managerID)
+        {
+            return _context.Managers
+                .Include(m => m.Buildings)
+                .FirstOrDefault(m => m.ManagerId.Equals(managerID));
+        }
     }
 }

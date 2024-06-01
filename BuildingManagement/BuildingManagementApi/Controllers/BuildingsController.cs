@@ -40,11 +40,11 @@ namespace BuildingManagementApi.Controllers
         [HttpPut("{buildingId}")]
         public IActionResult UpdateBuilding(Guid buildingId, [FromBody] UpdateBuildingRequest request)
         {
-            string managerId = _httpContextAccessor.HttpContext.Items["userID"] as string;
+            string ccadminId = _httpContextAccessor.HttpContext.Items["userID"] as string;
             Building buildingToUpdate = request.ToEntity();
             buildingToUpdate.BuildingId = buildingId;
 
-            var updatedBuilding = _buildingLogic.UpdateBuilding(managerId, buildingToUpdate);
+            var updatedBuilding = _buildingLogic.UpdateBuilding(ccadminId, buildingToUpdate,buildingId);
             return Ok(new BuildingResponse(updatedBuilding));
         }
 

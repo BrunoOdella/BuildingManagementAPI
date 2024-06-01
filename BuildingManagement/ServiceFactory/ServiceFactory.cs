@@ -2,6 +2,7 @@
 using DataAccess;
 using IDataAccess;
 using LogicInterface.Interfaces;
+using LogicInterface.Interfaces.IManagerLogic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -21,6 +22,7 @@ namespace ServiceFactory
             serviceCollection.AddScoped<IAuthenticationService, AuthenticationService>();
             serviceCollection.AddScoped<IReportLogicByBuilding, ConcreteReportFactory_RequestByBuilding>();
             serviceCollection.AddScoped<IConstructionCompanyLogic, ConstructionCompanyLogic>();
+            serviceCollection.AddScoped<IManagerLogic, ManagerLogic>();
             serviceCollection
                 .AddScoped<IReportLogicByMaintenanceStaff, ConcreteReportFactory_RequestByMaintenanceStaff>();
             serviceCollection.AddScoped<IBuildingImportLogic, BuildingImportLogic>();

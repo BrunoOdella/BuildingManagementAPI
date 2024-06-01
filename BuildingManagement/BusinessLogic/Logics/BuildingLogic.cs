@@ -90,48 +90,56 @@ namespace BusinessLogic.Logics
             }
         }
 
-        public Building UpdateBuilding(string managerId, Building building)
+        public Building UpdateBuilding(string ccadminId, Building building, Guid buildingId)
         {
-            if (!Guid.TryParse(managerId, out Guid parsedManagerId))
-                throw new ArgumentException("Invalid manager ID format.");
-
-            if (building.Manager is null || string.IsNullOrWhiteSpace(building.Manager.Email))
+            if (!Guid.TryParse(ccadminId, out Guid parsedccadminId))
             {
-                // Ahora no solo es un manager quien puede modificar un edificio, sino que también un administrador de la empresa constructora
-                var existingBuilding = _buildingRepository.GetBuilding(parsedManagerId, building.BuildingId);
-                if (existingBuilding == null)
-                    throw new InvalidOperationException("Bui" +
-                                                        "lding not found or manager does not have permission to update this building.");
+                throw new ArgumentException("Invalid manager ID");
+            }
 
-                // No es necesario verificar el ManagerId aquí ya que GetBuilding debería manejarlo
-                if (building.Name != null)
-                    existingBuilding.Name = building.Name;
-                if (building.Address != null)
-                    existingBuilding.Address = building.Address;
-                if (building.Location != null)
+            if (building == null)
+            {
+                throw new ArgumentNullException("Building is null");
+            }
+
+            if (building.BuildingId != buildingId)
+            {
+                throw new ArgumentException("Building ID does not match");
+            }
+
+            Building existingBuilding = _buildingRepository.GetBuilding(buildingId);
+            if (existingBuilding == null)
+            {
+                throw new ArgumentException("Building not found");
+            }
+
+            if (existingBuilding.ConstructionCompany.ConstructionCompanyAdmin.Id != parsedccadminId)
+            {
+                throw new UnauthorizedAccessException("Manager not authorized to update this building");
+            }
+
+            if (building.ManagerId != null)
+            {
+                Manager manager = _managerRepository.GetManagerById(building.ManagerId.Value);
+                if (manager == null && !string.IsNullOrWhiteSpace(building.Manager.Email))
                 {
-                    existingBuilding.Location.Latitude = building.Location.Latitude;
-                    existingBuilding.Location.Longitude = building.Location.Longitude;
+                    _managerRepository.CreateManager(building.Manager);
+                    manager = _managerRepository.GetManagerById(building.ManagerId.Value);
                 }
-                existingBuilding.ConstructionCompany = building.ConstructionCompany;
-                existingBuilding.CommonExpenses = building.CommonExpenses;
-
-                _buildingRepository.UpdateBuilding(existingBuilding);
-                return existingBuilding;
+                existingBuilding.ManagerId = building.ManagerId;
+                existingBuilding.Manager = manager; // Asegura que el Manager está actualizado
             }
-            else
-            {
-                var existingBuilding = _buildingRepository.GetBuildingByAdmin(parsedManagerId, building.BuildingId);
 
-                var manager = _managerRepository.GetManagerByEmail(building.Manager.Email);
-                if (manager == null)
-                    throw new InvalidOperationException("Manager not found.");
-                existingBuilding.Manager = manager;
-                
-                _buildingRepository.UpdateBuilding(existingBuilding);
-                return existingBuilding;
-            }
+            // Actualiza otras propiedades del building si es necesario
+            existingBuilding.Name = building.Name;
+            existingBuilding.Address = building.Address;
+            existingBuilding.Location = building.Location;
+            existingBuilding.CommonExpenses = building.CommonExpenses;
+
+            return _buildingRepository.UpdateBuilding(existingBuilding);
         }
+
+
 
         public IEnumerable<Building> GetBuildings(string adminId)
         {
@@ -140,13 +148,14 @@ namespace BusinessLogic.Logics
                 throw new ArgumentException("Invalid admin ID");
             }
             parsedAdminId = Guid.Parse(adminId);
-            if (_managerRepository.Get(parsedAdminId) != null)
+            if (_constructionCompanyAdminRepository.Get(parsedAdminId) != Guid.Empty)
             {
                 return _buildingRepository.GetBuildingsByConstructionCompanyAdminId(parsedAdminId);
             }
-            if (_constructionCompanyAdminRepository.Get(parsedAdminId) != null)
+            if (_managerRepository.Get(parsedAdminId) != Guid.Empty)
             {
-                return _buildingRepository.GetBuildingsByManagerId(parsedAdminId);
+                IEnumerable<Building> jaja= _buildingRepository.GetBuildingsByManagerId(parsedAdminId);
+                return jaja;
             }
                 throw new ArgumentException("Not buildings found");
         }

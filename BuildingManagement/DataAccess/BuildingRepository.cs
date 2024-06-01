@@ -52,12 +52,13 @@ namespace DataAccess
 
 
         public List<Apartment> GetAllApartments(Guid managerId, Guid buildingId)
-        {
-            Building building = _context.Buildings
-                .Include(b => b.Apartments)
-                .FirstOrDefault(b => b.BuildingId == buildingId && b.ManagerId == managerId);
-
-            return building?.Apartments.ToList();
+        {  
+            return _context.Apartments
+                .Include(a => a.Building)
+                .Include(a => a.Requests)
+                .Include(a => a.Owner)
+                .Where(a => a.Building.ManagerId == managerId && a.Building.BuildingId == buildingId)
+                .ToList();  
         }
 
         public bool DeleteBuilding(Guid buildingId)
@@ -99,6 +100,7 @@ namespace DataAccess
             return existingBuilding;
         }
 
+
         public Building GetBuildingByLocation(double latitude, double longitude)
         {
             return _context.Buildings
@@ -124,5 +126,14 @@ namespace DataAccess
                 .ToList();
         }
 
+        public Building GetBuilding(Guid buildingId)
+        {
+            return _context.Buildings
+                .Include(b => b.Apartments)
+                .Include(b => b.Location)
+                .Include(b => b.Manager)
+                .Include(b => b.ConstructionCompany)
+                .FirstOrDefault(b => b.BuildingId == buildingId);
+        }
     }
 }
