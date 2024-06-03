@@ -91,7 +91,7 @@ namespace BuildingManagementApiTest
                 Latitude = 40.7128,
                 Longitude = -74.0060,
                 CommonExpenses = 750,
-                ManagerEmail = "newManager"
+                ManagerGuid = "9EF9B0D8-45CE-42FB-0067-08DC811FD951"
             };
 
             var building = request.ToEntity();

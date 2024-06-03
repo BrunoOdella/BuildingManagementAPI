@@ -1,5 +1,4 @@
 ﻿using BuildingManagementApi.Filters;
-using Domain;
 using LogicInterface.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Models.In;
@@ -41,10 +40,10 @@ namespace BuildingManagementApi.Controllers
         public IActionResult UpdateBuilding(Guid buildingId, [FromBody] UpdateBuildingRequest request)
         {
             string ccadminId = _httpContextAccessor.HttpContext.Items["userID"] as string;
-            Building buildingToUpdate = request.ToEntity();
+            var buildingToUpdate = request.ToEntity();
             buildingToUpdate.BuildingId = buildingId;
 
-            var updatedBuilding = _buildingLogic.UpdateBuilding(ccadminId, buildingToUpdate,buildingId);
+            var updatedBuilding = _buildingLogic.UpdateBuilding(ccadminId, buildingToUpdate, buildingId);
             return Ok(new BuildingResponse(updatedBuilding));
         }
 

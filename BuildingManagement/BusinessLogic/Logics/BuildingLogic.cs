@@ -90,51 +90,52 @@ namespace BusinessLogic.Logics
             }
         }
 
-        public Building UpdateBuilding(string ccadminId, Building building, Guid buildingId)
+        public Building UpdateBuilding(string guid, Building building, Guid buildingId)
         {
-            if (!Guid.TryParse(ccadminId, out Guid parsedccadminId))
-            {
-                throw new ArgumentException("Invalid manager ID");
-            }
+            Guid Id;
+
+            if (!Guid.TryParse(guid, out Id))
+                throw new ArgumentException("Invalid ID");
 
             if (building == null)
-            {
                 throw new ArgumentNullException("Building is null");
-            }
 
             if (building.BuildingId != buildingId)
-            {
                 throw new ArgumentException("Building ID does not match");
-            }
 
             Building existingBuilding = _buildingRepository.GetBuilding(buildingId);
+
             if (existingBuilding == null)
-            {
                 throw new ArgumentException("Building not found");
-            }
 
-            if (existingBuilding.ConstructionCompany.ConstructionCompanyAdmin.Id != parsedccadminId)
+            if (_managerRepository.Get(Id) != Guid.Empty)
             {
-                throw new UnauthorizedAccessException("Manager not authorized to update this building");
-            }
+                existingBuilding.Name = building.Name;
+                existingBuilding.Address = building.Address;
+                existingBuilding.Location = building.Location;
+                existingBuilding.CommonExpenses = building.CommonExpenses;
 
-            if (building.ManagerId != null)
+            }
+            else if (_constructionCompanyAdminRepository.Get(Id) != Guid.Empty)
             {
-                Manager manager = _managerRepository.GetManagerById(building.ManagerId.Value);
-                if (manager == null && !string.IsNullOrWhiteSpace(building.Manager.Email))
+                var adminId = Id;
+                if (existingBuilding.ConstructionCompany.ConstructionCompanyAdmin.Id != adminId)
+                    throw new UnauthorizedAccessException("Manager not authorized to update this building");
+
+                if (building.ManagerId != null)
                 {
-                    _managerRepository.CreateManager(building.Manager);
-                    manager = _managerRepository.GetManagerById(building.ManagerId.Value);
-                }
-                existingBuilding.ManagerId = building.ManagerId;
-                existingBuilding.Manager = manager; // Asegura que el Manager está actualizado
-            }
+                    Manager manager = _managerRepository.GetManagerById(building.ManagerId.Value);
+                    if (manager == null)
+                        throw new ArgumentException("Invalid Manager ID");
 
-            // Actualiza otras propiedades del building si es necesario
-            existingBuilding.Name = building.Name;
-            existingBuilding.Address = building.Address;
-            existingBuilding.Location = building.Location;
-            existingBuilding.CommonExpenses = building.CommonExpenses;
+                    existingBuilding.ManagerId = manager.ManagerId;
+                    existingBuilding.Manager = manager; 
+                }
+            }
+            else
+            {
+                throw new ArgumentException("Invalid ID");
+            }
 
             return _buildingRepository.UpdateBuilding(existingBuilding);
         }
