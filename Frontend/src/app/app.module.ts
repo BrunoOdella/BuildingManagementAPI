@@ -26,6 +26,7 @@ import { UpdateCompanyNameComponent } from './update-company-name/update-company
 import { CreateMaintenanceStaffComponent } from './create-maintenance-staff/create-maintenance-staff.component';
 import { SelectBuildingComponent } from './select-building/select-building.component';
 import { SelectApartmentComponent } from './select-apartment/select-apartment.component';
+import { AddRequestComponent } from './add-request/add-request.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { SelectApartmentComponent } from './select-apartment/select-apartment.co
     CreateMaintenanceStaffComponent,
     SelectBuildingComponent,
     SelectApartmentComponent,
+    AddRequestComponent,
   ],
   imports: [
     BrowserModule,

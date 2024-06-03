@@ -54,5 +54,15 @@ namespace BusinessLogic.Logics
                    _maintenanceStaffRepository.EmailExistsInMaintenanceStaff(email) ||
                    _invitationRepository.EmailExistsInInvitations(email);
         }
+
+        public IEnumerable<MaintenanceStaff> GetAllMaintenanceStaff(string managerId)
+        {
+            if (!Guid.TryParse(managerId, out Guid managerGuid))
+            {
+                throw new ArgumentException("Invalid manager ID.");
+            }
+            if (_managerRepository.Get(managerGuid) == Guid.Empty) { throw new ArgumentException("Manager not found."); }
+            return _maintenanceStaffRepository.GetAllMaintenanceStaff();
+        }
     }
 }

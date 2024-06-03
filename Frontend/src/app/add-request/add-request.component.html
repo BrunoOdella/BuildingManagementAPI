@@ -1,0 +1,24 @@
+<div class="form-container">
+    <h2>Add Request</h2>
+    <form [formGroup]="addRequestForm" (ngSubmit)="onSubmit()">
+      <label for="description">Description:</label>
+      <input id="description" formControlName="description" required>
+      
+      <label for="category">Category:</label>
+      <select id="category" formControlName="category" required>
+        <option *ngFor="let category of categories" [value]="category.categoryID">{{ category.name }}</option>
+      </select>
+      
+      <label for="maintenanceStaff">Maintenance Staff:</label>
+      <select id="maintenanceStaff" formControlName="maintenanceStaff" required>
+        <option *ngFor="let staff of maintenanceStaff" [value]="staff.id">{{ staff.name }} {{ staff.lastName }}</option>
+      </select>
+      
+      <button type="submit" class="primary">Add Request</button>
+      <button type="button" class="secondary" (click)="navigateToDashboard()">Back to Dashboard</button>
+      
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+      <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+    </form>
+  </div>
+  

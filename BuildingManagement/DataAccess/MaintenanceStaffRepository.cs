@@ -55,5 +55,10 @@ namespace DataAccess
         {
             return _context.MaintenanceStaff.FirstOrDefault(a => a.Email == email && a.Password == password);
         }
+
+        public IEnumerable<MaintenanceStaff> GetAllMaintenanceStaff()
+        {
+            return _context.MaintenanceStaff.ToList();
+        }
     }
 }

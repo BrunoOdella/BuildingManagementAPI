@@ -9,7 +9,6 @@ public class CreateMaintenanceStaffResponse
     public string LastName { get; set; }
     public string Email { get; set; }
     public string Password { get; set; }
-    public string BuildingName { get; set; }
 
     public CreateMaintenanceStaffResponse(MaintenanceStaff staff)
     {

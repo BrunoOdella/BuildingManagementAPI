@@ -139,7 +139,11 @@ public class AuthenticationService : IAuthenticationService
     }
     private Guid BuscarTokenCreateCategory(Guid token, string verbo)
     {
-        return buscarTokenAdmin(token);
+        if (verbo == "POST")
+            return buscarTokenAdmin(token);
+        if (verbo == "GET")
+            return BuscarTokenManager(token);
+        throw new NotImplementedException();
     }
 
 

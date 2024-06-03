@@ -5,4 +5,5 @@ namespace LogicInterface.Interfaces;
 public interface ICategoriesRequestsLogic
 {
     Category CreateCategory(Category category);
+    IEnumerable<Category> GetAllCategories();
 }

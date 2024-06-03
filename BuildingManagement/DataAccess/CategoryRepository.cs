@@ -29,4 +29,9 @@ public class CategoryRepository : ICategoryRepository
     {
         return _context.Category.Count();
     }
+
+    public IEnumerable<Category> GetAll()
+    {
+        return _context.Category.ToList();
+    }
 }

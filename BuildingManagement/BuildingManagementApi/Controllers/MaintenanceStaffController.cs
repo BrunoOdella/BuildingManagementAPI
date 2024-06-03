@@ -23,7 +23,7 @@ namespace BuildingManagementApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateMaintenanceStaff(Guid buildingId, [FromBody] CreateMaintenanceStaffRequest request)
+        public IActionResult CreateMaintenanceStaff([FromBody] CreateMaintenanceStaffRequest request)
         {
             string managerId = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
             var maintenanceStaff = request.ToEntity();
@@ -31,6 +31,15 @@ namespace BuildingManagementApi.Controllers
             var response = new CreateMaintenanceStaffResponse(createdStaff);
 
             return new CreatedResult(string.Empty, response);
+        }
+
+        [HttpGet]
+        public IActionResult GetAllMaintenanceStaff()
+        {
+            string managerId = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+            var maintenanceStaff = _maintenanceStaffLogic.GetAllMaintenanceStaff(managerId);
+            var response = maintenanceStaff.Select(b => new CreateMaintenanceStaffResponse(b)).ToList();
+            return Ok(response);
         }
     }
 }

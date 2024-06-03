@@ -7,24 +7,29 @@ namespace BusinessLogic.Logics;
 
 public class CategoriesRequestsLogic : ICategoriesRequestsLogic
 {
-    private readonly ICategoryRepository _logic;
+    private readonly ICategoryRepository _categoryRepository;
 
-    public CategoriesRequestsLogic(ICategoryRepository logic)
+    public CategoriesRequestsLogic(ICategoryRepository categoryRepository)
     {
-        _logic = logic;
+        _categoryRepository = categoryRepository;
     }
 
     public Category CreateCategory(Category category)
     {
         if (IsUnique(category))
         {
-            return _logic.Add(category);
+            return _categoryRepository.Add(category);
         }
         throw new CategoryAlreadyExistException();
     }
 
     private bool IsUnique(Category category)
     {
-        return !_logic.Exist(category);
+        return !_categoryRepository.Exist(category);
+    }
+
+    public IEnumerable<Category> GetAllCategories()
+    {
+        return _categoryRepository.GetAll();
     }
 }

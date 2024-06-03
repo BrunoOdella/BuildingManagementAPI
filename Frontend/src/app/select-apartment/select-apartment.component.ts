@@ -28,6 +28,10 @@ export class SelectApartmentComponent implements OnInit {
     );
   }
 
+  selectApartment(apartmentId: string): void {
+    this.router.navigate(['add-request', apartmentId]);
+  }
+
   navigateToDashboard(): void {
     this.router.navigate(['manager-dashboard']);
   }
