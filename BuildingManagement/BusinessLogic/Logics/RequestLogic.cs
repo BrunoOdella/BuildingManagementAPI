@@ -42,7 +42,7 @@ public class RequestLogic : IRequestLogic
     public IEnumerable<Request_> GetAllRequest(Guid personID)
     {
         var manager = _managerRepository.Get(personID);
-        if(manager == null)
+        if(manager.Equals(Guid.Empty))
             return _requestRepository.GetAllRequestStaff(personID);
         return _requestRepository.GetAllRequest(personID);
     }

@@ -132,7 +132,7 @@ public class AuthenticationService : IAuthenticationService
             case "POST":
                 return BuscarTokenManager(token);
             case "PUT":
-                return BuscarTokenManager(token);
+                return buscartokenStaff(token); //return BuscarTokenManager(token);
             default:
                 throw new NotImplementedException();
         }
