@@ -35,6 +35,7 @@ public class RequestLogic : IRequestLogic
 
         request.Apartment = actualApartment;
         request.MaintenanceStaff = actualMaintenanceStaff;
+        actualMaintenanceStaff.Requests.Add(request);
 
         return _requestRepository.CreateRequest(request);
     }
@@ -52,15 +53,15 @@ public class RequestLogic : IRequestLogic
         return _requestRepository.GetAllRequest(managerId, category);
     }
 
-    public Request_ ActivateRequest(Guid managerId, Guid requestId, Guid maintenancePersonId, DateTime startTime)
+    public Request_ ActivateRequest(Guid requestId, Guid maintenancePersonId, DateTime startTime)
     {
-        MaintenanceStaff actualMaintenanceStaff = _maintenanceStaffRepository.GetMaintenanceStaff(managerId, maintenancePersonId);
+        MaintenanceStaff actualMaintenanceStaff = _maintenanceStaffRepository.Get(maintenancePersonId);
         if (actualMaintenanceStaff == null)
         {
             throw new InvalidOperationException("Maintenance staff does not exist.");
         }
 
-        Request_ actualRequest = _requestRepository.GetRequest(managerId, requestId);
+        Request_ actualRequest = _requestRepository.Get(requestId);
 
         if (actualRequest == null)
         {
@@ -71,10 +72,7 @@ public class RequestLogic : IRequestLogic
         actualRequest.StartTime = startTime;
         actualRequest.Status = Status.Active;
 
-        //actualMaintenanceStaff.Requests.Add(actualRequest);
-
         _requestRepository.Update(actualRequest);
-        //_maintenanceStaffRepository.Update(actualMaintenanceStaff);
 
         return actualRequest;
     }

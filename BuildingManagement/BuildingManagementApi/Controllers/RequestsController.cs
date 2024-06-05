@@ -58,7 +58,7 @@ namespace BuildingManagementApi.Controllers
         public ObjectResult PutMaintenancePersonRequest([FromRoute] string requestid, [FromBody] ActivateRequest ActivateRequest)
         {
             var staffID = new Guid(_httpContextAccessor.HttpContext.Items["userID"] as string);
-            return Ok(new RequestResponse(_logic.ActivateRequest(staffID, new Guid(requestid), ActivateRequest.MaintenancePersonId, ActivateRequest.StartTime)));
+            return Ok(new RequestResponse(_logic.ActivateRequest(new Guid(requestid), ActivateRequest.MaintenancePersonId, ActivateRequest.StartTime)));
         }
 
         [HttpPost]

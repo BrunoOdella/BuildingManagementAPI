@@ -37,7 +37,6 @@ namespace DataAccess
                 .FirstOrDefault(s => s.ID == maintenancePersonId);
         }
 
-
         public Guid GetMaintenanceStaff(Guid maintenancePersonId)
         {
             var maintenanceStaff = _context.MaintenanceStaff
@@ -59,6 +58,11 @@ namespace DataAccess
         public IEnumerable<MaintenanceStaff> GetAllMaintenanceStaff()
         {
             return _context.MaintenanceStaff.ToList();
+        }
+
+        public MaintenanceStaff Get(Guid maintenancePersonId)
+        {
+            return _context.MaintenanceStaff.FirstOrDefault(ms => ms.ID == maintenancePersonId);
         }
     }
 }

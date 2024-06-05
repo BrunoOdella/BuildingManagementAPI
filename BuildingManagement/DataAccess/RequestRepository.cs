@@ -81,5 +81,10 @@ namespace DataAccess
                 .ToList();
             return requests;
         }
+
+        public Request_ Get(Guid requestId)
+        {
+            return _context.Requests.FirstOrDefault(r => r.Id == requestId);
+        }
     }
 }
