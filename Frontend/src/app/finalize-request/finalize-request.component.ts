@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+
+
+
 
 interface RequestResponse {
   id: string; 
@@ -16,39 +19,46 @@ interface RequestResponse {
 }
 
 @Component({
-  selector: 'app-unattended-requests',
-  templateUrl: './unattended-requests.component.html',
-  styleUrls: ['./unattended-requests.component.css']
+  selector: 'app-finalize-request',
+  templateUrl: './finalize-request.component.html',
+  styleUrls: ['./finalize-request.component.css']
 })
-export class UnattendedRequestsComponent {
+export class FinalizeRequestComponent {
   requests: RequestResponse[] = [];
+  filteredRequest: RequestResponse[] = [];
   selectedElem: string = '';
-  
+  cost: number = -1;
 
   constructor(private http: HttpClient, private router: Router, private auth: AuthService) {}
 
- ngOnInit(): void {
+  ngOnInit(): void {
     this.http.get<RequestResponse[]>('http://localhost:5154/api/v2/Requests').subscribe(
-      (data) => this.requests = data.filter(request => request.status === 2),
+      (data) => this.requests = data.filter(request => request.status === 0),
       (error) => console.error(error)
     );
-  }
-
-  selectRequest(Id: string): void {
-    this.selectedElem = Id;
   }
 
   navigateToDashboard(): void {
     this.router.navigate(['maintenance-staff-dashboard']);
   }
 
-  activateRequest(): void {
+  selectRequest(Id: string): void {
+    this.selectedElem = Id;
+  }
+
+  onNumberInputChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const numberValue = parseFloat(input.value);
+    //console.log("Current number value: ", numberValue);
+    this.cost = numberValue;
+  }
+
+  terminateRequest(): void {
     if (this.selectedElem) {
-      const url = `http://localhost:5154/api/v2/Requests/${this.selectedElem}`;
+      const url = `http://localhost:5154/api/v2/Requests/${this.selectedElem}/finished`;
       const body = {
-        status: 0,
-        startTime: new Date().toISOString(),
-        maintenancePersonId: this.auth.getAuthHeaders().get('Authorization')
+        totalCost: this.cost,
+        endTime: new Date().toISOString(),
       };
 
       this.http.put(url, body).subscribe({
@@ -57,4 +67,5 @@ export class UnattendedRequestsComponent {
       });
     }
   }
+
 }

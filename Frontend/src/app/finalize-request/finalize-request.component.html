@@ -1,0 +1,38 @@
+<p>finalize-request works!</p>
+
+<div>
+    <h2>Attended Requests</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Número</th>
+                <th>Categoría</th>
+                <th>Descripción</th>
+                <th>Fecha de Creación</th>
+                <th>Fecha de Atención</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let request of requests; let i = index"
+                [class.selected]="request.id === selectedElem"
+                (click)="selectRequest(request.id)">
+                <td>{{ i + 1 }}</td>
+                <td>{{ request.category }}</td>
+                <td>{{ request.description }}</td>
+                <td>{{ request.creationTime | date: 'medium' }}</td>
+                <td>{{ request.startTime }}</td>
+
+            </tr>
+        </tbody>
+    </table>
+
+    <div *ngIf="selectedElem !== null">
+        <label for="costInput">Costo de la Solicitud:</label>
+        <input id="costInput" type="number" placeholder="Ingrese el costo" class="no-spinners" type="number" (input)="onNumberInputChange($event)">
+
+
+    </div>
+
+    <button class="btn btn-secondary" (click)="navigateToDashboard()">Back to Dashboard</button>
+    <button class="btn btn-secondary" (click)="terminateRequest()" [disabled]="!selectedElem || cost<=0">Activate selected request</button>
+</div>

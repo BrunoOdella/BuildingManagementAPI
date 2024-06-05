@@ -20,6 +20,7 @@ import { SelectBuildingComponent } from './select-building/select-building.compo
 import { SelectApartmentComponent } from './select-apartment/select-apartment.component';
 import { AddRequestComponent } from './add-request/add-request.component';
 import { UnattendedRequestsComponent } from './unattended-requests/unattended-requests.component'
+import { FinalizeRequestComponent } from './finalize-request/finalize-request.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -45,6 +46,7 @@ const routes: Routes = [
  
   { path: 'maintenance-staff-dashboard', component: MaintenanceStaffDashboardComponent, canActivate: [AuthGuard], data: { role: 'MaintenanceStaff' } },
   { path: 'unattended-requests', component: UnattendedRequestsComponent, canActivate: [AuthGuard], data: { role: 'MaintenanceStaff' } },
+  { path: 'finalize-request', component: FinalizeRequestComponent, canActivate: [AuthGuard], data: { role: 'MaintenanceStaff' } },
  
   { path: '**', redirectTo: 'login' } 
 ];

@@ -1,0 +1,113 @@
+.selected {
+    background-color: #f0f0f0; /* Gris claro */
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Sombreado ligero */
+}
+
+/* src/app/admin-dashboard/admin-dashboard.component.css */
+.dashboard-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: var(--background-color-day);
+    color: var(--text-color-day);
+  }
+  
+  .dashboard-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .dashboard-container button {
+    width: 100%;
+    padding: 10px;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+  }
+  
+  .form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: var(--background-color-day);
+    color: var(--text-color-day);
+  }
+  
+  .form-container form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-container label {
+    margin-top: 10px;
+  }
+  
+  .form-container input {
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .form-container button {
+    margin-top: 20px;
+    padding: 10px;
+    font-size: 1.2rem;
+  }
+  
+  .error-message {
+    color: red;
+    margin-top: 10px;
+    text-align: center;
+  }
+  
+  .success-message {
+    color: green;
+    margin-top: 10px;
+    text-align: center;
+  }
+  
+
+  /* Oculta las flechas para los navegadores basados en WebKit como Chrome, Safari, Opera */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Oculta las flechas para Firefox */
+input[type="number"]::-moz-focus-inner {
+  border: 0;
+}
+
+input[type="number"]::-moz-range-track {
+  background: none;
+}
+
+/* Estilo general para eliminar las flechas en IE */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+
+.no-spinners::-webkit-inner-spin-button,
+.no-spinners::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.no-spinners::-moz-focus-inner {
+  border: 0;
+}
+
+.no-spinners::-moz-range-track {
+  background: none;
+}
+
+.no-spinners {
+  -moz-appearance: textfield;
+}

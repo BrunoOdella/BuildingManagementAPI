@@ -50,8 +50,8 @@ namespace BuildingManagementApi.Controllers
         [HttpPut("{requestid}/finished")]
         public ObjectResult PutFinishedRequest([FromRoute] string requestid, [FromBody] FinishedRequest finishedRequest)
         {
-            var managerID = new Guid(_httpContextAccessor.HttpContext.Items["userID"] as string);
-            return Ok(new RequestResponse(_logic.TerminateRequest(managerID, new Guid(requestid), finishedRequest.EndTime, finishedRequest.TotalCost)));
+            var staffId = new Guid(_httpContextAccessor.HttpContext.Items["userID"] as string);
+            return Ok(new RequestResponse(_logic.TerminateRequest(staffId, new Guid(requestid), finishedRequest.EndTime, finishedRequest.TotalCost)));
         }
 
         [HttpPut("{requestid}")]

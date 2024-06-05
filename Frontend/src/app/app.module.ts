@@ -29,6 +29,7 @@ import { SelectApartmentComponent } from './select-apartment/select-apartment.co
 import { AddRequestComponent } from './add-request/add-request.component';
 import { UnattendedRequestsComponent } from './unattended-requests/unattended-requests.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FinalizeRequestComponent } from './finalize-request/finalize-request.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     SelectApartmentComponent,
     AddRequestComponent,
     UnattendedRequestsComponent,
+    FinalizeRequestComponent,
   ],
   imports: [
     BrowserModule,

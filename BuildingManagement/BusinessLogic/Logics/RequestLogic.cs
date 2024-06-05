@@ -77,12 +77,15 @@ public class RequestLogic : IRequestLogic
         return actualRequest;
     }
 
-    public Request_ TerminateRequest(Guid managerId, Guid id, DateTime endTime, float totalCost)
+    public Request_ TerminateRequest(Guid staffId, Guid id, DateTime endTime, float totalCost)
     {
-        Request_ actualRequest = _requestRepository.GetRequest(managerId, id);
+        Request_ actualRequest = _requestRepository.Get(id);
 
-        if (actualRequest == null)
+        if (actualRequest == null || !actualRequest.MaintenanceStaffId.Equals(staffId))
             throw new InvalidOperationException("Request does not exist.");
+
+        if (actualRequest.Status != Status.Active)
+            throw new InvalidOperationException("Request is not active.");
 
         if(actualRequest.StartTime >  endTime)
             throw new InvalidOperationException("End time has to be greater than Start time.");
