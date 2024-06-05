@@ -27,6 +27,7 @@ import { CreateMaintenanceStaffComponent } from './create-maintenance-staff/crea
 import { SelectBuildingComponent } from './select-building/select-building.component';
 import { SelectApartmentComponent } from './select-apartment/select-apartment.component';
 import { AddRequestComponent } from './add-request/add-request.component';
+import { ImportBuildingsComponent } from './import-buildings/import-buildings.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { AddRequestComponent } from './add-request/add-request.component';
     SelectBuildingComponent,
     SelectApartmentComponent,
     AddRequestComponent,
+    ImportBuildingsComponent,
   ],
   imports: [
     BrowserModule,

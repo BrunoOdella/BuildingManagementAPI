@@ -63,8 +63,14 @@ public class BuildingImportLogic : IBuildingImportLogic
                 NumberOfBathrooms = a.NumberOfBathrooms,
                 Owner = new Owner { Email = a.Owner.Email, FirstName = "Unknown", LastName = "Unknown" }
             }).ToList(),
-            Manager = string.IsNullOrEmpty(building.Manager?.Email) ? null : new Manager { Email = building.Manager.Email },
-            ConstructionCompany = new ConstructionCompany(){ ConstructionCompanyAdminId = Guid.Parse(adminGuid) }
+            Manager = string.IsNullOrEmpty(building.Manager?.Email)
+                      ? null
+                      : new Manager { Email = building.Manager.Email, Name = building.Manager.Email },
+            ConstructionCompany = new ConstructionCompany()
+            {
+                ConstructionCompanyAdminId = Guid.Parse(adminGuid)
+            }
         };
     }
+
 }

@@ -1,0 +1,14 @@
+<div class="form-container">
+    <h2>Import Buildings</h2>
+    <form [formGroup]="importBuildingsForm" (ngSubmit)="onSubmit()">
+      <label for="assemblyPath">DLL Path:</label>
+      <input id="assemblyPath" formControlName="assemblyPath" required>
+      
+      <button type="submit" class="primary">Import Buildings</button>
+      <button type="button" class="secondary" (click)="navigateToDashboard()">Back to Dashboard</button>
+      
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+      <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+    </form>
+  </div>
+  
