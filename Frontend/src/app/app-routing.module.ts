@@ -19,6 +19,7 @@ import { CreateMaintenanceStaffComponent } from './create-maintenance-staff/crea
 import { SelectBuildingComponent } from './select-building/select-building.component';
 import { SelectApartmentComponent } from './select-apartment/select-apartment.component';
 import { AddRequestComponent } from './add-request/add-request.component';
+import { UnattendedRequestsComponent } from './unattended-requests/unattended-requests.component'
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -43,6 +44,7 @@ const routes: Routes = [
   { path: 'add-request/:apartmentId', component: AddRequestComponent, canActivate: [AuthGuard], data: { role: 'Manager' } },
  
   { path: 'maintenance-staff-dashboard', component: MaintenanceStaffDashboardComponent, canActivate: [AuthGuard], data: { role: 'MaintenanceStaff' } },
+  { path: 'unattended-requests', component: UnattendedRequestsComponent, canActivate: [AuthGuard], data: { role: 'MaintenanceStaff' } },
  
   { path: '**', redirectTo: 'login' } 
 ];

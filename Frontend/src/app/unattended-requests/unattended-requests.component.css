@@ -1,3 +1,9 @@
+.selected {
+    background-color: #f0f0f0; /* Gris claro */
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Sombreado ligero */
+}
+
 /* src/app/admin-dashboard/admin-dashboard.component.css */
 .dashboard-container {
     max-width: 600px;

@@ -1,0 +1,28 @@
+<p>unattended-requests works!</p>
+
+<div>
+    <h2>Unattended Requests</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Número</th>
+                <th>Categoría</th>
+                <th>Descripción</th>
+                <th>Fecha de Creación</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let request of requests; let i = index"
+                [class.selected]="request.id === selectedElem"
+                (click)="selectRequest(request.id)">
+                <td>{{ i + 1 }}</td>
+                <td>{{ request.category }}</td>
+                <td>{{ request.description }}</td>
+                <td>{{ request.creationTime | date: 'medium' }}</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <button class="btn btn-secondary" (click)="navigateToDashboard()">Back to Dashboard</button>
+    <button class="btn btn-secondary" (click)="activateRequest()" [disabled]="!selectedElem">Activate selected request</button>
+</div>

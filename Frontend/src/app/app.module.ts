@@ -27,6 +27,8 @@ import { CreateMaintenanceStaffComponent } from './create-maintenance-staff/crea
 import { SelectBuildingComponent } from './select-building/select-building.component';
 import { SelectApartmentComponent } from './select-apartment/select-apartment.component';
 import { AddRequestComponent } from './add-request/add-request.component';
+import { UnattendedRequestsComponent } from './unattended-requests/unattended-requests.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -50,13 +52,15 @@ import { AddRequestComponent } from './add-request/add-request.component';
     SelectBuildingComponent,
     SelectApartmentComponent,
     AddRequestComponent,
+    UnattendedRequestsComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule
   ],
   providers: [
     AuthService,

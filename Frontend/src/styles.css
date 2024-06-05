@@ -93,3 +93,6 @@ body.dark-mode button.secondary {
   background-color: var(--secondary-color-night);
   color: var(--text-color-night);
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
