@@ -26,6 +26,10 @@ export class ConstructionCompanyAdminDashboardComponent {
     this.router.navigate(['update-company-name']);
   }
 
+  navigateToImportBuildings(): void {
+    this.router.navigate(['import-buildings']);
+  }
+
   logout(): void {
     this.authService.logout();
     this.router.navigate(['login']);

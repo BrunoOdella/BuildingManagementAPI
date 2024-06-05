@@ -21,6 +21,7 @@ import { SelectApartmentComponent } from './select-apartment/select-apartment.co
 import { AddRequestComponent } from './add-request/add-request.component';
 import { UnattendedRequestsComponent } from './unattended-requests/unattended-requests.component'
 import { FinalizeRequestComponent } from './finalize-request/finalize-request.component';
+import { ImportBuildingsComponent } from './import-buildings/import-buildings.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -37,6 +38,7 @@ const routes: Routes = [
   { path: 'create-building', component: CreateBuildingComponent, canActivate: [AuthGuard], data: { role: 'ConstructionCompanyAdmin' }},
   {path: 'list-buildings', component: ListBuildingsComponent, canActivate: [AuthGuard], data: { role: 'ConstructionCompanyAdmin' }},
   { path: 'update-company-name', component: UpdateCompanyNameComponent, canActivate: [AuthGuard], data: { role: 'ConstructionCompanyAdmin' } },
+  { path: 'import-buildings', component: ImportBuildingsComponent, canActivate: [AuthGuard], data: { role: 'ConstructionCompanyAdmin' } },
 
   { path: 'manager-dashboard', component: ManagerDashboardComponent, canActivate: [AuthGuard], data: { role: 'Manager' } },
   { path: 'create-maintenance-staff', component: CreateMaintenanceStaffComponent, canActivate: [AuthGuard], data: { role: 'Manager' } },
