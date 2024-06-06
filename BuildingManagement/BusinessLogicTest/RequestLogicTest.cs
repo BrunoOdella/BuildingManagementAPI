@@ -824,7 +824,7 @@ namespace BusinessLogicTest
             // Act
             try
             {
-                _requestLogic.ActivateRequest(_managerID, id, maintenanceStaff.ID, startTime);
+                _requestLogic.ActivateRequest(id, maintenanceStaff.ID, startTime);
             }
             catch (Exception ex)
             {
@@ -863,7 +863,7 @@ namespace BusinessLogicTest
             _requestRepositoryMock.Setup(r => r.Update(assignedRequest));
 
             // Act
-            var response = _requestLogic.ActivateRequest(_managerID, id, maintenanceStaff.ID, startTime);
+            var response = _requestLogic.ActivateRequest(id, maintenanceStaff.ID, startTime);
 
 
             Assert.IsNotNull(response);
@@ -889,7 +889,7 @@ namespace BusinessLogicTest
             // Act
             try
             {
-                _requestLogic.ActivateRequest(_managerID, id, maintenanceStaff.ID, startTime);
+                _requestLogic.ActivateRequest(id, maintenanceStaff.ID, startTime);
             }
             catch (Exception ex)
             {

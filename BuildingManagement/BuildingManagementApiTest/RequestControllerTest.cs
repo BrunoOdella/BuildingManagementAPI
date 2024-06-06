@@ -233,7 +233,7 @@ namespace BuildingManagementApiTest
             string userIDString = _httpContextAccessorMock.Object.HttpContext.Items["userID"] as string;
             Guid userID = Guid.Parse(userIDString);
 
-            _RlogicMock.Setup(logic => logic.ActivateRequest(userID, It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<DateTime>())).Returns(ActiveRequest);
+            _RlogicMock.Setup(logic => logic.ActivateRequest(It.IsAny<Guid>(), userID, It.IsAny<DateTime>())).Returns(ActiveRequest);
 
             var aux = new ActivateRequest();
             aux.MaintenancePersonId = new Guid();
