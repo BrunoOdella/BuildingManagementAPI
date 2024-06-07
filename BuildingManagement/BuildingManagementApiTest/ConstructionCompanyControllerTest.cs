@@ -9,6 +9,7 @@ using System;
 using Models.Out;
 using Azure;
 using Microsoft.AspNetCore.Http;
+using System.Net.Http;
 
 namespace BuildingManagementApiTest
 {
@@ -17,13 +18,21 @@ namespace BuildingManagementApiTest
     {
         private Mock<IConstructionCompanyLogic> _constructionCompanyLogicMock;
         private ConstructionCompanyController _constructionCompanyController;
-        private IHttpContextAccessor _httpContextAccessorMock;
+        private Mock<IHttpContextAccessor> _httpContextAccessorMock;
+
 
         [TestInitialize]
         public void TestSetup()
         {
             _constructionCompanyLogicMock = new Mock<IConstructionCompanyLogic>(MockBehavior.Strict);
-            _constructionCompanyController = new ConstructionCompanyController(_constructionCompanyLogicMock.Object, _httpContextAccessorMock);
+
+            _httpContextAccessorMock = new Mock<IHttpContextAccessor>(MockBehavior.Strict);
+            var httpContext = new DefaultHttpContext();
+            Guid expectedUserID = Guid.NewGuid();
+            httpContext.Items["userID"] = expectedUserID.ToString();
+            _httpContextAccessorMock.Setup(x => x.HttpContext).Returns(httpContext);
+
+            _constructionCompanyController = new ConstructionCompanyController(_constructionCompanyLogicMock.Object, _httpContextAccessorMock.Object);
         }
 
         [TestMethod]
@@ -41,7 +50,10 @@ namespace BuildingManagementApiTest
 
             ConstructionCompanyResponse response = new ConstructionCompanyResponse(newCreateConstructionCompanyRequest.ToEntity());
 
-            //_constructionCompanyLogicMock.Setup(logic => logic.CreateConstructionCompany(It.IsAny<ConstructionCompany>())).Returns(constructionCompanyEntity);
+            string ccAdmin = _httpContextAccessorMock.Object.HttpContext.Items["userID"] as string;
+
+
+            _constructionCompanyLogicMock.Setup(logic => logic.CreateConstructionCompany(It.IsAny<ConstructionCompany>(), ccAdmin)).Returns(constructionCompanyEntity);
 
             ObjectResult result = _constructionCompanyController.CreateConstructionCompany(newCreateConstructionCompanyRequest) as ObjectResult;
 

@@ -215,9 +215,16 @@ namespace BuildingManagementApiTest
         }
 
         [TestMethod]
-        public void PutRequest_ShouldAsignMaintenancePersonResponse()
+        public void PutRequest_ShouldActivateRequest()
         {
-            var id = Guid.NewGuid();
+            var id = new Guid();
+
+            ActivateRequest activeRequestRequest = new ActivateRequest()
+            {
+                Status = Status.Active,
+                StartTime = DateTime.Now,
+                MaintenancePersonId = id
+            };
 
             Request_ ActiveRequest = new Request_()
             {
@@ -226,23 +233,23 @@ namespace BuildingManagementApiTest
                 Status = Status.Active,
                 CategoryID = 1,
                 CreationTime = DateTime.Now.AddDays(-1),
-                StartTime = DateTime.Now
+                StartTime = activeRequestRequest.StartTime,
+                MaintenanceStaffId = activeRequestRequest.MaintenancePersonId
             };
 
-            //RequestResponse response = new RequestResponse(ActiveRequest);
-            string userIDString = _httpContextAccessorMock.Object.HttpContext.Items["userID"] as string;
-            Guid userID = Guid.Parse(userIDString);
 
-            _RlogicMock.Setup(logic => logic.ActivateRequest(It.IsAny<Guid>(), userID, It.IsAny<DateTime>())).Returns(ActiveRequest);
+            _RlogicMock.Setup(logic => logic.ActivateRequest(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<DateTime>())).Returns(ActiveRequest);
 
-            var aux = new ActivateRequest();
-            aux.MaintenancePersonId = new Guid();
-
-            ObjectResult result = _Rcontroller.PutMaintenancePersonRequest(id.ToString(), aux);
+            var result = _Rcontroller.PutMaintenancePersonRequest(ActiveRequest.Id.ToString(), activeRequestRequest);
 
             Assert.IsNotNull(result);
             Assert.AreEqual(200, result.StatusCode);
-            //CollectionAssert.AreEqual(response, (System.Collections.ICollection?)result.Value);
+
+            var response = result.Value as RequestResponse;
+
+            Assert.IsNotNull(response);
+            Assert.AreEqual(ActiveRequest.Id, response.Id);
+            Assert.AreEqual(ActiveRequest.Description, response.Description);
 
             _RlogicMock.VerifyAll();
         }

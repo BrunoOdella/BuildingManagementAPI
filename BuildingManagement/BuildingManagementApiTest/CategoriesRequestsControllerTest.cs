@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -52,6 +53,40 @@ namespace BuildingManagementApiTest
             Assert.IsNotNull(result);
             Assert.AreEqual(201, result.StatusCode);
             Assert.AreEqual(response, result.Value);
+
+            _CRlogicMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void GetCategoriesRequests_ShouldReturnOkResponse_WhenCategoriesAreFound()
+        {
+            // Arrange
+            List<Category> categories = new List<Category>
+            {
+                new Category
+                {
+                    ID = 1,
+                    Name = "Category A",
+                    Description = "Description A"
+                },
+                new Category
+                {
+                    ID = 2,
+                    Name = "Category B",
+                    Description = "Description B"
+                }
+            };
+
+            List<CategoryResponse> response = categories.Select(c => new CategoryResponse(c)).ToList();
+            _CRlogicMock.Setup(logic => logic.GetAllCategories()).Returns(categories);
+
+            // Act
+            ObjectResult result = _CRcontroller.GetAllCategories() as ObjectResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(200, result.StatusCode);
+            CollectionAssert.AreEqual(response, result.Value as ICollection);
 
             _CRlogicMock.VerifyAll();
         }

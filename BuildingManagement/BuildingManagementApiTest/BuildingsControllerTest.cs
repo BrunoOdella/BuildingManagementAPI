@@ -97,8 +97,7 @@ namespace BuildingManagementApiTest
             var building = request.ToEntity();
             building.BuildingId = buildingId;
 
-            //_buildingLogicMock.Setup(l => l.UpdateBuilding(managerId, It.IsAny<Building>()))
-            //                  .Returns(building);
+            _buildingLogicMock.Setup(l => l.UpdateBuilding(managerId, It.IsAny<Building>(), It.IsAny<Guid>())).Returns(building);
 
             // Act
             var result = _buildingsController.UpdateBuilding(buildingId, request) as OkObjectResult;
@@ -127,18 +126,20 @@ namespace BuildingManagementApiTest
                     BuildingId = Guid.NewGuid(),
                     Name = "Building 1",
                     Address = "123 Main St",
-                    Manager = new Manager { Name = "Manager 1" }
+                    Manager = new Manager { Name = "Manager 1" },
+                    Location = new Location(){Latitude = 12, Longitude = 21}
                 },
                 new Building
                 {
                     BuildingId = Guid.NewGuid(),
                     Name = "Building 2",
                     Address = "456 Oak St",
-                    Manager = null
+                    Manager = null,
+                    Location = new Location(){Latitude = 22, Longitude = 11}
                 }
             };
 
-            //_buildingLogicMock.Setup(l => l.GetBuildingsByConstructionCompanyAdminId(adminId)).Returns(buildings);
+            _buildingLogicMock.Setup(l => l.GetBuildings(adminId)).Returns(buildings);
 
             var result = _buildingsController.GetBuildings() as OkObjectResult;
 
@@ -152,7 +153,48 @@ namespace BuildingManagementApiTest
             Assert.AreEqual("Building 2", response[1].Name);
             Assert.AreEqual("No Manager Assigned", response[1].ManagerName);
 
-            //_buildingLogicMock.Verify(x => x.GetBuildingsByConstructionCompanyAdminId(adminId), Times.Once);
+            _buildingLogicMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void GetApartments_ReturnsOkResponse_WithListOfApartments()
+        {
+            string managerId = Guid.NewGuid().ToString();
+            _httpContextAccessorMock.Setup(a => a.HttpContext.Items["userID"]).Returns(managerId);
+
+            var buildingId = Guid.NewGuid();
+            var apartments = new List<Apartment>
+            {
+                new Apartment
+                {
+                    ApartmentId = Guid.NewGuid(),
+                    BuildingId = buildingId,
+                    Number = 101,
+                    Floor = 1,
+                    Owner = new Owner { FirstName = "Owner 1", LastName = "asd"}
+                },
+                new Apartment
+                {
+                    ApartmentId = Guid.NewGuid(),
+                    BuildingId = buildingId,
+                    Number = 102,
+                    Floor = 1,
+                    Owner = new Owner { FirstName = "Owner 2", LastName = "dsa"}
+                }
+            };
+
+            _buildingLogicMock.Setup(l => l.GetApartments(managerId, buildingId)).Returns(apartments);
+
+            var result = _buildingsController.GetApartments(buildingId) as OkObjectResult;
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(200, result.StatusCode);
+            var response = result.Value as List<ApartmentResponse>;
+            Assert.IsNotNull(response);
+            Assert.AreEqual(2, response.Count);
+            Assert.AreEqual(101, response[0].Number);
+            Assert.AreEqual(102, response[1].Number);
+
             _buildingLogicMock.VerifyAll();
         }
     }

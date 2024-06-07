@@ -108,6 +108,7 @@ namespace BuildingManagementApiTest
             Assert.IsNotNull(okObjectResult);
             Assert.AreEqual(StatusCodes.Status200OK, okObjectResult.StatusCode);
 
+            _maintenanceStaffLogicMock.VerifyAll();
         }
     }
 }
