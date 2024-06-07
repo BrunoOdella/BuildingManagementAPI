@@ -46,7 +46,6 @@ namespace BusinessLogicTest
                 BuildingId = Guid.NewGuid(),
                 Name = "New Building",
                 Location = new Location { Latitude = 1.0, Longitude = 1.0 },
-              //  ConstructionCompanyAdminId = adminId
             };
 
             _constructionCompanyAdminRepositoryMock.Setup(repo => repo.GetConstructionCompanyAdminById(adminId)).Returns(constructionCompanyAdmin);
@@ -74,7 +73,6 @@ namespace BusinessLogicTest
                 BuildingId = Guid.NewGuid(),
                 Name = "New Building",
                 Location = new Location { Latitude = 1.0, Longitude = 1.0 },
-                //ConstructionCompanyAdminId = invalidAdminId
             };
 
             _constructionCompanyAdminRepositoryMock.Setup(repo => repo.GetConstructionCompanyAdminById(invalidAdminId)).Returns((ConstructionCompanyAdmin)null);
@@ -102,7 +100,6 @@ namespace BusinessLogicTest
                 BuildingId = Guid.NewGuid(),
                 Name = "New Building",
                 Location = new Location { Latitude = 1.0, Longitude = 1.0 },
-              //  ConstructionCompanyAdminId = adminId
             };
 
             _constructionCompanyAdminRepositoryMock.Setup(repo => repo.GetConstructionCompanyAdminById(adminId)).Returns(constructionCompanyAdmin);
@@ -135,7 +132,6 @@ namespace BusinessLogicTest
                 BuildingId = Guid.NewGuid(),
                 Name = "New Building",
                 Location = new Location { Latitude = 1.0, Longitude = 1.0 },
-            //    ConstructionCompanyAdminId = adminId
             };
 
             Building existingBuilding = new Building
@@ -224,21 +220,21 @@ namespace BusinessLogicTest
             Building building = new Building { BuildingId = Guid.NewGuid() };
 
             // Act
-            //_buildingLogic.UpdateBuilding(invalidManagerId, building);
+            _buildingLogic.UpdateBuilding(invalidManagerId, building, building.BuildingId);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [ExpectedException(typeof(ArgumentException))]
         public void UpdateBuilding_BuildingNotFound_ThrowsInvalidOperationException()
         {
             // Arrange
             string managerId = Guid.NewGuid().ToString();
             Building building = new Building { BuildingId = Guid.NewGuid() };
 
-            _buildingRepositoryMock.Setup(r => r.GetBuilding(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns((Building)null);
+            _buildingRepositoryMock.Setup(r => r.GetBuilding(It.IsAny<Guid>())).Returns((Building)null);
 
             // Act
-            //_buildingLogic.UpdateBuilding(managerId, building);
+            _buildingLogic.UpdateBuilding(managerId, building, building.BuildingId);
         }
 
         [TestMethod]
@@ -263,18 +259,19 @@ namespace BusinessLogicTest
                 Location = new Location { Latitude = 35.0, Longitude = -75.0 } // Asegurarse de inicializar Location aquí también
             };
 
-            _buildingRepositoryMock.Setup(r => r.GetBuilding(Guid.Parse(managerId), buildingId)).Returns(existingBuilding);
+            _buildingRepositoryMock.Setup(r => r.GetBuilding(buildingId)).Returns(existingBuilding);
             _buildingRepositoryMock.Setup(r => r.UpdateBuilding(It.IsAny<Building>())).Returns(existingBuilding);
+            _managerRepositoryMock.Setup(r => r.Get(Guid.Parse(managerId))).Returns(Guid.Parse(managerId));
 
             // Act
-            //var result = _buildingLogic.UpdateBuilding(managerId, building);
+            var result = _buildingLogic.UpdateBuilding(managerId, building, building.BuildingId);
 
             //// Assert
-            //Assert.AreEqual("Updated Name", result.Name);
-            //Assert.AreEqual("Updated Address", result.Address);
-            //Assert.AreEqual(40.0, result.Location.Latitude);
-            //Assert.AreEqual(-74.0, result.Location.Longitude);
-            //Assert.AreEqual(500, result.CommonExpenses);
+            Assert.AreEqual("Updated Name", result.Name);
+            Assert.AreEqual("Updated Address", result.Address);
+            Assert.AreEqual(40.0, result.Location.Latitude);
+            Assert.AreEqual(-74.0, result.Location.Longitude);
+            Assert.AreEqual(500, result.CommonExpenses);
         }
 
 
@@ -298,15 +295,46 @@ namespace BusinessLogicTest
                 Address = "Old Address"
             };
 
-            _buildingRepositoryMock.Setup(r => r.GetBuilding(Guid.Parse(managerId), buildingId)).Returns(existingBuilding);
+            _buildingRepositoryMock.Setup(r => r.GetBuilding(buildingId)).Returns(existingBuilding);
+            _managerRepositoryMock.Setup(r => r.Get(Guid.Parse(managerId))).Returns(Guid.Parse(managerId));
             _buildingRepositoryMock.Setup(r => r.UpdateBuilding(It.IsAny<Building>())).Returns(existingBuilding);
 
             // Act
-            //var result = _buildingLogic.UpdateBuilding(managerId, building);
+            var result = _buildingLogic.UpdateBuilding(managerId, building, building.BuildingId);
 
-            //// Assert
-            //Assert.AreEqual("Partially Updated Name", result.Name);
-            //Assert.AreEqual("Old Address", result.Address);  // Should not be updated
+            // Assert
+            Assert.AreEqual("Partially Updated Name", result.Name);
+            Assert.AreEqual("Old Address", result.Address);  // Should not be updated
+        }
+
+        [TestMethod]
+        public void UpdateBuilding_PartialUpdate_UpdatesOnlySpecifiedFields2()
+        {
+            // Arrange
+            string managerId = Guid.NewGuid().ToString();
+            Guid buildingId = Guid.NewGuid();
+            Building building = new Building
+            {
+                BuildingId = buildingId,
+                // Address and other fields are not provided and should not be updated
+            };
+            Building existingBuilding = new Building
+            {
+                BuildingId = buildingId,
+                ManagerId = Guid.Parse(managerId),
+                Name = "Old Name",
+                Address = "Old Address"
+            };
+
+            _buildingRepositoryMock.Setup(r => r.GetBuilding(buildingId)).Returns(existingBuilding);
+            _managerRepositoryMock.Setup(r => r.Get(Guid.Parse(managerId))).Returns(Guid.Parse(managerId));
+            _buildingRepositoryMock.Setup(r => r.UpdateBuilding(It.IsAny<Building>())).Returns(existingBuilding);
+
+            // Act
+            var result = _buildingLogic.UpdateBuilding(managerId, building, building.BuildingId);
+
+            // Assert
+            Assert.AreEqual("Old Address", result.Address);  // Should not be updated
         }
 
         [TestMethod]
@@ -332,13 +360,14 @@ namespace BusinessLogicTest
             };
 
             _buildingRepositoryMock.Setup(repo => repo.GetBuildingsByConstructionCompanyAdminId(adminId)).Returns(buildings);
+            _constructionCompanyAdminRepositoryMock.Setup(r => r.Get(adminId)).Returns(adminId);
 
-            //var result = _buildingLogic.GetBuildingsByConstructionCompanyAdminId(adminId.ToString());
+            var result = _buildingLogic.GetBuildings(adminId.ToString());
 
-            //Assert.IsNotNull(result);
-            //Assert.AreEqual(2, result.Count());
-            //Assert.IsTrue(result.Any(b => b.Name == "Building 1"));
-            //Assert.IsTrue(result.Any(b => b.Name == "Building 2"));
+            Assert.IsNotNull(result);
+            Assert.AreEqual(2, result.Count());
+            Assert.IsTrue(result.Any(b => b.Name == "Building 1"));
+            Assert.IsTrue(result.Any(b => b.Name == "Building 2"));
 
             _buildingRepositoryMock.Verify(repo => repo.GetBuildingsByConstructionCompanyAdminId(adminId), Times.Once);
         }
@@ -348,31 +377,402 @@ namespace BusinessLogicTest
         public void UpdateManager_BuildingWithManager_UpdatesManager()
         {
             // Arrange
-            string adminId = Guid.NewGuid().ToString();
+            Guid adminId = Guid.NewGuid();
             Building building = new Building
             {
                 BuildingId = Guid.NewGuid(),
-                Manager = new Manager { Email = "manager1" }
+                Manager = new Manager { Email = "manager1" },
+                ConstructionCompany = new ConstructionCompany() {ConstructionCompanyAdminId = adminId, ConstructionCompanyAdmin = new ConstructionCompanyAdmin() {Id = adminId}}
             };
 
             Building updatedBuilding = new Building
             {
                 BuildingId = building.BuildingId,
-                Manager = new Manager { Email = "manager2" }
+                Manager = new Manager { Email = "manager2"},
+                ManagerId = Guid.NewGuid()
             };
 
-            _buildingRepositoryMock.Setup(r => r.GetBuildingByAdmin(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(building);
-            _managerRepositoryMock.Setup(r => r.GetManagerByEmail("manager2")).Returns(new Manager { Email = "manager2" });
+            _buildingRepositoryMock.Setup(r => r.GetBuilding(It.IsAny<Guid>())).Returns(building);
+            _managerRepositoryMock.Setup(r => r.Get(adminId)).Returns(Guid.Empty);
+            _managerRepositoryMock.Setup(r => r.GetManagerById(updatedBuilding.ManagerId.Value)).Returns(updatedBuilding.Manager);
+            _constructionCompanyAdminRepositoryMock.Setup(r => r.Get(adminId)).Returns(adminId);
             _buildingRepositoryMock.Setup(r => r.UpdateBuilding(It.IsAny<Building>())).Returns(updatedBuilding);
 
             //// Act
-            //var result = _buildingLogic.UpdateBuilding(adminId, updatedBuilding);
+            var result = _buildingLogic.UpdateBuilding(adminId.ToString(), updatedBuilding, building.BuildingId);
 
-            //// Assert
-            //Assert.AreEqual("manager2", result.Manager.Email);
+            // Assert
+            Assert.AreEqual("manager2", result.Manager.Email);
             
             _buildingRepositoryMock.VerifyAll();
             _managerRepositoryMock.VerifyAll();
+            _constructionCompanyAdminRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void CreateBuilding_InvalidGuid()
+        {
+            // Arrange
+            Guid adminId = Guid.NewGuid();
+            ConstructionCompanyAdmin constructionCompanyAdmin = new ConstructionCompanyAdmin
+            {
+                Id = adminId,
+                ConstructionCompany = new ConstructionCompany
+                {
+                    ConstructionCompanyId = Guid.NewGuid(),
+                    Name = "New Construction Company"
+                }
+            };
+
+            Building newBuilding = new Building
+            {
+                BuildingId = Guid.NewGuid(),
+                Name = "New Building",
+                Location = new Location { Latitude = 1.0, Longitude = 1.0 },
+            };
+
+            // Act
+            _buildingLogic.CreateBuilding("invalid-guid", newBuilding);
+        }
+
+        [TestMethod]
+        public void CreateBuilding_ManagerIsNotNull()
+        {
+            // Arrange
+            Guid adminId = Guid.NewGuid();
+            ConstructionCompanyAdmin constructionCompanyAdmin = new ConstructionCompanyAdmin
+            {
+                Id = adminId,
+                ConstructionCompany = new ConstructionCompany
+                {
+                    ConstructionCompanyId = Guid.NewGuid(),
+                    Name = "New Construction Company"
+                }
+            };
+
+            Building newBuilding = new Building
+            {
+                BuildingId = Guid.NewGuid(),
+                Name = "New Building",
+                Location = new Location { Latitude = 1.0, Longitude = 1.0 },
+                ManagerId = Guid.NewGuid(),
+                Manager = new Manager { Email = "manager1" }
+            };
+
+            _constructionCompanyAdminRepositoryMock.Setup(repo => repo.GetConstructionCompanyAdminById(adminId)).Returns(constructionCompanyAdmin);
+            _buildingRepositoryMock.Setup(repo => repo.GetBuildingByLocation(newBuilding.Location.Latitude, newBuilding.Location.Longitude)).Returns((Building)null);
+            _buildingRepositoryMock.Setup(repo => repo.CreateBuilding(It.IsAny<Building>())).Returns(newBuilding);
+            _managerRepositoryMock.Setup(r => r.GetManagerByEmail(It.IsAny<string>())).Returns(newBuilding.Manager);
+
+            // Act
+            Building result = _buildingLogic.CreateBuilding(adminId.ToString(), newBuilding);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(newBuilding.Name, result.Name);
+            _buildingRepositoryMock.VerifyAll();
+            _constructionCompanyAdminRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void CreateBuilding_ManagerIsNull()
+        {
+            // Arrange
+            Guid adminId = Guid.NewGuid();
+            ConstructionCompanyAdmin constructionCompanyAdmin = new ConstructionCompanyAdmin
+            {
+                Id = adminId,
+                ConstructionCompany = new ConstructionCompany
+                {
+                    ConstructionCompanyId = Guid.NewGuid(),
+                    Name = "New Construction Company"
+                }
+            };
+
+            Building newBuilding = new Building
+            {
+                BuildingId = Guid.NewGuid(),
+                Name = "New Building",
+                Location = new Location { Latitude = 1.0, Longitude = 1.0 },
+                Manager = new Manager { Email = "manager1", ManagerId = Guid.NewGuid()}
+            };
+
+            _constructionCompanyAdminRepositoryMock.Setup(repo => repo.GetConstructionCompanyAdminById(adminId)).Returns(constructionCompanyAdmin);
+            _buildingRepositoryMock.Setup(repo => repo.GetBuildingByLocation(newBuilding.Location.Latitude, newBuilding.Location.Longitude)).Returns((Building)null);
+            _buildingRepositoryMock.Setup(repo => repo.CreateBuilding(It.IsAny<Building>())).Returns(newBuilding);
+            _managerRepositoryMock.SetupSequence(r => r.GetManagerByEmail(It.IsAny<string>()))
+                .Returns((Manager)null)
+                .Returns(newBuilding.Manager);
+            _managerRepositoryMock.Setup(r => r.CreateManager(It.IsAny<Manager>()));
+
+            // Act
+            Building result = _buildingLogic.CreateBuilding(adminId.ToString(), newBuilding);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(newBuilding.Name, result.Name);
+            _buildingRepositoryMock.VerifyAll();
+            _constructionCompanyAdminRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void UpdateBUilding_BuildingIsNull()
+        {
+            // Arrange
+            string managerId = Guid.NewGuid().ToString();
+            Building building = null;
+
+            // Act
+            _buildingLogic.UpdateBuilding(managerId, building, Guid.NewGuid());
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void UpdateBUilding_BuildingIdIsDifferent()
+        {
+            // Arrange
+            string managerId = Guid.NewGuid().ToString();
+            Building building = new Building(){BuildingId = Guid.NewGuid()};
+
+            // Act
+            _buildingLogic.UpdateBuilding(managerId, building, Guid.NewGuid());
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(UnauthorizedAccessException))]
+        public void UpdateManager_CCAdminIsNotAuthorized()
+        {
+            // Arrange
+            Guid adminId = Guid.NewGuid();
+            Building building = new Building
+            {
+                BuildingId = Guid.NewGuid(),
+                Manager = new Manager { Email = "manager1" },
+                ConstructionCompany = new ConstructionCompany() { ConstructionCompanyAdminId = Guid.NewGuid(), ConstructionCompanyAdmin = new ConstructionCompanyAdmin() { Id = Guid.NewGuid() } }
+            };
+
+            Building updatedBuilding = new Building
+            {
+                BuildingId = building.BuildingId,
+                Manager = new Manager { Email = "manager2" },
+                ManagerId = Guid.NewGuid()
+            };
+
+            _buildingRepositoryMock.Setup(r => r.GetBuilding(It.IsAny<Guid>())).Returns(building);
+            _managerRepositoryMock.Setup(r => r.Get(adminId)).Returns(Guid.Empty);
+            _constructionCompanyAdminRepositoryMock.Setup(r => r.Get(adminId)).Returns(adminId);
+
+            _buildingLogic.UpdateBuilding(adminId.ToString(), updatedBuilding, building.BuildingId);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void UpdateManager_InvalidManagerId()
+        {
+            // Arrange
+            Guid adminId = Guid.NewGuid();
+            Building building = new Building
+            {
+                BuildingId = Guid.NewGuid(),
+                Manager = new Manager { Email = "manager1" },
+                ConstructionCompany = new ConstructionCompany() { ConstructionCompanyAdminId = adminId, ConstructionCompanyAdmin = new ConstructionCompanyAdmin() { Id = adminId } }
+            };
+
+            Building updatedBuilding = new Building
+            {
+                BuildingId = building.BuildingId,
+                Manager = new Manager { Email = "manager2" },
+                ManagerId = Guid.NewGuid()
+            };
+
+            _buildingRepositoryMock.Setup(r => r.GetBuilding(It.IsAny<Guid>())).Returns(building);
+            _managerRepositoryMock.Setup(r => r.Get(adminId)).Returns(Guid.Empty);
+            _managerRepositoryMock.Setup(r => r.GetManagerById(updatedBuilding.ManagerId.Value)).Returns((Manager)null);
+            _constructionCompanyAdminRepositoryMock.Setup(r => r.Get(adminId)).Returns(adminId);
+            _buildingRepositoryMock.Setup(r => r.UpdateBuilding(It.IsAny<Building>())).Returns(updatedBuilding);
+
+            //// Act
+            _buildingLogic.UpdateBuilding(adminId.ToString(), updatedBuilding, building.BuildingId);
+
+            _buildingRepositoryMock.VerifyAll();
+            _managerRepositoryMock.VerifyAll();
+            _constructionCompanyAdminRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void UpdateManager_InvalidId()
+        {
+            // Arrange
+            Guid adminId = Guid.NewGuid();
+            Building building = new Building
+            {
+                BuildingId = Guid.NewGuid(),
+                Manager = new Manager { Email = "manager1" },
+                ConstructionCompany = new ConstructionCompany() { ConstructionCompanyAdminId = adminId, ConstructionCompanyAdmin = new ConstructionCompanyAdmin() { Id = adminId } }
+            };
+
+            Building updatedBuilding = new Building
+            {
+                BuildingId = building.BuildingId,
+                Manager = new Manager { Email = "manager2" },
+                ManagerId = Guid.NewGuid()
+            };
+
+            _buildingRepositoryMock.Setup(r => r.GetBuilding(It.IsAny<Guid>())).Returns(building);
+            _managerRepositoryMock.Setup(r => r.Get(adminId)).Returns(Guid.Empty);
+            _constructionCompanyAdminRepositoryMock.Setup(r => r.Get(adminId)).Returns(Guid.Empty);
+
+            //// Act
+            _buildingLogic.UpdateBuilding(adminId.ToString(), updatedBuilding, building.BuildingId);
+
+            _buildingRepositoryMock.VerifyAll();
+            _managerRepositoryMock.VerifyAll();
+            _constructionCompanyAdminRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void GetBuildings_InvalidGuid()
+        {
+            // Arrange
+            string personId = "invalid-guid";
+
+            // Act
+            _buildingLogic.GetBuildings(personId);
+        }
+
+        [TestMethod]
+        public void GetBuildings_ReturnBuildings()
+        {
+            // Arrange
+            Guid managerId = Guid.NewGuid();
+            var buildings = new List<Building>
+            {
+                new Building
+                {
+                    BuildingId = Guid.NewGuid(),
+                    Name = "Building 1",
+                    Address = "123 Main St",
+                },
+                new Building
+                {
+                    BuildingId = Guid.NewGuid(),
+                    Name = "Building 2",
+                    Address = "456 Oak St",
+                }
+            };
+
+            _constructionCompanyAdminRepositoryMock.Setup(r => r.Get(managerId)).Returns(Guid.Empty);
+            _managerRepositoryMock.Setup(r => r.Get(managerId)).Returns(managerId);
+            _buildingRepositoryMock.Setup(repo => repo.GetBuildingsByManagerId(managerId)).Returns(buildings);
+
+            // Act
+            var result = _buildingLogic.GetBuildings(managerId.ToString());
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(2, result.Count());
+            Assert.IsTrue(result.Any(b => b.Name == "Building 1"));
+            Assert.IsTrue(result.Any(b => b.Name == "Building 2"));
+
+            _buildingRepositoryMock.Verify(repo => repo.GetBuildingsByManagerId(managerId), Times.Once);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void GetBuildings_IdNotExist()
+        {
+            // Arrange
+            Guid personID = Guid.NewGuid();
+            var buildings = new List<Building>
+            {
+                new Building
+                {
+                    BuildingId = Guid.NewGuid(),
+                    Name = "Building 1",
+                    Address = "123 Main St",
+                },
+                new Building
+                {
+                    BuildingId = Guid.NewGuid(),
+                    Name = "Building 2",
+                    Address = "456 Oak St",
+                }
+            };
+
+            _constructionCompanyAdminRepositoryMock.Setup(r => r.Get(personID)).Returns(Guid.Empty);
+            _managerRepositoryMock.Setup(r => r.Get(personID)).Returns(Guid.Empty);
+            
+            // Act
+            _buildingLogic.GetBuildings(personID.ToString());
+        }
+
+        [TestMethod]
+        public void GetApartnebts()
+        {
+            // Arrange
+            Guid buildingId = Guid.NewGuid();
+            var apartments = new List<Apartment>
+            {
+                new Apartment
+                {
+                    ApartmentId = Guid.NewGuid(),
+                    Floor = 1,
+                    BuildingId = buildingId
+                },
+                new Apartment
+                {
+                    ApartmentId = Guid.NewGuid(),
+                    Floor = 2,
+                    BuildingId = buildingId
+                }
+            };
+
+            Manager manager = new Manager
+            {
+                ManagerId = Guid.NewGuid()
+            };
+
+            _buildingRepositoryMock.Setup(repo => repo.GetAllApartments(manager.ManagerId, buildingId)).Returns(apartments);
+
+            // Act
+            var result = _buildingLogic.GetApartments(manager.ManagerId.ToString(), buildingId);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(2, result.Count());
+            Assert.IsTrue(result.Any(a => a.Floor == 1));
+
+            _buildingRepositoryMock.Verify(repo => repo.GetAllApartments(manager.ManagerId, buildingId), Times.Once);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void GetApartments_InvalidManagerId()
+        {
+            // Arrange
+            string managerId = "invalid-guid";
+            Guid buildingId = Guid.NewGuid();
+
+            // Act
+            _buildingLogic.GetApartments(managerId, buildingId);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void GetApartments_BuildingWithOutApartments()
+        {
+            // Arrange
+            string managerId = Guid.NewGuid().ToString();
+            Guid buildingId = Guid.NewGuid();
+
+            _buildingRepositoryMock.Setup(repo => repo.GetAllApartments(Guid.Parse(managerId), buildingId)).Returns((List<Apartment>)null);
+
+            // Act
+            _buildingLogic.GetApartments(managerId, buildingId);
         }
     }
 }

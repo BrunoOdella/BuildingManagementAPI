@@ -78,7 +78,7 @@ namespace BusinessLogic.Logics
             }
 
             var building = _buildingRepository.GetBuilding(managerGuid, buildingId);
-            if (building == null || building.ManagerId != managerGuid)
+            if (building == null)
             {
                 throw new UnauthorizedAccessException("Building not found or manager not authorized to delete this building.");
             }
@@ -110,17 +110,17 @@ namespace BusinessLogic.Logics
 
             if (_managerRepository.Get(Id) != Guid.Empty)
             {
-                existingBuilding.Name = building.Name;
-                existingBuilding.Address = building.Address;
-                existingBuilding.Location = building.Location;
-                existingBuilding.CommonExpenses = building.CommonExpenses;
-
+                existingBuilding.Name = building.Name ?? existingBuilding.Name;
+                existingBuilding.Address = building.Address ?? existingBuilding.Address;
+                existingBuilding.Location = building.Location ?? existingBuilding.Location;
+                if (building.CommonExpenses > 0)
+                    existingBuilding.CommonExpenses = building.CommonExpenses;
             }
             else if (_constructionCompanyAdminRepository.Get(Id) != Guid.Empty)
             {
                 var adminId = Id;
                 if (existingBuilding.ConstructionCompany.ConstructionCompanyAdmin.Id != adminId)
-                    throw new UnauthorizedAccessException("Manager not authorized to update this building");
+                    throw new UnauthorizedAccessException("Construction Company Admin is not authorized to update this building");
 
                 if (building.ManagerId != null)
                 {
@@ -142,23 +142,23 @@ namespace BusinessLogic.Logics
 
 
 
-        public IEnumerable<Building> GetBuildings(string adminId)
+        public IEnumerable<Building> GetBuildings(string personId)
         {
-            if (!Guid.TryParse(adminId, out Guid parsedAdminId))
+            if (!Guid.TryParse(personId, out Guid parsedAdminId))
             {
                 throw new ArgumentException("Invalid admin ID");
             }
-            parsedAdminId = Guid.Parse(adminId);
+            parsedAdminId = Guid.Parse(personId);
             if (_constructionCompanyAdminRepository.Get(parsedAdminId) != Guid.Empty)
             {
                 return _buildingRepository.GetBuildingsByConstructionCompanyAdminId(parsedAdminId);
             }
             if (_managerRepository.Get(parsedAdminId) != Guid.Empty)
             {
-                IEnumerable<Building> jaja= _buildingRepository.GetBuildingsByManagerId(parsedAdminId);
-                return jaja;
+                IEnumerable<Building> building = _buildingRepository.GetBuildingsByManagerId(parsedAdminId);
+                return building;
             }
-                throw new ArgumentException("Not buildings found");
+            throw new ArgumentException("Not buildings found");
         }
 
         public IEnumerable<Apartment> GetApartments(string managerId, Guid buildingId)
@@ -167,11 +167,15 @@ namespace BusinessLogic.Logics
             {
                 throw new ArgumentException("Invalid manager ID");
             }
-            if (_buildingRepository.GetAllApartments(parsedAdminId, buildingId) == null)
+
+            var apartments = _buildingRepository.GetAllApartments(parsedAdminId, buildingId);
+
+            if (apartments == null)
             {
                 throw new ArgumentException("Not apartments found");
             }
-            return _buildingRepository.GetAllApartments(parsedAdminId, buildingId);
+
+            return apartments;
         }
 
     }
