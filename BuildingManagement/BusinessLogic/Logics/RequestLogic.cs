@@ -102,13 +102,6 @@ public class RequestLogic : IRequestLogic
         return actualRequest;
     }
 
-    /*no usada
-    public Request_ AsignMaintenancePerson(Guid managerId, Guid requestGuid, Guid maintenancePersonId)
-    {
-        throw new NotImplementedException();
-    }
-    */
-
     private void ValidateIncomingRequest(Request_ request)
     {
         // General validations

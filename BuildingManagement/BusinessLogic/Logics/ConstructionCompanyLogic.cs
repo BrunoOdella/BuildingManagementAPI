@@ -61,6 +61,16 @@ namespace BusinessLogic.Logics
                 throw new ConstructionCompanyNotFoundException();
             }
 
+            if (_constructionCompanyRepository.NameExists(constructionCompany.Name))
+            {
+                throw new ConstructionCompanyAlreadyExistsException();
+            }
+
+            if (string.IsNullOrWhiteSpace(constructionCompany.Name))
+            {
+                throw new ConstructionCompanyNameCanNotBeEmptyException();
+            }
+
             existingCompany.Name = constructionCompany.Name;
 
             _constructionCompanyRepository.UpdateConstructionCompany(existingCompany);

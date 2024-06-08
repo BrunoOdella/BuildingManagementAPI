@@ -30,7 +30,6 @@ public class CategoriesRequestsLogicTest
         };
 
         _categoryRepositoryMock.Setup(c => c.Exist(category)).Returns(false);
-        _categoryRepositoryMock.Setup(c => c.Count()).Returns(0);
         _categoryRepositoryMock.Setup(c => c.Add(category)).Returns(category);
 
         Category response = _categoriesRequestsLogic.CreateCategory(category);
@@ -65,6 +64,32 @@ public class CategoriesRequestsLogicTest
 
         Assert.IsInstanceOfType(exception, typeof(CategoryAlreadyExistException));
         Assert.IsTrue(exception.Message.Equals("Can not create an already existing category."));
+        _categoryRepositoryMock.VerifyAll();
+    }
+
+    [TestMethod]
+    public void GetAllCategories()
+    {
+        List<Category> categories = new List<Category>()
+        {
+            new Category()
+            {
+                Description = "descripcion",
+                Name = "nombre"
+            },
+            new Category()
+            {
+                Description = "descripcion2",
+                Name = "nombre2"
+            }
+        };
+
+        _categoryRepositoryMock.Setup(c => c.GetAll()).Returns(categories);
+
+        IEnumerable<Category> response = _categoriesRequestsLogic.GetAllCategories();
+
+        Assert.IsNotNull(response);
+        Assert.AreEqual(categories.Count, response.Count());
         _categoryRepositoryMock.VerifyAll();
     }
 }

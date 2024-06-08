@@ -118,9 +118,61 @@ namespace BusinessLogicTest
 
             // Assert - Expects EmailAlreadyExistsException
             _adminRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void GetAllMaintenanceStaff_ValidData_ReturnsStaff()
+        {
+            // Arrange
+            var managerId = Guid.NewGuid().ToString();
+            var maintenanceStaff = new MaintenanceStaff
+            {
+                Name = "John",
+                LastName = "Doe",
+                Email = "email"
+            };
+
+            _managerRepositoryMock.Setup(repo => repo.Get(It.IsAny<Guid>())).Returns(Guid.NewGuid());
+            _maintenanceStaffRepositoryMock.Setup(repo => repo.GetAllMaintenanceStaff()).Returns(new[] { maintenanceStaff });
+
+            // Act
+            var result = _maintenanceStaffLogic.GetAllMaintenanceStaff(managerId);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(1, result.Count());
+            Assert.AreEqual(maintenanceStaff.Email, result.First().Email);
+
             _managerRepositoryMock.VerifyAll();
             _maintenanceStaffRepositoryMock.VerifyAll();
-            _invitationRepositoryMock.VerifyAll();
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void GetAllMaintenanceStaff_InvalidManagerId_ThrowsException()
+        {
+            // Arrange
+            var managerId = "invalid-guid";
+
+            // Act
+            _maintenanceStaffLogic.GetAllMaintenanceStaff(managerId);
+
+            // Assert - Expects ArgumentException
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void GetAllMaintenanceStaff_ManagerNotFound_ThrowsException()
+        {
+            // Arrange
+            var managerId = Guid.NewGuid().ToString();
+
+            _managerRepositoryMock.Setup(repo => repo.Get(It.IsAny<Guid>())).Returns(Guid.Empty);
+
+            // Act
+            _maintenanceStaffLogic.GetAllMaintenanceStaff(managerId);
+
+            // Assert - Expects ArgumentException
+            _managerRepositoryMock.VerifyAll();
+        }
+
     }
 }

@@ -16,6 +16,7 @@ namespace BusinessLogic.Logics
         {
             _managerRepository = managerRepository;
         }
+
         public IEnumerable<Manager> GetAll()
         {
             if (_managerRepository.GetAll() == null)

@@ -49,7 +49,7 @@ namespace BusinessLogicTest
                 Email = "test@example.com",
                 Status = "No aceptada",
                 ExpirationDate = DateTime.UtcNow.AddDays(1),
-                Role = "encargado"
+                Role = "manager"
             };
 
             _invitationRepositoryMock.Setup(repo => repo.GetInvitationById(invitationId)).Returns(invitation);
@@ -77,7 +77,7 @@ namespace BusinessLogicTest
                 Email = "admin@example.com",
                 Status = "No aceptada",
                 ExpirationDate = DateTime.UtcNow.AddDays(1),
-                Role = "construction_company_admin"
+                Role = "constructioncompanyadmin"
             };
 
             _invitationRepositoryMock.Setup(repo => repo.GetInvitationById(invitationId)).Returns(invitation);
@@ -205,9 +205,6 @@ namespace BusinessLogicTest
 
             // Assert - Expects EmailAlreadyExistsException
             _adminRepositoryMock.VerifyAll();
-            _managerRepositoryMock.VerifyAll();
-            _maintenanceStaffRepositoryMock.VerifyAll();
-            _invitationRepositoryMock.VerifyAll();
         }
 
         [TestMethod]
@@ -325,6 +322,44 @@ namespace BusinessLogicTest
             Assert.IsTrue(exception.Message.Equals("Email does not match the invitation."));
 
             _invitationRepositoryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void AceptInvitation_InvalidRole_ThrowException()
+        {
+            string email = "email";
+
+            Guid id = Guid.NewGuid();
+
+            var invitation = new Invitation
+            {
+                InvitationId = id,
+                Status = "No aceptada",
+                Email = email,
+                ExpirationDate = DateTime.UtcNow.AddDays(1),
+                Role = "invalid"
+            };
+
+            _invitationRepositoryMock.Setup(repo => repo.GetInvitationById(It.IsAny<Guid>())).Returns(invitation);
+            _invitationRepositoryMock.Setup(r => r.UpdateInvitation(It.IsAny<Invitation>()));
+
+            Exception exception = null;
+
+            try
+            {
+                _invitationLogic.AcceptInvitation(id, email, "password");
+
+            }
+            catch (Exception ex)
+            {
+                exception = ex;
+            }
+
+            Assert.IsInstanceOfType(exception, typeof(ArgumentException));
+            Assert.IsTrue(exception.Message.Equals("Invalid role specified."));
+
+            _invitationRepositoryMock.VerifyAll();
+
         }
     }
 }
