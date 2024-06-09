@@ -146,5 +146,89 @@ namespace DataAccessTest
                 Assert.IsFalse(notExists);
             }
         }
+
+        [TestMethod]
+        public void GetByEmailAndPasswordTest()
+        {
+            using (BuildingManagementDbContext context = CreateDbContext("TestGetByEmailAndPassword"))
+            {
+                ManagerRepository repository = new ManagerRepository(context);
+                Manager manager = new Manager
+                {
+                    ManagerId = Guid.NewGuid(),
+                    Name = "Default Manager Name",
+                    Email = "email",
+                    Password = "password"
+                };
+
+                context.Managers.Add(manager);
+                context.SaveChanges();
+
+                Manager result = repository.GetByEmailAndPassword(manager.Email, manager.Password);
+                Assert.IsNotNull(result);
+                Assert.AreEqual(manager.Email, result.Email);   
+            }
+        }
+
+        [TestMethod]
+        public void GetAllTest()
+        {
+            using (BuildingManagementDbContext context = CreateDbContext("TestGetAll"))
+            {
+                ManagerRepository repository = new ManagerRepository(context);
+                Manager manager1 = new Manager
+                {
+                    ManagerId = Guid.NewGuid(),
+                    Name = "Manager1",
+                    Email = "email",
+                    Password = "password"
+                };
+
+                Manager manager2 = new Manager
+                {
+                    ManagerId = Guid.NewGuid(),
+                    Name = "Manager2",
+                    Email = "email",
+                    Password = "password"
+                };
+
+                context.Managers.Add(manager1);
+                context.Managers.Add(manager2);
+                context.SaveChanges();
+
+                IEnumerable<Manager> result = repository.GetAll();
+
+                Assert.AreEqual(2, result.Count());
+                Assert.IsTrue(result.Any(m => m.ManagerId == manager1.ManagerId));
+                Assert.IsTrue(result.Any(m => m.ManagerId == manager2.ManagerId));
+                Assert.IsTrue(result.Any(m => m.Name == manager1.Name));
+            }
+        }
+
+        [TestMethod]
+        public void GetManagerByIdTest2()
+        {
+            using (BuildingManagementDbContext context = CreateDbContext("TestGetManagerById2"))
+            {
+                ManagerRepository repository = new ManagerRepository(context);
+                Manager manager = new Manager
+                {
+                    ManagerId = Guid.NewGuid(),
+                    Name = "Default Manager Name",
+                    Email = "email",
+                    Password = "password"
+                };
+
+                context.Managers.Add(manager);
+                context.SaveChanges();
+
+                Manager result = repository.GetManagerById(manager.ManagerId);
+
+                Assert.IsNotNull(result);
+                Assert.AreEqual(manager.ManagerId, result.ManagerId);
+                Assert.AreEqual(manager.Email, result.Email);
+            }
+        }
+
     }
 }

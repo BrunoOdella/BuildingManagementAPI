@@ -484,23 +484,24 @@ namespace DataAccessTest
             {
                 var adminId = Guid.NewGuid();
                 var buildings = new List<Building>
-        {
-            new Building
-            {
-                BuildingId = Guid.NewGuid(),
-                Name = "Building 1",
-                Address = "123 Main St",
-//                ConstructionCompanyAdminId = adminId,
-                Manager = new Manager { Name = "Manager 1", Email = "manager1@example.com", Password = "password" }
-            },
-            new Building
-            {
-                BuildingId = Guid.NewGuid(),
-                Name = "Building 2",
-                Address = "456 Oak St",
-//Manager = new Manager { Name = "Manager 2", Email = "manager2@example.com", Password = "password" }
-            }
-        };
+                {
+                    new Building
+                    {
+                        BuildingId = Guid.NewGuid(),
+                        Name = "Building 1",
+                        Address = "123 Main St",
+                        ConstructionCompany = new ConstructionCompany(){ConstructionCompanyAdminId = adminId, Name = "company"},
+                        Manager = new Manager { Name = "Manager 1", Email = "manager1@example.com", Password = "password" }
+                    },
+                    new Building
+                    {
+                        BuildingId = Guid.NewGuid(),
+                        Name = "Building 2",
+                        Address = "456 Oak St",
+                        ConstructionCompany = new ConstructionCompany(){ConstructionCompanyAdminId = adminId, Name = "company"},
+                        Manager = new Manager { Name = "Manager 2", Email = "manager2@example.com", Password = "password" }
+                    }
+                };
 
                 context.Buildings.AddRange(buildings);
                 context.SaveChanges();
@@ -524,6 +525,8 @@ namespace DataAccessTest
         {
             using (var context = CreateDbContext("TestGetBuildingByAdminIdAndBuildingId"))
             {
+                var repository = new BuildingRepository(context);
+
                 var adminId = Guid.NewGuid();
                 var buildingId = Guid.NewGuid();
                 var building = new Building
@@ -531,18 +534,82 @@ namespace DataAccessTest
                     BuildingId = buildingId,
                     Name = "Building 1",
                     Address = "123 Main St",
- //                   ConstructionCompanyAdminId = adminId,
+                    ConstructionCompanyId = Guid.NewGuid(),
+                    ConstructionCompany = new ConstructionCompany { ConstructionCompanyAdminId = adminId, Name = "company"},
                     Manager = new Manager { Name = "Manager 1", Email = "email", Password = "pass"}
                 };
 
                 context.Buildings.Add(building);
                 context.SaveChanges();
 
-                var repository = new BuildingRepository(context);
                 var result = repository.GetBuildingByAdmin(adminId, buildingId);
 
                 Assert.IsNotNull(result);
                 Assert.AreEqual(buildingId, result.BuildingId);
+                Assert.AreEqual("Building 1", result.Name);
+            }
+        }
+
+        [TestMethod]
+        public void GetBuildingByManagerId_Succes()
+        {
+            using (var context = CreateDbContext("TestGetBuildings_123"))
+            {
+                var repository = new BuildingRepository(context);
+
+                var managerId = Guid.NewGuid();
+                var building = new Building
+                {
+                    BuildingId = Guid.NewGuid(),
+                    Name = "Building 1",
+                    Address = "123 Main St",
+                    ConstructionCompanyId = Guid.NewGuid(),
+                    ManagerId = managerId,
+                    Manager = new Manager { ManagerId = managerId, Name = "Manager 1", Email = "email", Password = "pass" },
+                    Location = new Location { Latitude = 40.7128, Longitude = -74.0060 },
+                    Apartments = new List<Apartment>(),
+                    ConstructionCompany = new ConstructionCompany { ConstructionCompanyAdminId = Guid.NewGuid(), Name = "company" }
+                };
+
+                context.Buildings.Add(building);
+                context.SaveChanges();
+
+                var result = repository.GetBuildingsByManagerId(managerId);
+
+                Assert.IsNotNull(result);
+                Assert.AreEqual(1, result.Count());
+                Assert.AreEqual("Building 1", result.First().Name);
+            }
+        }
+
+        [TestMethod]
+        public void GetBuilding_Succes()
+        {
+            using (var context = CreateDbContext("TestGetBuilding_1"))
+            {
+                var repository = new BuildingRepository(context);
+
+                var managerId = Guid.NewGuid();
+                var building = new Building
+                {
+                    BuildingId = Guid.NewGuid(),
+                    Name = "Building 1",
+                    Address = "123 Main St",
+                    ConstructionCompanyId = Guid.NewGuid(),
+                    ManagerId = managerId,
+                    Manager = new Manager { ManagerId = managerId, Name = "Manager 1", Email = "email", Password = "pass" },
+                    Location = new Location { Latitude = 40.7128, Longitude = -74.0060 },
+                    Apartments = new List<Apartment>(),
+                    ConstructionCompany = new ConstructionCompany { ConstructionCompanyAdminId = Guid.NewGuid(), Name = "company" }
+                };
+
+                context.Buildings.Add(building);
+                context.SaveChanges();
+
+                var result = repository.GetBuilding(building.BuildingId);
+
+                Assert.IsNotNull(result);
+                Assert.AreEqual(building.BuildingId, result.BuildingId);
                 Assert.AreEqual("Building 1", result.Name);
             }
         }

@@ -150,4 +150,33 @@ public class CategoryRepositoryTest
             Assert.AreEqual(2, categoryRepository.Count());
         }
     }
+
+    [TestMethod]
+    public void GetAllCategories()
+    {
+        using (BuildingManagementDbContext context = CreateDbContext("TestGetAllCategories"))
+        {
+            CategoryRepository categoryRepository = new CategoryRepository(context);
+
+            Category category = new Category
+            {
+                Name = "Category1",
+                Description = "Description1"
+            };
+
+            Category category2 = new Category
+            {
+                Name = "Category2",
+                Description = "Description2"
+            };
+
+            // Act
+            categoryRepository.Add(category);
+            categoryRepository.Add(category2);
+            context.SaveChanges();
+
+            // Assert
+            Assert.AreEqual(2, categoryRepository.GetAll().Count());
+        }
+    }
 }

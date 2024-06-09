@@ -119,11 +119,13 @@ namespace DataAccess
 
         public IEnumerable<Building> GetBuildingsByManagerId(Guid managerId)
         {
-            return _context.Buildings
+            List <Building> buildings = _context.Buildings.Include(b => b.Apartments)
+                .Include(b => b.Location)
                 .Include(b => b.Manager)
                 .Include(b => b.ConstructionCompany)
-                .Where(b => b.Manager.ManagerId == managerId)
+                .Where(b => b.ManagerId.Equals(managerId))
                 .ToList();
+            return buildings;
         }
 
         public Building GetBuilding(Guid buildingId)

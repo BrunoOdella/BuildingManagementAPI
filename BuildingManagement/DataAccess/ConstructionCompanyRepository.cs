@@ -45,8 +45,13 @@ namespace DataAccess
         }
         public void UpdateConstructionCompany(ConstructionCompany constructionCompany)
         {
-            _context.ConstructionCompanies.Update(constructionCompany);
-            _context.SaveChanges();
+            var existingCompany = _context.ConstructionCompanies.Local.FirstOrDefault(cc => cc.ConstructionCompanyId == constructionCompany.ConstructionCompanyId);
+            if (existingCompany != null)
+            {
+                // Actualiza solo los campos que vienen en el objeto updatedCompany
+                _context.Entry(existingCompany).CurrentValues.SetValues(constructionCompany);
+                _context.SaveChanges();
+            }
         }
 
         public ConstructionCompany GetCompanyByAdminId(Guid adminId)

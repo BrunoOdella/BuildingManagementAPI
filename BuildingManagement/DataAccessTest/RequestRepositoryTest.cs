@@ -326,5 +326,32 @@ namespace DataAccessTest
                 Assert.IsTrue(result.Any(r => r.Id == request2.Id));
             }
         }
+
+        [TestMethod]
+        public void GetRequest_Succes()
+        {
+            using (BuildingManagementDbContext context = CreateDbContext("TestGetRequest"))
+            {
+                RequestRepository repository = new RequestRepository(context);
+                Guid requestId = Guid.NewGuid();
+                Request_ request = new Request_
+                {
+                    Id = requestId,
+                    Description = "Fix the leaky faucet",
+                    Status = Status.Pending,
+                    CategoryID = 1,
+                    CreationTime = DateTime.Now,
+                    MaintenanceStaffId = Guid.NewGuid(),
+                    ApartmentId = Guid.NewGuid()
+                };
+
+                context.Requests.Add(request);
+                context.SaveChanges();
+
+                Request_ result = repository.Get(requestId);
+                Assert.IsNotNull(result);
+                Assert.AreEqual(request.Id, result.Id);
+            }
+        }
     }
 }

@@ -121,5 +121,32 @@ namespace DataAccessTest
                 Assert.IsFalse(result);
             }
         }
+
+        [TestMethod]
+        public void GetByEmailAndPassword_AdminExists_ReturnsAdmin()
+        {
+            using (var context = CreateDbContext("TestGetByEmailAndPassword_AdminExists"))
+            {
+                var repository = new AdminRepository(context);
+
+                var admin = new Admin
+                {
+                    AdminID = Guid.NewGuid(),
+                    FirstName = "Juan",
+                    LastName = "Perez",
+                    Email = "email",
+                    Password = "password",
+                };
+
+                context.Admins.Add(admin);
+                context.SaveChanges();
+
+                var result = repository.GetByEmailAndPassword(admin.Email, admin.Password);
+
+                Assert.IsNotNull(result);
+                Assert.AreEqual(admin.Email, result.Email);
+                Assert.AreEqual(admin.AdminID, result.AdminID);
+            }
+        }
     }
 }
