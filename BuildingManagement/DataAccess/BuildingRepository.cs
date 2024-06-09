@@ -1,9 +1,5 @@
-﻿using Domain;
-using IDataAccess;
+﻿using IDataAccess;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace DataAccess
 {
@@ -52,13 +48,13 @@ namespace DataAccess
 
 
         public List<Apartment> GetAllApartments(Guid managerId, Guid buildingId)
-        {  
+        {
             return _context.Apartments
                 .Include(a => a.Building)
                 .Include(a => a.Requests)
                 .Include(a => a.Owner)
                 .Where(a => a.Building.ManagerId == managerId && a.Building.BuildingId == buildingId)
-                .ToList();  
+                .ToList();
         }
 
         public bool DeleteBuilding(Guid buildingId)
@@ -119,7 +115,7 @@ namespace DataAccess
 
         public IEnumerable<Building> GetBuildingsByManagerId(Guid managerId)
         {
-            List <Building> buildings = _context.Buildings.Include(b => b.Apartments)
+            List<Building> buildings = _context.Buildings.Include(b => b.Apartments)
                 .Include(b => b.Location)
                 .Include(b => b.Manager)
                 .Include(b => b.ConstructionCompany)

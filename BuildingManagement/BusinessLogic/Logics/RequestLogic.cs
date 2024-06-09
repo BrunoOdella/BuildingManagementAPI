@@ -39,11 +39,11 @@ public class RequestLogic : IRequestLogic
 
         return _requestRepository.CreateRequest(request);
     }
-    
+
     public IEnumerable<Request_> GetAllRequest(Guid personID)
     {
         var manager = _managerRepository.Get(personID);
-        if(manager.Equals(Guid.Empty))
+        if (manager.Equals(Guid.Empty))
             return _requestRepository.GetAllRequestStaff(personID);
         return _requestRepository.GetAllRequest(personID);
     }
@@ -87,7 +87,7 @@ public class RequestLogic : IRequestLogic
         if (actualRequest.Status != Status.Active)
             throw new InvalidOperationException("Request is not active.");
 
-        if(actualRequest.StartTime >  endTime)
+        if (actualRequest.StartTime > endTime)
             throw new InvalidOperationException("End time has to be greater than Start time.");
 
         if (actualRequest.CreationTime > endTime)
@@ -106,8 +106,8 @@ public class RequestLogic : IRequestLogic
     {
         // General validations
         // Empty request
-        if (request.StartTime.Equals(request.CreationTime) && 
-            request.CreationTime.Equals(request.EndTime) && 
+        if (request.StartTime.Equals(request.CreationTime) &&
+            request.CreationTime.Equals(request.EndTime) &&
             request.CreationTime.Equals(DateTime.MinValue))
             throw new ArgumentException("Can not create an empty Request.");
 
@@ -153,7 +153,7 @@ public class RequestLogic : IRequestLogic
             (!request.EndTime.Equals(DateTime.MinValue)))
             throw new ArgumentException("If status is Active, End Time need to be empty.");
 
-        
+
         //Cosas por definir: si el status es Finished, el end time lo ponemos como DateTime.Now o lo debemos recibir??
         // Status = Finished
         if (request.Status == Status.Finished &&

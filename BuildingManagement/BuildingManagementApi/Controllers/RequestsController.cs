@@ -1,10 +1,6 @@
 ﻿using BuildingManagementApi.Filters;
-using BusinessLogic.Logics;
-using Domain;
 using LogicInterface.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Models.In;
 using Models.Out;
 

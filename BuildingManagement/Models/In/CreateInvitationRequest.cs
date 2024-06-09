@@ -1,5 +1,4 @@
 ﻿using Domain;
-using System;
 
 namespace Models.In
 {
@@ -17,7 +16,7 @@ namespace Models.In
                 Email = Email,
                 Name = Name,
                 ExpirationDate = ExpirationDate,
-                Role = Role 
+                Role = Role
             };
         }
     }

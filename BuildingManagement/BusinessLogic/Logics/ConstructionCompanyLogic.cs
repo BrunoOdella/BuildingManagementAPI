@@ -1,8 +1,8 @@
-﻿using Domain;
+﻿using CustomExceptions;
+using CustomExceptions.ConstructionCompanyExceptions;
+using Domain;
 using IDataAccess;
 using LogicInterface.Interfaces;
-using CustomExceptions.ConstructionCompanyExceptions;
-using CustomExceptions;
 
 namespace BusinessLogic.Logics
 {

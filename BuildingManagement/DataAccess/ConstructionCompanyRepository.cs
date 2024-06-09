@@ -1,7 +1,5 @@
 ﻿using Domain;
 using IDataAccess;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace DataAccess
 {

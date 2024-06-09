@@ -1,7 +1,5 @@
 ﻿using BuildingManagementApi.Filters;
-using Domain;
 using LogicInterface.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models.Out;
 

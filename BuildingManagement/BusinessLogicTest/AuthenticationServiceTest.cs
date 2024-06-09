@@ -3,8 +3,6 @@ using CustomExceptions;
 using Domain;
 using IDataAccess;
 using Moq;
-using Newtonsoft.Json.Linq;
-using System;
 
 namespace BusinessLogicTest;
 

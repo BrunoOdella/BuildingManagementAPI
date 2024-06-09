@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BuildingManagementApi.Controllers;
+﻿using BuildingManagementApi.Controllers;
 using Domain;
 using LogicInterface.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Models.In;
 using Models.Out;
 using Moq;
+using System.Collections;
 
 namespace BuildingManagementApiTest
 {

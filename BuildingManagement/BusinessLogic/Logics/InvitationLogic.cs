@@ -1,5 +1,5 @@
-﻿using CustomExceptions.InvitationExceptions;
-using CustomExceptions;
+﻿using CustomExceptions;
+using CustomExceptions.InvitationExceptions;
 using Domain;
 using IDataAccess;
 using LogicInterface.Interfaces;
@@ -48,12 +48,12 @@ namespace BusinessLogic.Logics
 
             if (invitation.Role == "manager")
             {
-                Manager manager = new Manager { Email = email, Password = password, Name=invitation.Name };
+                Manager manager = new Manager { Email = email, Password = password, Name = invitation.Name };
                 _managerRepository.CreateManager(manager);
             }
             else if (invitation.Role == "constructioncompanyadmin")
             {
-                ConstructionCompanyAdmin constructionCompanyAdmin = new ConstructionCompanyAdmin { Email = email, Password = password,Name = invitation.Name };
+                ConstructionCompanyAdmin constructionCompanyAdmin = new ConstructionCompanyAdmin { Email = email, Password = password, Name = invitation.Name };
                 _constructionCompanyAdminRepository.CreateConstructionCompanyAdmin(constructionCompanyAdmin);
             }
             else

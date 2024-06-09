@@ -1,7 +1,6 @@
 ﻿using Domain;
 using IDataAccess;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DataAccess
 {

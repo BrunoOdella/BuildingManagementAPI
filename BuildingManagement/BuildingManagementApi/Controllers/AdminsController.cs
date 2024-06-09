@@ -1,6 +1,4 @@
-﻿using BuildingManagementApi.Filters;
-using LogicInterface.Interfaces;
-using Microsoft.AspNetCore.Http;
+﻿using LogicInterface.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Models.In;
 using Models.Out;

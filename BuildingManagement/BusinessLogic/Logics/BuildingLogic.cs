@@ -2,11 +2,6 @@
 using Domain;
 using IDataAccess;
 using LogicInterface.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLogic.Logics
 {
@@ -129,7 +124,7 @@ namespace BusinessLogic.Logics
                         throw new ArgumentException("Invalid Manager ID");
 
                     existingBuilding.ManagerId = manager.ManagerId;
-                    existingBuilding.Manager = manager; 
+                    existingBuilding.Manager = manager;
                 }
             }
             else

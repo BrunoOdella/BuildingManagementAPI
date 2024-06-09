@@ -1,6 +1,4 @@
-﻿using Domain;
-
-namespace Models.In;
+﻿namespace Models.In;
 
 public class FinishedRequest
 {

@@ -2,7 +2,6 @@
 using CustomExceptions.CategoryExceptions;
 using Domain;
 using IDataAccess;
-using LogicInterface.Interfaces;
 using Moq;
 
 namespace BusinessLogicTest;
@@ -36,7 +35,7 @@ public class CategoriesRequestsLogicTest
 
         Assert.IsNotNull(response);
         Assert.AreEqual(category.Name, response.Name);
-        
+
         _categoryRepositoryMock.VerifyAll();
     }
 

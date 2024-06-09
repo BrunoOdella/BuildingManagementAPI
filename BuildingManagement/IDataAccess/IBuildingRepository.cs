@@ -1,6 +1,4 @@
-﻿using Domain;
-
-namespace IDataAccess
+﻿namespace IDataAccess
 {
     public interface IBuildingRepository
     {

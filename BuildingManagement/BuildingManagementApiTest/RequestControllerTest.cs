@@ -1,17 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Azure;
-using Azure.Core;
-using BuildingManagementApi.Controllers;
+﻿using BuildingManagementApi.Controllers;
 using Domain;
 using LogicInterface.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel.Client;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel.DataCollection;
 using Models.In;
 using Models.Out;
 using Moq;
@@ -85,7 +76,7 @@ namespace BuildingManagementApiTest
 
             Assert.IsNotNull(result);
             Assert.AreEqual(200, result.StatusCode);
-            CollectionAssert.AreEqual(response, (System.Collections.ICollection?) result.Value);
+            CollectionAssert.AreEqual(response, (System.Collections.ICollection?)result.Value);
 
             _RlogicMock.VerifyAll();
         }
@@ -124,7 +115,7 @@ namespace BuildingManagementApiTest
                 CreationTime = DateTime.Now.AddDays(-1),
             };
 
-            IEnumerable<Request_> expected = new List<Request_>() { ActiveRequest};
+            IEnumerable<Request_> expected = new List<Request_>() { ActiveRequest };
 
             List<RequestResponse> response = expected.Select(request => new RequestResponse(request)).ToList();
 
@@ -285,7 +276,7 @@ namespace BuildingManagementApiTest
             Guid userID = Guid.Parse(userIDString);
 
             _RlogicMock.Setup(logic => logic.CreateRequest(userID, It.IsAny<Request_>())).Returns(request);
-            
+
             ObjectResult result = _Rcontroller.PostRequest(createdRequest);
 
             Assert.IsNotNull(result);

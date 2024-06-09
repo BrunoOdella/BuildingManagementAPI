@@ -1,10 +1,5 @@
 ﻿using Domain;
 using IDataAccess;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess
 {
@@ -27,7 +22,7 @@ namespace DataAccess
         public Guid Get(Guid adminID)
         {
             var admin = _context.Admins.FirstOrDefault(a => a.AdminID.Equals(adminID));
-            if(admin == null)
+            if (admin == null)
                 return Guid.Empty;
             return admin.AdminID;
         }

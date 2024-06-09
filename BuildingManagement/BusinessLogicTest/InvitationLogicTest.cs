@@ -3,11 +3,7 @@ using CustomExceptions;
 using CustomExceptions.InvitationExceptions;
 using Domain;
 using IDataAccess;
-using LogicInterface.Interfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
 
 namespace BusinessLogicTest
 {
@@ -275,7 +271,7 @@ namespace BusinessLogicTest
         public void DeleteInvitation_InvitationDoesNotExist_ReturnFalse()
         {
 
-            _invitationRepositoryMock.Setup(repo => repo.GetInvitationById(It.IsAny<Guid>())).Returns((Invitation) null);
+            _invitationRepositoryMock.Setup(repo => repo.GetInvitationById(It.IsAny<Guid>())).Returns((Invitation)null);
 
             // Act
             var result = _invitationLogic.DeleteInvitation(Guid.NewGuid());

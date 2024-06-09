@@ -2,9 +2,7 @@
 using CustomExceptions;
 using Domain;
 using IDataAccess;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
 
 namespace BusinessLogicTest
 {

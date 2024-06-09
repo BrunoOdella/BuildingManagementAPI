@@ -1,9 +1,7 @@
 ﻿using BusinessLogic.Logics;
 using Domain;
 using IDataAccess;
-using LogicInterface.Interfaces;
 using Moq;
-using System.Linq;
 
 namespace BusinessLogicTest;
 

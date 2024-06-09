@@ -1,8 +1,6 @@
 ﻿using DataAccess;
 using Domain;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Linq;
 
 namespace DataAccessTest
 {
@@ -210,7 +208,7 @@ namespace DataAccessTest
                 // Act
                 var updatedCompany = new ConstructionCompany
                 {
-                    ConstructionCompanyId = companyId,  
+                    ConstructionCompanyId = companyId,
                     Name = "Updated Name"
                 };
                 repository.UpdateConstructionCompany(updatedCompany);

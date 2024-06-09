@@ -1,10 +1,6 @@
 ﻿using DataAccess;
 using Domain;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace DataAccessTest
 {
@@ -27,7 +23,8 @@ namespace DataAccessTest
                 ManagerRepository repository = new ManagerRepository(context);
                 Manager expected = new Manager
                 {
-                    ManagerId = Guid.NewGuid(), Name = "Default Manager Name",
+                    ManagerId = Guid.NewGuid(),
+                    Name = "Default Manager Name",
                     Email = "manager@example.com",
                     Password = "password"
                 };
@@ -49,7 +46,8 @@ namespace DataAccessTest
                 ManagerRepository repository = new ManagerRepository(context);
                 Manager expected = new Manager
                 {
-                    ManagerId = Guid.NewGuid(), Name = "Default Manager Name",
+                    ManagerId = Guid.NewGuid(),
+                    Name = "Default Manager Name",
                     Email = "manager@example.com",
                     Password = "password"
                 };
@@ -72,7 +70,8 @@ namespace DataAccessTest
                 ManagerRepository repository = new ManagerRepository(context);
                 Manager manager = new Manager
                 {
-                    ManagerId = Guid.NewGuid(), Name = "Default Manager Name",
+                    ManagerId = Guid.NewGuid(),
+                    Name = "Default Manager Name",
                     Email = "manager@example.com",
                     Password = "password"
                 };
@@ -98,7 +97,8 @@ namespace DataAccessTest
                 ManagerRepository repository = new ManagerRepository(context);
                 Manager expected = new Manager
                 {
-                    ManagerId = Guid.NewGuid(), Name = "Default Manager Name",
+                    ManagerId = Guid.NewGuid(),
+                    Name = "Default Manager Name",
                     Email = "manager@example.com",
                     Password = "password"
                 };
@@ -131,7 +131,8 @@ namespace DataAccessTest
                 ManagerRepository repository = new ManagerRepository(context);
                 Manager manager = new Manager
                 {
-                    ManagerId = Guid.NewGuid(), Name = "Default Manager Name",
+                    ManagerId = Guid.NewGuid(),
+                    Name = "Default Manager Name",
                     Email = "manager@example.com",
                     Password = "password"
                 };
@@ -166,7 +167,7 @@ namespace DataAccessTest
 
                 Manager result = repository.GetByEmailAndPassword(manager.Email, manager.Password);
                 Assert.IsNotNull(result);
-                Assert.AreEqual(manager.Email, result.Email);   
+                Assert.AreEqual(manager.Email, result.Email);
             }
         }
 

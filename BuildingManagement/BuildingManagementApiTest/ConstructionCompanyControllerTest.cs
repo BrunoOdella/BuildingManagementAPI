@@ -1,15 +1,11 @@
 ﻿using BuildingManagementApi.Controllers;
 using Domain;
 using LogicInterface.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Models.In;
-using Moq;
-using System;
-using Models.Out;
-using Azure;
 using Microsoft.AspNetCore.Http;
-using System.Net.Http;
+using Microsoft.AspNetCore.Mvc;
+using Models.In;
+using Models.Out;
+using Moq;
 
 namespace BuildingManagementApiTest
 {

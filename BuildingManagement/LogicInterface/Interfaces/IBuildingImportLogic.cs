@@ -1,6 +1,4 @@
-﻿using Domain;
-
-namespace LogicInterface.Interfaces;
+﻿namespace LogicInterface.Interfaces;
 
 public interface IBuildingImportLogic
 {

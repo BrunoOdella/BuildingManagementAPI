@@ -1,10 +1,6 @@
 ﻿using DataAccess;
 using Domain;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace DataAccessTest
 {
@@ -140,7 +136,8 @@ namespace DataAccessTest
 
                 Manager manager = new Manager()
                 {
-                    ManagerId = Guid.NewGuid(), Name = "Default Manager Name",
+                    ManagerId = Guid.NewGuid(),
+                    Name = "Default Manager Name",
                     Email = "email",
                     Password = "pass"
                 };
@@ -194,7 +191,8 @@ namespace DataAccessTest
 
                 Manager manager = new Manager()
                 {
-                    ManagerId = Guid.NewGuid(), Name = "Default Manager Name",
+                    ManagerId = Guid.NewGuid(),
+                    Name = "Default Manager Name",
                     Email = "email",
                     Password = "pass"
                 };
@@ -247,7 +245,8 @@ namespace DataAccessTest
 
                 Manager manager = new Manager()
                 {
-                    ManagerId = Guid.NewGuid(), Name = "Default Manager Name",
+                    ManagerId = Guid.NewGuid(),
+                    Name = "Default Manager Name",
                     Email = "email",
                     Password = "pass"
                 };
@@ -297,7 +296,8 @@ namespace DataAccessTest
 
                 Manager manager = new Manager()
                 {
-                    ManagerId = Guid.NewGuid(), Name = "Default Manager Name",
+                    ManagerId = Guid.NewGuid(),
+                    Name = "Default Manager Name",
                     Email = "email",
                     Password = "pass"
                 };
@@ -337,7 +337,8 @@ namespace DataAccessTest
 
                 Manager manager = new Manager()
                 {
-                    ManagerId = Guid.NewGuid(), Name = "Default Manager Name",
+                    ManagerId = Guid.NewGuid(),
+                    Name = "Default Manager Name",
                     Email = "email",
                     Password = "pass"
                 };
@@ -424,7 +425,8 @@ namespace DataAccessTest
 
                 Manager manager = new Manager()
                 {
-                    ManagerId = Guid.NewGuid(), Name = "Default Manager Name",
+                    ManagerId = Guid.NewGuid(),
+                    Name = "Default Manager Name",
                     Email = "email",
                     Password = "pass"
                 };
@@ -535,8 +537,8 @@ namespace DataAccessTest
                     Name = "Building 1",
                     Address = "123 Main St",
                     ConstructionCompanyId = Guid.NewGuid(),
-                    ConstructionCompany = new ConstructionCompany { ConstructionCompanyAdminId = adminId, Name = "company"},
-                    Manager = new Manager { Name = "Manager 1", Email = "email", Password = "pass"}
+                    ConstructionCompany = new ConstructionCompany { ConstructionCompanyAdminId = adminId, Name = "company" },
+                    Manager = new Manager { Name = "Manager 1", Email = "email", Password = "pass" }
                 };
 
                 context.Buildings.Add(building);

@@ -1,9 +1,6 @@
 ﻿using DataAccess;
 using Domain;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Linq;
 
 namespace DataAccessTest
 {

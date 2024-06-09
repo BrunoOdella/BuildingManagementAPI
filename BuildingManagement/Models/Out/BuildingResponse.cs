@@ -1,6 +1,4 @@
-﻿using Domain;
-
-namespace Models.Out
+﻿namespace Models.Out
 {
     public class BuildingResponse
     {

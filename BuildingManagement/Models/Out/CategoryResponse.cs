@@ -18,7 +18,7 @@ public class CategoryResponse
     public override bool Equals(object obj)
     {
         return obj is CategoryResponse response &&
-               Name == response.Name && 
+               Name == response.Name &&
                Description == response.Description
                && CategoryID == response.CategoryID;
     }

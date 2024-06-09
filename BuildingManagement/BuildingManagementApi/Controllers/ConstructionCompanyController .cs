@@ -1,12 +1,8 @@
 ﻿using BuildingManagementApi.Filters;
-using Domain;
 using LogicInterface.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Models;
 using Models.In;
 using Models.Out;
-using System.Net;
 
 namespace BuildingManagementApi.Controllers
 {

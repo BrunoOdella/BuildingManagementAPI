@@ -2,7 +2,6 @@
 using Domain;
 using IDataAccess;
 using LogicInterface.Interfaces;
-using System.Security.Authentication;
 
 namespace BusinessLogic.Logics;
 
@@ -17,8 +16,8 @@ public class AuthenticationService : IAuthenticationService
     public AuthenticationService(IManagerRepository managerRepository, IMaintenanceStaffRepository maintenanceStaffRepository, IAdminRepository adminRepository, IConstructionCompanyAdminRepository constructionCompanyAdminRepository)
     {
         _managerRepository = managerRepository;
-        _maintenanceStaffRepository =maintenanceStaffRepository;
-        _adminRepository =adminRepository;
+        _maintenanceStaffRepository = maintenanceStaffRepository;
+        _adminRepository = adminRepository;
         _constructionCompanyAdminRepository = constructionCompanyAdminRepository;
 
     }
@@ -59,7 +58,7 @@ public class AuthenticationService : IAuthenticationService
 
     private Guid BuscarTokenReport(Guid token, string verbo)
     {
-         return BuscarTokenManager(token);
+        return BuscarTokenManager(token);
     }
 
     /*private Guid BuscarTokenConstructionCompany(Guid token, string verbo)
@@ -69,7 +68,7 @@ public class AuthenticationService : IAuthenticationService
 
     private Guid BuscarTokenBuilding(Guid token, string verbo)
     {
-        if(verbo == "PUT") //manager o constructionCompanyAdmin
+        if (verbo == "PUT") //manager o constructionCompanyAdmin
             return BuscarTokenManagerAndCCAdmin(token);
         if (verbo == "POST")
             return BuscarTokenCCAdmin(token);
@@ -84,7 +83,7 @@ public class AuthenticationService : IAuthenticationService
         var ccAdmin = BuscarTokenCCAdmin(token);
 
         if (manager.Equals(Guid.Empty))
-            if(ccAdmin.Equals(Guid.Empty))
+            if (ccAdmin.Equals(Guid.Empty))
                 throw new ArgumentException("There is no person associated with the token.");
             else
                 return ccAdmin;
@@ -154,7 +153,7 @@ public class AuthenticationService : IAuthenticationService
         Guid staff = _maintenanceStaffRepository.GetMaintenanceStaff(token);
 
         if (manager.Equals(Guid.Empty))
-            if(staff.Equals(Guid.Empty))
+            if (staff.Equals(Guid.Empty))
                 throw new ArgumentException("There is no person associated with the token.");
             else
                 return staff;

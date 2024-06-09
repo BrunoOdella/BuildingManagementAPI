@@ -1,15 +1,7 @@
 ﻿using BusinessLogic.Logics;
 using Domain;
 using IDataAccess;
-using LogicInterface.Interfaces;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel.DataCollection;
 using Moq;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLogicTest
 {
@@ -68,7 +60,7 @@ namespace BusinessLogicTest
                 MaintenanceStaff = staff,
                 Apartment = apartment
             };
-            
+
             _requestRepositoryMock.Setup(repository => repository.CreateRequest(It.IsAny<Request_>())).Returns(request);
             _buildingRepositoryMock.Setup(repo => repo.GetBuilding(_managerID, It.IsAny<Guid>())).Returns(building);
             _buildingRepositoryMock.Setup(repo => repo.GetApartment(_managerID, It.IsAny<Guid>())).Returns(apartment);
@@ -84,7 +76,7 @@ namespace BusinessLogicTest
         [TestMethod]
         public void CreateRequest_NullBuilding_ThrowException()
         {
-            
+
 
             Request_ request = new Request_()
             {
@@ -97,7 +89,7 @@ namespace BusinessLogicTest
                 Status = Status.Finished,
                 TotalCost = 1000,
                 MaintenanceStaff = new MaintenanceStaff(),
-                Apartment = new Apartment() { BuildingId = new Guid(), ApartmentId = new Guid()}
+                Apartment = new Apartment() { BuildingId = new Guid(), ApartmentId = new Guid() }
             };
 
             _buildingRepositoryMock.Setup(repo => repo.GetApartment(_managerID, It.IsAny<Guid>())).Returns((Apartment)null);
@@ -152,7 +144,7 @@ namespace BusinessLogicTest
                 Id = Guid.NewGuid(),
                 StartTime = DateTime.Now.AddDays(-1),
                 Status = Status.Finished,
-                TotalCost = 1000, 
+                TotalCost = 1000,
                 MaintenanceStaff = new MaintenanceStaff(),
             };
 
@@ -160,7 +152,7 @@ namespace BusinessLogicTest
 
             try
             {
-                
+
                 _requestLogic.CreateRequest(_managerID, request);
             }
             catch (Exception e)
@@ -194,7 +186,7 @@ namespace BusinessLogicTest
 
             try
             {
-                
+
                 _requestLogic.CreateRequest(_managerID, request);
             }
             catch (Exception e)
@@ -227,7 +219,7 @@ namespace BusinessLogicTest
 
             try
             {
-                
+
                 _requestLogic.CreateRequest(_managerID, request);
             }
             catch (Exception e)
@@ -261,7 +253,7 @@ namespace BusinessLogicTest
 
             try
             {
-                
+
                 _requestLogic.CreateRequest(_managerID, request);
             }
             catch (Exception e)
@@ -329,7 +321,7 @@ namespace BusinessLogicTest
 
             try
             {
-                
+
                 _requestLogic.CreateRequest(_managerID, request);
             }
             catch (Exception e)
@@ -363,7 +355,7 @@ namespace BusinessLogicTest
 
             try
             {
-                
+
                 _requestLogic.CreateRequest(_managerID, request);
             }
             catch (Exception e)
@@ -377,7 +369,7 @@ namespace BusinessLogicTest
             _requestRepositoryMock.VerifyAll();
         }
 
-        [TestMethod] 
+        [TestMethod]
         public void CreateRequest_ValidatesStatusActive_EndTimeMustBeEmpty()
         {
             Request_ request = new Request_()
@@ -397,7 +389,7 @@ namespace BusinessLogicTest
 
             try
             {
-                
+
                 _requestLogic.CreateRequest(_managerID, request);
             }
             catch (Exception e)
@@ -431,7 +423,7 @@ namespace BusinessLogicTest
 
             try
             {
-                
+
                 _requestLogic.CreateRequest(_managerID, request);
             }
             catch (Exception e)
@@ -464,7 +456,7 @@ namespace BusinessLogicTest
 
             try
             {
-                
+
                 _requestLogic.CreateRequest(_managerID, request);
             }
             catch (Exception e)
@@ -498,7 +490,7 @@ namespace BusinessLogicTest
 
             try
             {
-                
+
                 _requestLogic.CreateRequest(_managerID, request);
             }
             catch (Exception e)
@@ -532,7 +524,7 @@ namespace BusinessLogicTest
 
             try
             {
-                
+
                 _requestLogic.CreateRequest(_managerID, request);
             }
             catch (Exception e)
@@ -637,7 +629,7 @@ namespace BusinessLogicTest
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedRequests.Count, result.ToList().Count);
-           
+
             _requestRepositoryMock.VerifyAll();
             _managerRepositoryMock.VerifyAll();
         }
@@ -677,7 +669,7 @@ namespace BusinessLogicTest
 
             // Act
 
-            
+
 
             IEnumerable<Request_> result = _requestLogic.GetAllRequest(_managerID, category);
 
@@ -705,7 +697,7 @@ namespace BusinessLogicTest
                 StartTime = DateTime.Now.AddDays(-2),
                 Status = Status.Active,
                 TotalCost = totalCost,
-                MaintenanceStaff = new MaintenanceStaff() {ID = _managerID},
+                MaintenanceStaff = new MaintenanceStaff() { ID = _managerID },
                 MaintenanceStaffId = _managerID
             };
 
@@ -831,9 +823,9 @@ namespace BusinessLogicTest
 
             Request_ updatedRequest = new Request_();
 
-            _requestRepositoryMock.Setup(repository => 
+            _requestRepositoryMock.Setup(repository =>
                 repository.Get(requestId)).Returns((Request_)null);
-            
+
             Exception exception = null;
             // Act
             try
@@ -857,7 +849,7 @@ namespace BusinessLogicTest
             // Arrange
             Guid id = Guid.NewGuid();
             DateTime endTime = DateTime.Now.AddDays(-1);
-            var requestId = new Guid(); 
+            var requestId = new Guid();
             var request = new Request_()
             {
                 Id = requestId,
@@ -1102,7 +1094,7 @@ namespace BusinessLogicTest
                 TotalCost = totalCost,
                 MaintenanceStaff = new MaintenanceStaff() { ID = _managerID },
                 MaintenanceStaffId = _managerID,
-                Apartment = new Apartment(){ApartmentId = Guid.NewGuid()}
+                Apartment = new Apartment() { ApartmentId = Guid.NewGuid() }
             };
 
             _buildingRepositoryMock.Setup(repo => repo.GetApartment(_managerID, It.IsAny<Guid>())).Returns((Apartment)null);

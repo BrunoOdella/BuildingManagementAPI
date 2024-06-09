@@ -1,9 +1,4 @@
 ﻿using Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Models.Out
 {
@@ -17,7 +12,7 @@ namespace Models.Out
 
         public InvitationResponse(Invitation invitation)
         {
-            this.InvitationId=invitation.InvitationId;
+            this.InvitationId = invitation.InvitationId;
             this.Email = invitation.Email;
             this.Name = invitation.Name;
             this.ExpirationDate = invitation.ExpirationDate;

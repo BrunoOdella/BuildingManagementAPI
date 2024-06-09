@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices.JavaScript;
-using Domain;
+﻿using Domain;
 
 namespace Models.In;
 

@@ -1,5 +1,4 @@
-﻿using Azure;
-using BuildingManagementApi.Controllers;
+﻿using BuildingManagementApi.Controllers;
 using Domain;
 using LogicInterface.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -52,7 +51,7 @@ public class ReportControllerTest
 
         report.BuildingReports = new List<BuildingReport>()
         {
-            buildingReport  
+            buildingReport
         };
 
 
@@ -61,7 +60,7 @@ public class ReportControllerTest
         _reportLogicBuildingMock.Setup(l => l.RequestByBuilding(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(report);
 
         ObjectResult result = _reportsController.GetReport_RequestByBuilding(buildingID.ToString());
-        
+
         Assert.IsNotNull(result);
         Assert.AreEqual(200, result.StatusCode);
 

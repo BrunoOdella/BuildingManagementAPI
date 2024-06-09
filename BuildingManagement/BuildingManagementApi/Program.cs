@@ -1,5 +1,4 @@
 using BuildingManagementApi.Filters;
-using DataAccess;
 using ServiceFactory;
 
 var builder = WebApplication.CreateBuilder(args);

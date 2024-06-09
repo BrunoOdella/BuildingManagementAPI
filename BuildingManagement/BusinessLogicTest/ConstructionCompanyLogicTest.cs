@@ -3,10 +3,7 @@ using CustomExceptions;
 using CustomExceptions.ConstructionCompanyExceptions;
 using Domain;
 using IDataAccess;
-using LogicInterface.Interfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
 
 namespace BusinessLogicTest
 {
@@ -167,7 +164,7 @@ namespace BusinessLogicTest
 
             _constructionCompanyRepositoryMock.Setup(r => r.GetConstructionCompanyAdminById(admin.Id.ToString())).Returns(admin);
             _constructionCompanyRepositoryMock.Setup(r => r.GetCompanyByAdminId(admin.Id))
-                .Returns(new ConstructionCompany(){Name = actualName});
+                .Returns(new ConstructionCompany() { Name = actualName });
             _constructionCompanyRepositoryMock.Setup(repo => repo.NameExists(updatedCompany.Name)).Returns(true);
 
             // Act

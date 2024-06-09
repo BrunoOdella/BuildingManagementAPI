@@ -1,11 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Domain;
-using LogicInterface.Interfaces;
-using IDataAccess;
-using System;
-using BusinessLogic.Logics;
+﻿using BusinessLogic.Logics;
 using CustomExceptions;
+using Domain;
+using IDataAccess;
+using LogicInterface.Interfaces;
+using Moq;
 
 namespace BusinessLogicTest
 {
@@ -382,13 +380,13 @@ namespace BusinessLogicTest
             {
                 BuildingId = Guid.NewGuid(),
                 Manager = new Manager { Email = "manager1" },
-                ConstructionCompany = new ConstructionCompany() {ConstructionCompanyAdminId = adminId, ConstructionCompanyAdmin = new ConstructionCompanyAdmin() {Id = adminId}}
+                ConstructionCompany = new ConstructionCompany() { ConstructionCompanyAdminId = adminId, ConstructionCompanyAdmin = new ConstructionCompanyAdmin() { Id = adminId } }
             };
 
             Building updatedBuilding = new Building
             {
                 BuildingId = building.BuildingId,
-                Manager = new Manager { Email = "manager2"},
+                Manager = new Manager { Email = "manager2" },
                 ManagerId = Guid.NewGuid()
             };
 
@@ -403,7 +401,7 @@ namespace BusinessLogicTest
 
             // Assert
             Assert.AreEqual("manager2", result.Manager.Email);
-            
+
             _buildingRepositoryMock.VerifyAll();
             _managerRepositoryMock.VerifyAll();
             _constructionCompanyAdminRepositoryMock.VerifyAll();
@@ -495,7 +493,7 @@ namespace BusinessLogicTest
                 BuildingId = Guid.NewGuid(),
                 Name = "New Building",
                 Location = new Location { Latitude = 1.0, Longitude = 1.0 },
-                Manager = new Manager { Email = "manager1", ManagerId = Guid.NewGuid()}
+                Manager = new Manager { Email = "manager1", ManagerId = Guid.NewGuid() }
             };
 
             _constructionCompanyAdminRepositoryMock.Setup(repo => repo.GetConstructionCompanyAdminById(adminId)).Returns(constructionCompanyAdmin);
@@ -534,7 +532,7 @@ namespace BusinessLogicTest
         {
             // Arrange
             string managerId = Guid.NewGuid().ToString();
-            Building building = new Building(){BuildingId = Guid.NewGuid()};
+            Building building = new Building() { BuildingId = Guid.NewGuid() };
 
             // Act
             _buildingLogic.UpdateBuilding(managerId, building, Guid.NewGuid());
@@ -705,7 +703,7 @@ namespace BusinessLogicTest
 
             _constructionCompanyAdminRepositoryMock.Setup(r => r.Get(personID)).Returns(Guid.Empty);
             _managerRepositoryMock.Setup(r => r.Get(personID)).Returns(Guid.Empty);
-            
+
             // Act
             _buildingLogic.GetBuildings(personID.ToString());
         }

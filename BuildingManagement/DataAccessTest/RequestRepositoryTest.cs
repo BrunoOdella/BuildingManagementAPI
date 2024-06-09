@@ -1,10 +1,6 @@
 ﻿using DataAccess;
 using Domain;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace DataAccessTest
 {
@@ -58,7 +54,8 @@ namespace DataAccessTest
 
                 Manager manager = new Manager
                 {
-                    ManagerId = Guid.NewGuid(), Name = "Default Manager Name",
+                    ManagerId = Guid.NewGuid(),
+                    Name = "Default Manager Name",
                     Email = "manager@example.com",
                     Password = "password"
                 };
@@ -115,7 +112,8 @@ namespace DataAccessTest
 
                 Manager manager = new Manager
                 {
-                    ManagerId = Guid.NewGuid(), Name = "Default Manager Name",
+                    ManagerId = Guid.NewGuid(),
+                    Name = "Default Manager Name",
                     Email = "manager@example.com",
                     Password = "password"
                 };
@@ -187,7 +185,8 @@ namespace DataAccessTest
 
                 Manager manager = new Manager
                 {
-                    ManagerId = Guid.NewGuid(), Name = "Default Manager Name",
+                    ManagerId = Guid.NewGuid(),
+                    Name = "Default Manager Name",
                     Email = "manager@example.com",
                     Password = "password"
                 };

@@ -17,10 +17,10 @@ public class CreateRequestRequest
             Description = Description,
             CategoryID = Category,
             CreationTime = CreationTime,
-            Apartment = new Apartment(){ApartmentId = ApartmentID},
+            Apartment = new Apartment() { ApartmentId = ApartmentID },
             MaintenanceStaff = new MaintenanceStaff() { ID = MaintenanceStaffID },
             MaintenanceStaffId = MaintenanceStaffID,
             ApartmentId = ApartmentID
         };
-    } 
+    }
 }

@@ -1,11 +1,11 @@
-﻿using Moq;
+﻿using BuildingManagementApi.Controllers;
+using Domain;
+using LogicInterface.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using BuildingManagementApi.Controllers;
-using LogicInterface.Interfaces;
 using Models.In;
 using Models.Out;
-using Domain;
+using Moq;
 
 namespace BuildingManagementApiTest
 {
