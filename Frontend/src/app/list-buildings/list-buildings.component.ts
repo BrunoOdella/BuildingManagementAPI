@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { environment } from 'src/environments/environment';
 
 interface BuildingResponse {
   buildingId: string;
@@ -32,7 +33,7 @@ export class ListBuildingsComponent implements OnInit {
   constructor(private http: HttpClient, private router: Router, private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    this.http.get<BuildingResponse[]>('http://localhost:5154/api/v2/buildings').subscribe(
+    this.http.get<BuildingResponse[]>(`${environment.apiUrl}/buildings`).subscribe(
       (data) => {
         this.buildings = data;
         this.buildings.forEach(building => {
@@ -46,7 +47,7 @@ export class ListBuildingsComponent implements OnInit {
       (error) => console.error(error)
     );
 
-    this.http.get<ManagerResponse[]>('http://localhost:5154/api/v2/managers').subscribe(
+    this.http.get<ManagerResponse[]>(`${environment.apiUrl}/managers`).subscribe(
       (data) => {
         this.managers = data;
         console.log('Managers:', this.managers);
@@ -67,7 +68,7 @@ export class ListBuildingsComponent implements OnInit {
       managerGuid: selectedManagerId
     };
 
-    this.http.put(`http://localhost:5154/api/v2/buildings/${building.buildingId}`, updateRequest).subscribe(
+    this.http.put(`${environment.apiUrl}/buildings/${building.buildingId}`, updateRequest).subscribe(
       response => {
         console.log('Building updated successfully');
         building.managerName = this.managers.find(manager => manager.managerId === selectedManagerId)?.email || 'Assigned';

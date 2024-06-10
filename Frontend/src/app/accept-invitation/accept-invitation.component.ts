@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-accept-invitation',
@@ -28,7 +29,7 @@ export class AcceptInvitationComponent {
   onSubmit(): void {
     if (this.acceptInvitationForm.valid) {
       const { invitationId, email, password } = this.acceptInvitationForm.value;
-      this.http.put(`http://localhost:5154/api/v2/invitations/${invitationId}`, { email, password }).subscribe(
+      this.http.put(`${environment.apiUrl}/invitations/${invitationId}`, { email, password }).subscribe(
         response => {
           this.successMessage = 'Invitation accepted successfully!';
           this.errorMessage = '';

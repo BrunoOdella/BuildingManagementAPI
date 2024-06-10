@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { environment } from 'src/environments/environment';
 
 
 
@@ -32,7 +33,7 @@ export class FinalizeRequestComponent {
   constructor(private http: HttpClient, private router: Router, private auth: AuthService) {}
 
   ngOnInit(): void {
-    this.http.get<RequestResponse[]>('http://localhost:5154/api/v2/Requests').subscribe(
+    this.http.get<RequestResponse[]>(`${environment.apiUrl}/Requests`).subscribe(
       (data) => this.requests = data.filter(request => request.status === 0),
       (error) => console.error(error)
     );
@@ -55,7 +56,7 @@ export class FinalizeRequestComponent {
 
   terminateRequest(): void {
     if (this.selectedElem) {
-      const url = `http://localhost:5154/api/v2/Requests/${this.selectedElem}/finished`;
+      const url = `${environment.apiUrl}/Requests/${this.selectedElem}/finished`;
       const body = {
         totalCost: this.cost,
         endTime: new Date().toISOString(),

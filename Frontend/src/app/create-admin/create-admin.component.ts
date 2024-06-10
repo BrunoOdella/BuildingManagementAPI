@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-create-admin',
@@ -28,7 +29,7 @@ export class CreateAdminComponent {
 
   onSubmit(): void {
     if (this.createAdminForm.valid) {
-      this.http.post('http://localhost:5154/api/v2/admins', this.createAdminForm.value).subscribe(
+      this.http.post(`${environment.apiUrl}/admins`, this.createAdminForm.value).subscribe(
         response=> {
           this.successMessage = 'Admin created successfully!';
           this.errorMessage = '';

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-create-maintenance-staff',
@@ -28,7 +29,7 @@ export class CreateMaintenanceStaffComponent {
 
   onSubmit(): void {
     if (this.createMaintenanceStaffForm.valid) {
-      this.http.post('http://localhost:5154/api/v2/maintenancestaff', this.createMaintenanceStaffForm.value).subscribe(
+      this.http.post(`${environment.apiUrl}/maintenancestaff`, this.createMaintenanceStaffForm.value).subscribe(
         response => {
           this.successMessage = 'Maintenance staff created successfully!';
           this.errorMessage = '';

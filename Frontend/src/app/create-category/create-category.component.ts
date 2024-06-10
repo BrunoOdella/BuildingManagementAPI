@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-create-category',
@@ -26,7 +27,7 @@ export class CreateCategoryComponent {
 
   onSubmit(): void {
     if (this.createCategoryForm.valid) {
-      this.http.post('http://localhost:5154/api/v2/CategoriesRequests', this.createCategoryForm.value).subscribe(
+      this.http.post(`${environment.apiUrl}/CategoriesRequests`, this.createCategoryForm.value).subscribe(
         response => {
           this.successMessage = 'Category created successfully!';
           this.errorMessage = '';

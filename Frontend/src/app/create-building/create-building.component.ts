@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-create-building',
@@ -52,7 +53,7 @@ export class CreateBuildingComponent {
 
   onSubmit(): void {
     if (this.createBuildingForm.valid) {
-      this.http.post('http://localhost:5154/api/v2/buildings', this.createBuildingForm.value).subscribe(
+      this.http.post(`${environment.apiUrl}/buildings`, this.createBuildingForm.value).subscribe(
         response => {
           this.successMessage = 'Building created successfully!';
           this.errorMessage = '';

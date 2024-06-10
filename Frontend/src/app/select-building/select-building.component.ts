@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 interface BuildingResponse {
   buildingId: string;
@@ -24,7 +25,7 @@ export class SelectBuildingComponent implements OnInit {
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
-    this.http.get<BuildingResponse[]>('http://localhost:5154/api/v2/buildings').subscribe(
+    this.http.get<BuildingResponse[]>(`${environment.apiUrl}/buildings`).subscribe(
       (data) => this.buildings = data,
       (error) => console.error(error)
     );

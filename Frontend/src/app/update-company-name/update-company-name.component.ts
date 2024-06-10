@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-update-company-name',
@@ -25,7 +26,7 @@ export class UpdateCompanyNameComponent {
 
   onSubmit(): void {
     if (this.updateCompanyNameForm.valid) {
-      this.http.put('http://localhost:5154/api/v2/ConstructionCompany', this.updateCompanyNameForm.value).subscribe(
+      this.http.put(`${environment.apiUrl}/ConstructionCompany`, this.updateCompanyNameForm.value).subscribe(
         response => {
           this.successMessage = 'Company name updated successfully!';
           this.errorMessage = '';

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 interface ApartmentResponse {
   apartmentId: string;
@@ -22,7 +23,7 @@ export class SelectApartmentComponent implements OnInit {
 
   ngOnInit(): void {
     this.buildingId = this.route.snapshot.paramMap.get('buildingId')!;
-    this.http.get<ApartmentResponse[]>(`http://localhost:5154/api/v2/buildings/${this.buildingId}/apartments`).subscribe(
+    this.http.get<ApartmentResponse[]>(`${environment.apiUrl}/buildings/${this.buildingId}/apartments`).subscribe(
       (data) => this.apartments = data,
       (error) => console.error(error)
     );

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { environment } from 'src/environments/environment';
 
 interface RequestResponse {
   id: string; 
@@ -28,7 +29,7 @@ export class UnattendedRequestsComponent {
   constructor(private http: HttpClient, private router: Router, private auth: AuthService) {}
 
  ngOnInit(): void {
-    this.http.get<RequestResponse[]>('http://localhost:5154/api/v2/Requests').subscribe(
+    this.http.get<RequestResponse[]>(`${environment.apiUrl}/Requests`).subscribe(
       (data) => this.requests = data.filter(request => request.status === 2),
       (error) => console.error(error)
     );
@@ -44,7 +45,7 @@ export class UnattendedRequestsComponent {
 
   activateRequest(): void {
     if (this.selectedElem) {
-      const url = `http://localhost:5154/api/v2/Requests/${this.selectedElem}`;
+      const url = `${environment.apiUrl}/Requests/${this.selectedElem}`;
       const body = {
         status: 0,
         startTime: new Date().toISOString(),

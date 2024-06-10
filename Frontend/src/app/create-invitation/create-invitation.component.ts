@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-create-invitation',
@@ -33,7 +34,7 @@ export class CreateInvitationComponent {
 
   onSubmit(): void {
     if (this.createInvitationForm.valid) {
-      this.http.post('http://localhost:5154/api/v2/invitations', this.createInvitationForm.value).subscribe(
+      this.http.post(`${environment.apiUrl}/invitations`, this.createInvitationForm.value).subscribe(
         response => {
           this.successMessage = 'Invitation created successfully!';
           this.errorMessage = '';

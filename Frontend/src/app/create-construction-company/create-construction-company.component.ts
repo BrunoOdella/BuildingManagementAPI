@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-create-construction-company',
@@ -25,7 +26,7 @@ export class CreateConstructionCompanyComponent {
 
   onSubmit(): void {
     if (this.createCompanyForm.valid) {
-      this.http.post<{ companyId: string }>('http://localhost:5154/api/v2/ConstructionCompany', this.createCompanyForm.value).subscribe(
+      this.http.post<{ companyId: string }>(`${environment.apiUrl}/ConstructionCompany`, this.createCompanyForm.value).subscribe(
         response => {
           this.successMessage = 'Construction Company created successfully!';
           this.errorMessage = '';

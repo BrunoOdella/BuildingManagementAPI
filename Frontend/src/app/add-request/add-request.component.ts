@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { environment } from 'src/environments/environment';
 
 interface CategoryResponse {
   categoryID: number;
@@ -45,12 +46,12 @@ export class AddRequestComponent implements OnInit {
   ngOnInit(): void {
     this.apartmentId = this.route.snapshot.paramMap.get('apartmentId')!;
 
-    this.http.get<CategoryResponse[]>('http://localhost:5154/api/v2/categoriesrequests').subscribe(
+    this.http.get<CategoryResponse[]>(`${environment.apiUrl}/categoriesrequests`).subscribe(
       (data) => this.categories = data,
       (error) => console.error(error)
     );
 
-    this.http.get<MaintenanceStaffResponse[]>('http://localhost:5154/api/v2/maintenancestaff').subscribe(
+    this.http.get<MaintenanceStaffResponse[]>(`${environment.apiUrl}/maintenancestaff`).subscribe(
       (data) => this.maintenanceStaff = data,
       (error) => console.error(error)
     );
@@ -66,7 +67,7 @@ export class AddRequestComponent implements OnInit {
         maintenanceStaffID: this.addRequestForm.value.maintenanceStaff
       };
 
-      this.http.post('http://localhost:5154/api/v2/requests', requestPayload).subscribe(
+      this.http.post(`${environment.apiUrl}/requests`, requestPayload).subscribe(
         response => {
           this.successMessage = 'Request added successfully!';
           this.errorMessage = '';

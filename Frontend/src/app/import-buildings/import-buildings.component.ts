@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-import-buildings',
@@ -29,7 +30,7 @@ export class ImportBuildingsComponent {
         assemblyPath: this.importBuildingsForm.value.assemblyPath
       };
 
-      this.http.post('http://localhost:5154/api/v2/ImportBuildings', requestPayload).subscribe(
+      this.http.post(`${environment.apiUrl}/ImportBuildings`, requestPayload).subscribe(
         response => {
           this.successMessage = 'Buildings Created';
           this.errorMessage = '';

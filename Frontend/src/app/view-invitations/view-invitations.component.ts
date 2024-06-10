@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 interface Invitation {
   invitationId: string;
@@ -21,14 +22,14 @@ export class ViewInvitationsComponent implements OnInit {
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
-    this.http.get<Invitation[]>('http://localhost:5154/api/v2/invitations').subscribe(
+    this.http.get<Invitation[]>(`${environment.apiUrl}/invitations`).subscribe(
       (data) => this.invitations = data,
       (error) => console.error(error)
     );
   }
 
   deleteInvitation(invitationId: string): void {
-    this.http.delete(`http://localhost:5154/api/v2/invitations/${invitationId}`).subscribe(
+    this.http.delete(`${environment.apiUrl}/invitations/${invitationId}`).subscribe(
       response => {
         this.invitations = this.invitations.filter(inv => inv.invitationId !== invitationId);
       },
