@@ -73,6 +73,7 @@ namespace DataAccess
         {
             Building building = _context.Buildings
                 .Include(b => b.Apartments)
+                    .ThenInclude(a => a.Requests)
                 .Include(b => b.Location)
                 .FirstOrDefault(i => i.BuildingId.Equals(buildingId) && i.ManagerId.Equals(managerId));
             return building;

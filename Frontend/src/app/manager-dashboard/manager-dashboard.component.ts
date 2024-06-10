@@ -18,6 +18,18 @@ export class ManagerDashboardComponent {
     this.router.navigate(['select-building']);
   }
 
+  navigateToGenerateBuildingReport(): void {
+    this.router.navigate(['generate-report']);
+  }
+
+  navigateToGenerateMaintenanceReport(): void {
+    this.router.navigate(['generate-maintenance-report']);
+  }
+
+  navigateToEditBuildings(): void {
+    this.router.navigate(['edit-buildings']);
+  }
+
   logout(): void {
     this.authService.logout();
     this.router.navigate(['login']);

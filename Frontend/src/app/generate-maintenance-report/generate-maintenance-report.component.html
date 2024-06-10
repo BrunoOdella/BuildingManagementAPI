@@ -1,0 +1,37 @@
+<div class="container">
+    <h2>Generate Maintenance Report</h2>
+    <form [formGroup]="reportForm" (ngSubmit)="onSubmit()">
+      <label for="maintenanceStaffId">Filter by Maintenance Staff:</label>
+      <select id="maintenanceStaffId" formControlName="maintenanceStaffId">
+        <option value="">All Maintenance Staff</option>
+        <option *ngFor="let staff of maintenanceStaff" [value]="staff.id">{{ staff.name }} {{ staff.lastName }}</option>
+      </select>
+      <button type="submit" class="primary">Generate Report</button>
+    </form>
+  
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  
+    <table *ngIf="reports.length > 0">
+      <thead>
+        <tr>
+          <th>Maintenance Staff</th>
+          <th>Pending Requests</th>
+          <th>Active Requests</th>
+          <th>Completed Requests</th>
+          <th>Average Completion Time (Hours)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let report of reports">
+          <td>{{ report.staffName }}</td>
+          <td>{{ report.pendingRequests }}</td>
+          <td>{{ report.activeRequests }}</td>
+          <td>{{ report.completedRequests }}</td>
+          <td>{{ report.averageCompletionTimeInHours }}</td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <button class="secondary" (click)="navigateToDashboard()">Back to Dashboard</button>
+  </div>
+  

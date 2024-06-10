@@ -31,6 +31,9 @@ import { ImportBuildingsComponent } from './import-buildings/import-buildings.co
 import { UnattendedRequestsComponent } from './unattended-requests/unattended-requests.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FinalizeRequestComponent } from './finalize-request/finalize-request.component';
+import { GenerateReportComponent } from './generate-report/generate-report.component';
+import { GenerateMaintenanceReportComponent } from './generate-maintenance-report/generate-maintenance-report.component';
+import { EditBuildingsComponent } from './edit-buildings/edit-buildings.component';
 import { environment } from 'src/environments/environment';
 
 @NgModule({
@@ -58,6 +61,9 @@ import { environment } from 'src/environments/environment';
     ImportBuildingsComponent,
     UnattendedRequestsComponent,
     FinalizeRequestComponent,
+    GenerateReportComponent,
+    GenerateMaintenanceReportComponent,
+    EditBuildingsComponent,
   ],
   imports: [
     BrowserModule,

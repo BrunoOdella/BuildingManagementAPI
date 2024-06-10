@@ -23,8 +23,10 @@ export class SelectApartmentComponent implements OnInit {
 
   ngOnInit(): void {
     this.buildingId = this.route.snapshot.paramMap.get('buildingId')!;
-    this.http.get<ApartmentResponse[]>(`${environment.apiUrl}/buildings/${this.buildingId}/apartments`).subscribe(
-      (data) => this.apartments = data,
+    this.http.get<ApartmentResponse[]>(`http://localhost:5154/api/v2/buildings/${this.buildingId}/apartments`).subscribe(
+      (data) => {
+        this.apartments = data.sort((a, b) => a.floor - b.floor);
+      },
       (error) => console.error(error)
     );
   }
