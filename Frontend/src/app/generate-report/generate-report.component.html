@@ -1,0 +1,35 @@
+<div class="container">
+    <h2>Generate Report</h2>
+    <form [formGroup]="reportForm" (ngSubmit)="onSubmit()">
+      <label for="buildingId">Filter by Building:</label>
+      <select id="buildingId" formControlName="buildingId">
+        <option value="">All Buildings</option>
+        <option *ngFor="let building of buildings" [value]="building.buildingId">{{ building.name }}</option>
+      </select>
+      <button type="submit" class="primary">Generate Report</button>
+    </form>
+  
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  
+    <table *ngIf="reports.length > 0">
+      <thead>
+        <tr>
+          <th>Building Name</th>
+          <th>Pending Requests</th>
+          <th>Active Requests</th>
+          <th>Completed Requests</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let report of reports">
+          <td>{{ report.buildingName }}</td>
+          <td>{{ report.pendingRequests }}</td>
+          <td>{{ report.activeRequests }}</td>
+          <td>{{ report.completedRequests }}</td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <button class="secondary" (click)="navigateToDashboard()">Back to Dashboard</button>
+  </div>
+  

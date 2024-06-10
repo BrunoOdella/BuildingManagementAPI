@@ -22,6 +22,8 @@ import { AddRequestComponent } from './add-request/add-request.component';
 import { UnattendedRequestsComponent } from './unattended-requests/unattended-requests.component'
 import { FinalizeRequestComponent } from './finalize-request/finalize-request.component';
 import { ImportBuildingsComponent } from './import-buildings/import-buildings.component';
+import { GenerateReportComponent } from './generate-report/generate-report.component';
+import { GenerateMaintenanceReportComponent } from './generate-maintenance-report/generate-maintenance-report.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -45,6 +47,8 @@ const routes: Routes = [
   { path: 'select-building', component: SelectBuildingComponent, canActivate: [AuthGuard], data: { role: 'Manager' } },
   { path: 'select-apartment/:buildingId', component: SelectApartmentComponent, canActivate: [AuthGuard], data: { role: 'Manager' } },
   { path: 'add-request/:apartmentId', component: AddRequestComponent, canActivate: [AuthGuard], data: { role: 'Manager' } },
+  { path: 'generate-report', component: GenerateReportComponent, canActivate: [AuthGuard], data: { role: 'Manager' } },
+  { path: 'generate-maintenance-report', component: GenerateMaintenanceReportComponent, canActivate: [AuthGuard], data: { role: 'Manager' }},
  
   { path: 'maintenance-staff-dashboard', component: MaintenanceStaffDashboardComponent, canActivate: [AuthGuard], data: { role: 'MaintenanceStaff' } },
   { path: 'unattended-requests', component: UnattendedRequestsComponent, canActivate: [AuthGuard], data: { role: 'MaintenanceStaff' } },

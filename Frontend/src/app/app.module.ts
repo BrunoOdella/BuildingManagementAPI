@@ -31,6 +31,8 @@ import { ImportBuildingsComponent } from './import-buildings/import-buildings.co
 import { UnattendedRequestsComponent } from './unattended-requests/unattended-requests.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FinalizeRequestComponent } from './finalize-request/finalize-request.component';
+import { GenerateReportComponent } from './generate-report/generate-report.component';
+import { GenerateMaintenanceReportComponent } from './generate-maintenance-report/generate-maintenance-report.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +59,8 @@ import { FinalizeRequestComponent } from './finalize-request/finalize-request.co
     ImportBuildingsComponent,
     UnattendedRequestsComponent,
     FinalizeRequestComponent,
+    GenerateReportComponent,
+    GenerateMaintenanceReportComponent,
   ],
   imports: [
     BrowserModule,
