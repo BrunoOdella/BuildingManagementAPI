@@ -33,6 +33,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FinalizeRequestComponent } from './finalize-request/finalize-request.component';
 import { GenerateReportComponent } from './generate-report/generate-report.component';
 import { GenerateMaintenanceReportComponent } from './generate-maintenance-report/generate-maintenance-report.component';
+import { EditBuildingsComponent } from './edit-buildings/edit-buildings.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { GenerateMaintenanceReportComponent } from './generate-maintenance-repor
     FinalizeRequestComponent,
     GenerateReportComponent,
     GenerateMaintenanceReportComponent,
+    EditBuildingsComponent,
   ],
   imports: [
     BrowserModule,

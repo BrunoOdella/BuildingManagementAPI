@@ -1,0 +1,38 @@
+<div class="container">
+    <h2>Edit Buildings</h2>
+    <div *ngIf="buildings.length > 0">
+      <ul>
+        <li *ngFor="let building of buildings" (click)="selectBuilding(building)">
+          {{ building.name }} - {{ building.address }}
+        </li>
+      </ul>
+    </div>
+  
+    <div *ngIf="selectedBuilding">
+      <h3>Edit Building: {{ selectedBuilding.name }}</h3>
+      <form [formGroup]="editBuildingForm" (ngSubmit)="onSubmit()">
+        <label for="name">Name:</label>
+        <input id="name" formControlName="name" required>
+        
+        <label for="address">Address:</label>
+        <input id="address" formControlName="address" required>
+        
+        <label for="latitude">Latitude:</label>
+        <input id="latitude" formControlName="latitude" required>
+        
+        <label for="longitude">Longitude:</label>
+        <input id="longitude" formControlName="longitude" required>
+        
+        <label for="commonExpenses">Common Expenses:</label>
+        <input id="commonExpenses" formControlName="commonExpenses" required>
+        
+        <button type="submit" class="primary">Update Building</button>
+      </form>
+    </div>
+  
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+    <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+  
+    <button class="secondary" (click)="navigateToDashboard()">Back to Dashboard</button>
+  </div>
+  
