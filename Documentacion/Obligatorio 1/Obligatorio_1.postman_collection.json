@@ -1,0 +1,655 @@
+{
+	"info": {
+		"_postman_id": "56141729-7da9-48de-bcb2-079f44a71682",
+		"name": "Obligatorio 1",
+		"description": "# 🚀 Get started here\n\nThis template guides you through CRUD operations (GET, POST, PUT, DELETE), variables, and tests.\n\n## 🔖 **How to use this template**\n\n#### **Step 1: Send requests**\n\nRESTful APIs allow you to perform CRUD operations using the POST, GET, PUT, and DELETE HTTP methods.\n\nThis collection contains each of these [request](https://learning.postman.com/docs/sending-requests/requests/) types. Open each request and click \"Send\" to see what happens.\n\n#### **Step 2: View responses**\n\nObserve the response tab for status code (200 OK), response time, and size.\n\n#### **Step 3: Send new Body data**\n\nUpdate or add new data in \"Body\" in the POST request. Typically, Body data is also used in PUT request.\n\n```\n{\n    \"name\": \"Add your name in the body\"\n}\n\n ```\n\n#### **Step 4: Update the variable**\n\nVariables enable you to store and reuse values in Postman. We have created a [variable](https://learning.postman.com/docs/sending-requests/variables/) called `base_url` with the sample request [https://postman-api-learner.glitch.me](https://postman-api-learner.glitch.me). Replace it with your API endpoint to customize this collection.\n\n#### **Step 5: Add tests in the \"Tests\" tab**\n\nTests help you confirm that your API is working as expected. You can write test scripts in JavaScript and view the output in the \"Test Results\" tab.\n\n<img src=\"https://content.pstmn.io/b5f280a7-4b09-48ec-857f-0a7ed99d7ef8/U2NyZWVuc2hvdCAyMDIzLTAzLTI3IGF0IDkuNDcuMjggUE0ucG5n\">\n\n## 💪 Pro tips\n\n- Use folders to group related requests and organize the collection.\n- Add more [scripts](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/) in \"Tests\" to verify if the API works as expected and execute workflows.\n    \n\n## 💡Related templates\n\n[API testing basics](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9a37a28-055b-49cd-8c7e-97494a21eb54&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[API documentation](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9c28f47-1253-44af-a2f3-20dce4da1f18&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[Authorization methods](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=31a9a6ed-4cdf-4ced-984c-d12c9aec1c27&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22408718"
+	},
+	"item": [
+		{
+			"name": "Request",
+			"item": [
+				{
+					"name": "GetAllRequest",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "90584536-478F-4F36-912A-08DC6ADFD1DB",
+								"uuid": "84b578e6-46d7-41a4-aeaf-2c1f79dd9b0c"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}Requests",
+							"host": [
+								"{{URL}}Requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PutRequest - Active",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "90584536-478F-4F36-912A-08DC6ADFD1DB",
+								"uuid": "692d09a1-68e4-4002-88b4-970f6816fb14"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"status\": 0,\r\n  \"startTime\": \"2024-05-02\",\r\n  \"maintenancePersonId\": \"5C17FF02-605A-41B2-9BA9-31A788B5F7AF\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}Requests/92038632-BD1A-49C8-BAB7-24C5D003654F",
+							"host": [
+								"{{URL}}Requests"
+							],
+							"path": [
+								"92038632-BD1A-49C8-BAB7-24C5D003654F"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PutRequest - Terminate",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "5C17FF02-605A-41B2-9BA9-31A788B5F7AF",
+								"uuid": "925c4851-7952-42e4-a80c-d3b82b84b31b"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"totalCost\": 1000,\r\n  \"endTime\": \"2024-05-02T21:26:06.277Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}Requests/6FF13331-274A-4E8C-8E5D-45CDC45D95F5/finished",
+							"host": [
+								"{{URL}}Requests"
+							],
+							"path": [
+								"6FF13331-274A-4E8C-8E5D-45CDC45D95F5",
+								"finished"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllRequest Category 1",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "90584536-478F-4F36-912A-08DC6ADFD1DB",
+								"uuid": "3ac93b72-cffa-4540-87a3-e55580aa5785"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}Requests?category=1",
+							"host": [
+								"{{URL}}Requests"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllRequest Category 2",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "90584536-478F-4F36-912A-08DC6ADFD1DB",
+								"uuid": "39c8ff20-2757-4f33-9bba-4723a38c0eda"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}Requests?category=2",
+							"host": [
+								"{{URL}}Requests"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PostRequest",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "90584536-478F-4F36-912A-08DC6ADFD1DB",
+								"uuid": "ee542850-42f3-467a-a8f0-cb187c903d80"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"description\": \"{{$randomPhrase}}\",\r\n  \"category\": 1,\r\n  \"creationTime\": \"2024-04-02\",\r\n  \"apartmentID\": \"0FB9DABC-1FC4-413A-6243-08DC6AF8AC55\",\r\n  \"maintenanceStaffID\": \"5C17FF02-605A-41B2-9BA9-31A788B5F7AF\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}Requests",
+							"host": [
+								"{{URL}}Requests"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Invitation",
+			"item": [
+				{
+					"name": "PostInvitation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{adminId}}",
+								"uuid": "37c3d3c2-e2c1-407a-95c3-3516828ee3e0",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"{{$randomEmail}}\",\r\n  \"name\": \"{{$randomFirstName}}\",\r\n  \"expirationDate\": \"2024-06-06\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}Invitations",
+							"host": [
+								"{{URL}}Invitations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllInvitation",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{adminId}}",
+								"uuid": "05799dce-5f51-4cd6-973b-4c6c145de75f",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}Invitations",
+							"host": [
+								"{{URL}}Invitations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteInvitation",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{adminId}}",
+								"uuid": "8933755d-2c2f-46e8-8b4b-1ec79afa95f8",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}Invitations/5BF345D3-523F-44B0-A009-08DC6AF00177",
+							"host": [
+								"{{URL}}Invitations"
+							],
+							"path": [
+								"5BF345D3-523F-44B0-A009-08DC6AF00177"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PutInvitation",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"password\": \"{{$randomColor}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}Invitations/50AE0224-594F-4D4A-A005-08DC6AF00177",
+							"host": [
+								"{{URL}}Invitations"
+							],
+							"path": [
+								"50AE0224-594F-4D4A-A005-08DC6AF00177"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CreateCategory",
+			"item": [
+				{
+					"name": "PostCategoriesRequests",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"{{$randomJobArea}}\",\r\n  \"description\": \"{{$randomJobDescriptor}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}CategoriesRequests",
+							"host": [
+								"{{URL}}CategoriesRequests"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "PostAdmin",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*",
+								"uuid": "83043a12-e132-45f7-bf52-1251b6b9a96e"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"uuid": "75a10a73-bb46-462a-95d5-5df80fb25b6e"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"email\": \"{{$randomEmail}}\",\r\n  \"password\": \"{{$randomColor}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{URL}}admins",
+							"host": [
+								"{{URL}}admins"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Building",
+			"item": [
+				{
+					"name": "PostBuilding",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "90584536-478F-4F36-912A-08DC6ADFD1DB",
+								"uuid": "77c994f5-8cef-455a-a208-d2b328fc5cc5"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"{{$randomWord}}\",\r\n  \"address\": \"{{$randomStreetAddress}}\",\r\n  \"latitude\": {{$randomLatitude}},\r\n  \"longitude\": {{$randomLongitude}},\r\n  \"constructionCompany\": \"{{$randomCompanyName}}\",\r\n  \"commonExpenses\": {{$randomInt}},\r\n  \"apartments\": [\r\n    {\r\n      \"floor\": 0,\r\n      \"number\": 1,\r\n      \"owner\": {\r\n        \"firstName\": \"{{$randomFirstName}}\",\r\n        \"lastName\": \"{{$randomLastName}}\",\r\n        \"email\": \"{{$randomEmail}}\"\r\n      },\r\n      \"numberOfBathrooms\": {{$randomInt}},\r\n      \"hasTerrace\": {{$randomBoolean}}\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}Buildings",
+							"host": [
+								"{{URL}}Buildings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PutBuilding",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "90584536-478F-4F36-912A-08DC6ADFD1DB",
+								"uuid": "48086f06-0025-41b2-80ad-bcea6cb3b9d5"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"{{$randomWord}}\",\r\n  \"address\": \"{{$randomStreetAddress}}\",\r\n  \"latitude\": {{$randomLatitude}},\r\n  \"longitude\": {{$randomLongitude}},\r\n  \"constructionCompany\": \"{{$randomCompanyName}}\",\r\n  \"commonExpenses\": {{$randomInt}}\r\n}\r\n\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}Buildings/CA1C8DD9-C6D6-46DB-116F-08DC6AFC526B",
+							"host": [
+								"{{URL}}Buildings"
+							],
+							"path": [
+								"CA1C8DD9-C6D6-46DB-116F-08DC6AFC526B"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteBuilding",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "90584536-478F-4F36-912A-08DC6ADFD1DB",
+								"uuid": "f4a8b73b-7b5d-4320-9378-70014550acc0"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}Buildings/7D3690EF-8048-49E3-91A2-08DC6AF8AC51",
+							"host": [
+								"{{URL}}Buildings"
+							],
+							"path": [
+								"7D3690EF-8048-49E3-91A2-08DC6AF8AC51"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "MaitenanceStaff",
+			"item": [
+				{
+					"name": "CreateMaitenanceStaff",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "90584536-478F-4F36-912A-08DC6ADFD1DB",
+								"uuid": "4aaaa25b-8557-4ec2-93bc-76ebfe5af25b"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"email\": \"{{$randomEmail}}\",\r\n  \"password\": \"{{$randomColor}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}buildings/00B7D3F5-4870-409D-91A3-08DC6AF8AC51/maintenancestaff",
+							"host": [
+								"{{URL}}buildings"
+							],
+							"path": [
+								"00B7D3F5-4870-409D-91A3-08DC6AF8AC51",
+								"maintenancestaff"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Report",
+			"item": [
+				{
+					"name": "GetReportByBuilding",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "90584536-478F-4F36-912A-08DC6ADFD1DB",
+								"uuid": "63613f64-d901-46b0-8d64-48cb0159eca4"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}Reports/request_by_building",
+							"host": [
+								"{{URL}}Reports"
+							],
+							"path": [
+								"request_by_building"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetReportByBuilding - BuildingID 1",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "90584536-478F-4F36-912A-08DC6ADFD1DB",
+								"uuid": "6147cb8d-17e0-4b70-aa8a-2fc09461c758"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}Reports/request_by_building?BuildingID=CA1C8DD9-C6D6-46DB-116F-08DC6AFC526B",
+							"host": [
+								"{{URL}}Reports"
+							],
+							"path": [
+								"request_by_building"
+							],
+							"query": [
+								{
+									"key": "BuildingID",
+									"value": "CA1C8DD9-C6D6-46DB-116F-08DC6AFC526B"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetReportByStaff",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "90584536-478F-4F36-912A-08DC6ADFD1DB",
+								"uuid": "89d6f9ca-fc83-4033-8a59-eb3dd51364a9"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}Reports/request_by_maintenance_staff",
+							"host": [
+								"{{URL}}Reports"
+							],
+							"path": [
+								"request_by_maintenance_staff"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetReportByStaff- Staff Marguerite",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "90584536-478F-4F36-912A-08DC6ADFD1DB",
+								"uuid": "8d711bfd-162c-4750-a300-19da33f1e69d"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}Reports/request_by_maintenance_staff?MaintenanceStaffID=D6EC0533-59DE-4C13-B4A1-69D934DD18E6",
+							"host": [
+								"{{URL}}Reports"
+							],
+							"path": [
+								"request_by_maintenance_staff"
+							],
+							"query": [
+								{
+									"key": "MaintenanceStaffID",
+									"value": "D6EC0533-59DE-4C13-B4A1-69D934DD18E6"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": "1"
+		},
+		{
+			"key": "base_url",
+			"value": "https://postman-rest-api-learner.glitch.me/"
+		},
+		{
+			"key": "URL",
+			"value": "http://localhost:5154/api/v1/"
+		},
+		{
+			"key": "adminId",
+			"value": "fec60e90-66ea-4728-7298-08dc6ad30054",
+			"type": "string"
+		}
+	]
+}

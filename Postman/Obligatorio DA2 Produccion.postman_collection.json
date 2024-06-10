@@ -1,0 +1,1492 @@
+{
+	"info": {
+		"_postman_id": "e37280e3-dec8-464e-9cf8-b2eb1a02a123",
+		"name": "Obligatorio DA2 Produccion",
+		"description": "# 🚀 Get started here\n\nThis template guides you through CRUD operations (GET, POST, PUT, DELETE), variables, and tests.\n\n## 🔖 **How to use this template**\n\n#### **Step 1: Send requests**\n\nRESTful APIs allow you to perform CRUD operations using the POST, GET, PUT, and DELETE HTTP methods.\n\nThis collection contains each of these [request](https://learning.postman.com/docs/sending-requests/requests/) types. Open each request and click \"Send\" to see what happens.\n\n#### **Step 2: View responses**\n\nObserve the response tab for status code (200 OK), response time, and size.\n\n#### **Step 3: Send new Body data**\n\nUpdate or add new data in \"Body\" in the POST request. Typically, Body data is also used in PUT request.\n\n```\n{\n    \"name\": \"Add your name in the body\"\n}\n\n ```\n\n#### **Step 4: Update the variable**\n\nVariables enable you to store and reuse values in Postman. We have created a [variable](https://learning.postman.com/docs/sending-requests/variables/) called `base_url` with the sample request [https://postman-api-learner.glitch.me](https://postman-api-learner.glitch.me). Replace it with your API endpoint to customize this collection.\n\n#### **Step 5: Add tests in the \"Tests\" tab**\n\nTests help you confirm that your API is working as expected. You can write test scripts in JavaScript and view the output in the \"Test Results\" tab.\n\n<img src=\"https://content.pstmn.io/b5f280a7-4b09-48ec-857f-0a7ed99d7ef8/U2NyZWVuc2hvdCAyMDIzLTAzLTI3IGF0IDkuNDcuMjggUE0ucG5n\">\n\n## 💪 Pro tips\n\n- Use folders to group related requests and organize the collection.\n- Add more [scripts](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/) in \"Tests\" to verify if the API works as expected and execute workflows.\n    \n\n## 💡Related templates\n\n[API testing basics](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9a37a28-055b-49cd-8c7e-97494a21eb54&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[API documentation](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9c28f47-1253-44af-a2f3-20dce4da1f18&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[Authorization methods](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=31a9a6ed-4cdf-4ced-984c-d12c9aec1c27&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22408718",
+		"_collection_link": "https://planetary-eclipse-347206.postman.co/workspace/Obligatorio-DA2~30c6e83d-19d9-46ba-92e2-4c34d352bd42/collection/22408718-e37280e3-dec8-464e-9cf8-b2eb1a02a123?action=share&source=collection_link&creator=22408718"
+	},
+	"item": [
+		{
+			"name": "Request",
+			"item": [
+				{
+					"name": "GetAllRequest",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"  pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has the correct Content-Type header\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response body is an array\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('array');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response body is empty\", function () {",
+									"  pm.expect(pm.response.text()).to.be.empty;",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is within acceptable range\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{manager ID}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5000/api/v2/Requests",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v2",
+								"Requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PutRequest - Active",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{manager ID}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"status\": 0,\r\n  \"startTime\": \"2024-05-02\",\r\n  \"maintenancePersonId\": \"5C17FF02-605A-41B2-9BA9-31A788B5F7AF\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}Requests/92038632-BD1A-49C8-BAB7-24C5D003654F",
+							"host": [
+								"{{URL}}Requests"
+							],
+							"path": [
+								"92038632-BD1A-49C8-BAB7-24C5D003654F"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PutRequest - Terminate",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{manager ID}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"totalCost\": 1000,\r\n  \"endTime\": \"2024-05-02T21:26:06.277Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}Requests/6FF13331-274A-4E8C-8E5D-45CDC45D95F5/finished",
+							"host": [
+								"{{URL}}Requests"
+							],
+							"path": [
+								"6FF13331-274A-4E8C-8E5D-45CDC45D95F5",
+								"finished"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllRequest Category 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"  pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has the correct Content-Type header\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response body is an array\", function () {",
+									"    pm.expect(pm.response.json()).to.be.an('array');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response body is empty\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData).to.be.an('array');",
+									"  pm.expect(responseData).to.have.lengthOf(0, \"Response body should be empty\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Verify that the 'category' query parameter is present in the request URL\", function () {",
+									"  const requestUrl = pm.request.url.toString();",
+									"  ",
+									"  pm.expect(requestUrl).to.include(\"category\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{manager ID}}"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}Requests?category=1",
+							"host": [
+								"{{URL}}Requests"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllRequest Category 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"  pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has the correct Content-Type header\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.equal(\"application/json\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response body is an empty array\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData).to.be.an('array').and.to.have.lengthOf(0);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Verify that the 'category' query parameter is set to 2\", function () {",
+									"  const url = pm.request.url;",
+									"  const params = new URLSearchParams(url.search);",
+									"  const category = params.get('category');",
+									"",
+									"  pm.expect(category).to.equal('2');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 500ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{manager ID}}"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}Requests?category=2",
+							"host": [
+								"{{URL}}Requests"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PostRequest",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Define una lista de valores posibles\r",
+									"const apartmentIdList = [\r",
+									"\"7B7D2792-0745-4ABB-2DB7-08DC88F1A80A\",\r",
+									"\"9BBE3266-7E36-489C-2DB8-08DC88F1A80A\",\r",
+									"\"3C16023A-124E-40B6-2DB9-08DC88F1A80A\",\r",
+									"\"C061FF3D-00AC-47F4-2DBA-08DC88F1A80A\",\r",
+									"\"27464946-DFCA-4F8A-2DBB-08DC88F1A80A\",\r",
+									"\"0C7CF475-0F21-4A37-2DBC-08DC88F1A80A\",\r",
+									"\"C32CEEC1-D2DA-4DBD-2DBD-08DC88F1A80A\",\r",
+									"\"381A66A8-0B8F-4375-2DBE-08DC88F1A80A\",\r",
+									"\"1E33A82E-2E07-49A7-2DBF-08DC88F1A80A\",\r",
+									"\"55033A25-CB52-4694-2DC0-08DC88F1A80A\",\r",
+									"\"B2CBEEF5-A344-4650-2DC1-08DC88F1A80A\",\r",
+									"\"9332E4BE-A6E0-4B5D-2DC2-08DC88F1A80A\",\r",
+									"\"6416CE67-E216-44AB-2DC3-08DC88F1A80A\",\r",
+									"\"5704047D-1794-40B9-2DC4-08DC88F1A80A\",\r",
+									"\"DB0C3AC6-A512-4EAA-2DC5-08DC88F1A80A\",\r",
+									"\"FFC2EBCB-10C7-4312-2DC6-08DC88F1A80A\",\r",
+									"\"FC0AD6C5-D800-4294-2DC7-08DC88F1A80A\",\r",
+									"\"353E33E6-4EAC-47E5-2DC8-08DC88F1A80A\",\r",
+									"\"8550EFDF-41FA-4435-2DC9-08DC88F1A80A\",\r",
+									"\"103D5D8D-A0E7-4E77-2DCA-08DC88F1A80A\",\r",
+									"\"48AA05E3-6A2E-41C0-2DCB-08DC88F1A80A\",\r",
+									"\"E1CAFF94-D30F-421D-2DCC-08DC88F1A80A\",\r",
+									"\"868292F2-7D31-418D-2DCD-08DC88F1A80A\",\r",
+									"\"DAA93915-E72C-4CEA-2DCE-08DC88F1A80A\",\r",
+									"\"4E4685F4-6492-40E7-2DCF-08DC88F1A80A\",\r",
+									"\"4FE00B29-4C42-45B7-2DD0-08DC88F1A80A\",\r",
+									"\"D10833C9-A312-4085-2DD1-08DC88F1A80A\",\r",
+									"\"0931FE69-40E5-4FE6-2DD2-08DC88F1A80A\",\r",
+									"\"8237825D-F381-46DD-2DD3-08DC88F1A80A\",\r",
+									"\"0E766AE7-B1D9-472B-2DD4-08DC88F1A80A\",\r",
+									"\"296BB7EF-3D94-4DE8-2DD5-08DC88F1A80A\",\r",
+									"\"7BE206C2-4308-41A4-2DD6-08DC88F1A80A\",\r",
+									"\"E6C4D951-46C0-4413-2DD7-08DC88F1A80A\",\r",
+									"\"7687BACF-BED1-4E3E-2DD8-08DC88F1A80A\",\r",
+									"\"34232C63-423D-4FA6-2DD9-08DC88F1A80A\",\r",
+									"\"AF032B83-E6EC-452D-2DDA-08DC88F1A80A\",\r",
+									"\"42FE628C-21D0-49FA-2DDB-08DC88F1A80A\",\r",
+									"\"5B06BCB9-8DE4-465D-2DDC-08DC88F1A80A\",\r",
+									"\"D0D2BC2A-33C3-4197-2DDD-08DC88F1A80A\",\r",
+									"\"1BFEC848-230B-457B-2DDE-08DC88F1A80A\",\r",
+									"\"284E5F44-511D-419E-2DDF-08DC88F1A80A\",\r",
+									"\"5ACB9949-BB12-438F-2DE0-08DC88F1A80A\",\r",
+									"\"99A0BC89-C1AE-4E90-2DE1-08DC88F1A80A\",\r",
+									"\"6BC85940-9DE5-46D6-2DE2-08DC88F1A80A\",\r",
+									"\"602D9A68-C19D-47C4-2DE3-08DC88F1A80A\",\r",
+									"\"D6D40892-F93C-4934-2DE4-08DC88F1A80A\",\r",
+									"\"718714A5-F023-40F3-2DE5-08DC88F1A80A\",\r",
+									"\"61AA0426-CF70-4EC1-2DE6-08DC88F1A80A\",\r",
+									"\"8F3C1324-70BF-4D74-2DE7-08DC88F1A80A\",\r",
+									"\"9E24C5F9-00BC-44BF-2DE8-08DC88F1A80A\",\r",
+									"\"301215FE-620C-42C8-2DE9-08DC88F1A80A\",\r",
+									"\"6E6B0021-14AD-4276-2DEA-08DC88F1A80A\",\r",
+									"\"FC35BA4C-B248-4D53-2DEB-08DC88F1A80A\",\r",
+									"\"537CE295-A66B-4369-2DEC-08DC88F1A80A\",\r",
+									"\"A2CEECF0-1B7E-4771-2DED-08DC88F1A80A\",\r",
+									"\"110C633C-3761-4128-2DEE-08DC88F1A80A\"\r",
+									"];\r",
+									"\r",
+									"// Selecciona un valor aleatorio de la lista\r",
+									"const randomValue = apartmentIdList[Math.floor(Math.random() * apartmentIdList.length)];\r",
+									"\r",
+									"// Establece el valor seleccionado como una variable de entorno\r",
+									"pm.environment.set(\"randomApartmen\", randomValue);\r",
+									"\r",
+									"\r",
+									"// Generar un número aleatorio entre 1 y 18\r",
+									"const randomNumber = Math.floor(Math.random() * 18) + 1;\r",
+									"\r",
+									"// Establecer el número aleatorio como una variable de entorno\r",
+									"pm.environment.set(\"randomCategoryNumber\", randomNumber);\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{manager ID}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"description\": \"{{$randomPhrase}}\",\r\n  \"category\": {{randomCategoryNumber}},\r\n  \"creationTime\": \"2024-04-02\",\r\n  \"apartmentID\": \"{{randomApartmen}}\",\r\n  \"maintenanceStaffID\": \"91056360-28FD-4D81-9BB4-A37EAB670638\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}Requests",
+							"host": [
+								"{{URL}}Requests"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Invitation",
+			"item": [
+				{
+					"name": "Construction Company Invitation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Email is in a valid format\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData).to.be.an('object');",
+									"  pm.expect(responseData.email).to.exist.and.to.match(/^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$/, \"Email is not in a valid format\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Expiration date is in a valid date format\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData.expirationDate).to.match(/^\\d{4}-\\d{2}-\\d{2}$/);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Status is one of the expected values\", function () {",
+									"  const expectedValues = [\"pending\", \"accepted\", \"expired\"];",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData.status).to.exist.and.to.be.oneOf(expectedValues);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{adminId}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"{{$randomEmail}}\",\r\n  \"name\": \"{{$randomFirstName}}\",\r\n  \"expirationDate\": \"2024-07-06\",\r\n  \"role\": \"{{Construction Company Admin Role}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}Invitations",
+							"host": [
+								"{{URL}}Invitations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Manager Invitation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Email is in a valid format\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData).to.be.an('object');",
+									"  pm.expect(responseData.email).to.exist.and.to.match(/^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$/, \"Email is not in a valid format\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Expiration date is in a valid date format\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData.expirationDate).to.match(/^\\d{4}-\\d{2}-\\d{2}$/);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Status is one of the expected values\", function () {",
+									"  const expectedValues = [\"pending\", \"accepted\", \"expired\"];",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData.status).to.exist.and.to.be.oneOf(expectedValues);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{adminId}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"email\": \"{{$randomEmail}}\",\r\n  \"name\": \"{{$randomFirstName}}\",\r\n  \"expirationDate\": \"2024-06-06\",\r\n  \"role\": \"{{Manager Role}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}Invitations",
+							"host": [
+								"{{URL}}Invitations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllInvitation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Email is in a valid format\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('array').that.is.not.empty;",
+									"    ",
+									"    responseData.forEach(function(invitation) {",
+									"        pm.expect(invitation.email).to.be.a('string').and.to.match(/^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$/);",
+									"    });",
+									"});",
+									"",
+									"",
+									"pm.test(\"Expiration date is in a valid date format\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData).to.be.an('array');",
+									"  ",
+									"  responseData.forEach(function(invitation){",
+									"    pm.expect(invitation.expirationDate).to.match(/^\\d{4}-\\d{2}-\\d{2}$/);",
+									"  });",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response is an array with at least one element\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData).to.be.an('array').and.to.have.lengthOf.at.least(1);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{adminId}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}Invitations",
+							"host": [
+								"{{URL}}Invitations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteInvitation",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{adminId}}",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}Invitations/5BF345D3-523F-44B0-A009-08DC6AF00177",
+							"host": [
+								"{{URL}}Invitations"
+							],
+							"path": [
+								"5BF345D3-523F-44B0-A009-08DC6AF00177"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PutInvitation",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{Construction Company Email}}\",\r\n    \"password\": \"{{$randomPassword}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}Invitations/{{Invitation Guid}}",
+							"host": [
+								"{{URL}}Invitations"
+							],
+							"path": [
+								"{{Invitation Guid}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Create Category",
+			"item": [
+				{
+					"name": "PostCategoriesRequests",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 201\", function () {",
+									"  pm.response.to.have.status(201);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has the required fields\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData).to.be.an('object');",
+									"  pm.expect(responseData.name).to.exist.and.to.be.a('string');",
+									"  pm.expect(responseData.description).to.exist.and.to.be.a('string');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Name is a non-empty string\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData.name).to.be.a('string');",
+									"  pm.expect(responseData.name).to.have.lengthOf.at.least(1, \"Name should not be empty\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Description is a non-empty string\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData.description).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Description should not be empty\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is in an acceptable range\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{adminId}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"{{$randomJobArea}}\",\r\n  \"description\": \"{{$randomJobDescriptor}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}CategoriesRequests",
+							"host": [
+								"{{URL}}CategoriesRequests"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "PostAdmin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has the required fields - adminId, firstName, lastName, and email\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.adminId).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.firstName).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.lastName).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.email).to.exist.and.to.be.a('string');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Email is in a valid format\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData.email).to.match(/^[\\w-]+(\\.[\\w-]+)*@([\\w-]+\\.)+[a-zA-Z]{2,7}$/);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Verify that adminId is a non-empty string\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.adminId).to.exist.and.to.be.a('string').and.to.have.lengthOf.at.least(1, \"adminId should not be empty\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"email\": \"{{$randomEmail}}\",\r\n  \"password\": \"{{$randomColor}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{URL}}admins",
+							"host": [
+								"{{URL}}admins"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Building",
+			"item": [
+				{
+					"name": "PostBuilding",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 201\", function () {",
+									"  pm.response.to.have.status(201);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Latitude is a number between -90 and 90\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.location).to.exist;",
+									"    pm.expect(responseData.location.latitude).to.be.a('number');",
+									"    pm.expect(responseData.location.latitude).to.be.within(-90, 90);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Longitude is a number between -180 and 180\", function () {",
+									"    const responseData = pm.response.json();",
+									"",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.location).to.exist;",
+									"    pm.expect(responseData.location.longitude).to.be.a('number');",
+									"    pm.expect(responseData.location.longitude).to.be.within(-180, 180);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Common expenses is a non-negative number\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.commonExpenses).to.exist.and.to.be.a('number');",
+									"    pm.expect(responseData.commonExpenses).to.be.at.least(0, \"Common expenses should be a non-negative number\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Generar un número aleatorio de apartamentos, por ejemplo entre 15 y 150\r",
+									"let numApartments = Math.floor(Math.random() * 150) + 15;\r",
+									"let apartments = [];\r",
+									"\r",
+									"for (let i = 0; i < numApartments; i++) {\r",
+									"    apartments.push({\r",
+									"        \"floor\": Math.floor(Math.random() * 15), // Pisos del 0 al 9\r",
+									"        \"number\": i + 1, // Número de apartamento consecutivo\r",
+									"        \"owner\": {\r",
+									"            \"firstName\": pm.variables.replaceIn('{{$randomFirstName}}'),\r",
+									"            \"lastName\": pm.variables.replaceIn('{{$randomLastName}}'),\r",
+									"            \"email\": pm.variables.replaceIn('{{$randomEmail}}')\r",
+									"        },\r",
+									"        \"numberOfBathrooms\": Math.floor(Math.random() * 3) + 1, // 1-3 baños\r",
+									"        \"hasTerrace\": Math.random() < 0.5 // True o False aleatoriamente\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									"// Convertir el array a JSON y guardarlo como una variable de entorno\r",
+									"pm.environment.set(\"randomApartments\", JSON.stringify(apartments));\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "2C309973-466A-4354-8797-08DC81121513"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"{{$randomWord}}\",\r\n  \"address\": \"{{$randomStreetAddress}}\",\r\n  \"latitude\": {{$randomLatitude}},\r\n  \"longitude\": {{$randomLongitude}},\r\n  \"constructionCompany\": \"{{$randomCompanyName}}\",\r\n  \"commonExpenses\": {{$randomInt}},\r\n  \"apartments\": {{randomApartments}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}Buildings",
+							"host": [
+								"{{URL}}Buildings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Building - Manager",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Validate data types\", function () {",
+									"  const responseData = pm.response.json();",
+									"",
+									"  pm.expect(responseData.buildingId).to.be.a('string');",
+									"  pm.expect(responseData.name).to.be.a('string');",
+									"  pm.expect(responseData.address).to.be.a('string');",
+									"  pm.expect(responseData.constructionCompanyName).to.be.a('string');",
+									"  pm.expect(responseData.commonExpenses).to.be.a('number');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Validate the format of location - latitude and longitude should be numbers\", function () {",
+									"    const responseData = pm.response.json();",
+									"",
+									"    pm.expect(responseData.location).to.exist;",
+									"    pm.expect(responseData.location.latitude).to.be.a('number');",
+									"    pm.expect(responseData.location.longitude).to.be.a('number');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Common expenses should be a non-negative number\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData.commonExpenses).to.be.a('number');",
+									"  pm.expect(responseData.commonExpenses).to.be.at.least(0, \"Common expenses should be non-negative\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "9EF9B0D8-45CE-42FB-0067-08DC811FD951"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"{{$randomWord}}\",\r\n  \"address\": \"{{$randomStreetAddress}}\",\r\n  \"latitude\": {{$randomLatitude}},\r\n  \"longitude\": {{$randomLongitude}},\r\n  \"commonExpenses\": {{$randomInt}},\r\n  \"managerGuid\": \"00000000-0000-0000-0000-000000000000\"\r\n}\r\n\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}Buildings/852D97D0-765E-4320-D63D-08DC811FD655",
+							"host": [
+								"{{URL}}Buildings"
+							],
+							"path": [
+								"852D97D0-765E-4320-D63D-08DC811FD655"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Building - CCAdmin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Validate data types\", function () {",
+									"  const responseData = pm.response.json();",
+									"",
+									"  pm.expect(responseData.buildingId).to.be.a('string');",
+									"  pm.expect(responseData.name).to.be.a('string');",
+									"  pm.expect(responseData.address).to.be.a('string');",
+									"  pm.expect(responseData.constructionCompanyName).to.be.a('string');",
+									"  pm.expect(responseData.commonExpenses).to.be.a('number');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Validate the format of location - latitude and longitude should be numbers\", function () {",
+									"    const responseData = pm.response.json();",
+									"",
+									"    pm.expect(responseData.location).to.exist;",
+									"    pm.expect(responseData.location.latitude).to.be.a('number');",
+									"    pm.expect(responseData.location.longitude).to.be.a('number');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Common expenses should be a non-negative number\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData.commonExpenses).to.be.a('number');",
+									"  pm.expect(responseData.commonExpenses).to.be.at.least(0, \"Common expenses should be non-negative\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "D8B3F144-0163-4ECC-4018-08DC88EFEDAB",
+								"description": "ccAdmin ID"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"\",\r\n  \"address\": \"\",\r\n  \"latitude\": 0,\r\n  \"longitude\": 0,\r\n  \"commonExpenses\": 0,\r\n  \"managerGuid\": \"3BC5A1F0-C43A-4A28-14C3-08DC88EF8275\"\r\n}\r\n\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}Buildings/74458AFD-CC2C-485B-7442-08DC88F1A806",
+							"host": [
+								"{{URL}}Buildings"
+							],
+							"path": [
+								"74458AFD-CC2C-485B-7442-08DC88F1A806"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteBuilding",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "90584536-478F-4F36-912A-08DC6ADFD1DB"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}Buildings/7D3690EF-8048-49E3-91A2-08DC6AF8AC51",
+							"host": [
+								"{{URL}}Buildings"
+							],
+							"path": [
+								"7D3690EF-8048-49E3-91A2-08DC6AF8AC51"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "MaitenanceStaff",
+			"item": [
+				{
+					"name": "CreateMaitenanceStaff",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "90584536-478F-4F36-912A-08DC6ADFD1DB"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"email\": \"{{$randomEmail}}\",\r\n  \"password\": \"{{$randomColor}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}buildings/00B7D3F5-4870-409D-91A3-08DC6AF8AC51/maintenancestaff",
+							"host": [
+								"{{URL}}buildings"
+							],
+							"path": [
+								"00B7D3F5-4870-409D-91A3-08DC6AF8AC51",
+								"maintenancestaff"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Report",
+			"item": [
+				{
+					"name": "GetReportByBuilding",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Verify that the 'maintenanceStaffReports' array is present in the response\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.maintenanceStaffReports).to.exist.and.to.be.an('array');",
+									"    pm.expect(responseData.maintenanceStaffReports).to.have.lengthOf(1);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Verify buildingName is a non-empty string\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.maintenanceStaffReports).to.be.an('array').with.lengthOf.at.least(1);",
+									"    ",
+									"    responseData.maintenanceStaffReports.forEach(function(report) {",
+									"        pm.expect(report.buildingName).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+									"    });",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 500ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "90584536-478F-4F36-912A-08DC6ADFD1DB"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}Reports/request_by_building",
+							"host": [
+								"{{URL}}Reports"
+							],
+							"path": [
+								"request_by_building"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetReportByBuilding - BuildingID 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"  pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has the required fields\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData).to.be.an('object');",
+									"  ",
+									"  const requiredFields = ['buildingName', 'pendingRequests', 'activeRequests', 'completedRequests'];",
+									"  ",
+									"  requiredFields.forEach(function(field) {",
+									"    pm.expect(responseData).to.have.property(field);",
+									"  });",
+									"});",
+									"",
+									"",
+									"pm.test(\"Verify that the maintenanceStaffReports array is present and contains the expected number of elements\", function () {",
+									"    const responseData = pm.response.json();",
+									"",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.maintenanceStaffReports).to.exist.and.to.be.an('array');",
+									"    pm.expect(responseData.maintenanceStaffReports).to.have.lengthOf(1);",
+									"});",
+									"",
+									"",
+									"pm.test(\"buildingName is a non-empty string\", function () {",
+									"  const responseData = pm.response.json();",
+									"",
+									"  pm.expect(responseData).to.be.an('object');",
+									"  pm.expect(responseData.maintenanceStaffReports).to.exist.and.to.be.an('array');",
+									"",
+									"  responseData.maintenanceStaffReports.forEach(function (report) {",
+									"    pm.expect(report.buildingName).to.be.a('string').and.to.have.lengthOf.at.least(1);",
+									"  });",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "90584536-478F-4F36-912A-08DC6ADFD1DB"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}Reports/request_by_building?BuildingID=CA1C8DD9-C6D6-46DB-116F-08DC6AFC526B",
+							"host": [
+								"{{URL}}Reports"
+							],
+							"path": [
+								"request_by_building"
+							],
+							"query": [
+								{
+									"key": "BuildingID",
+									"value": "CA1C8DD9-C6D6-46DB-116F-08DC6AFC526B"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetReportByStaff",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Content-Type is application/json\", function () {",
+									"  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Verify that the 'maintenanceStaffReports' array is present in the response\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.maintenanceStaffReports).to.exist.and.to.be.an('array');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Verify that the 'maintenanceStaffReports' array is empty\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.maintenanceStaffReports).to.be.an('array').that.is.empty;",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 500ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "90584536-478F-4F36-912A-08DC6ADFD1DB"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}Reports/request_by_maintenance_staff",
+							"host": [
+								"{{URL}}Reports"
+							],
+							"path": [
+								"request_by_maintenance_staff"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetReportByStaff- Staff Marguerite",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "90584536-478F-4F36-912A-08DC6ADFD1DB"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}Reports/request_by_maintenance_staff?MaintenanceStaffID=D6EC0533-59DE-4C13-B4A1-69D934DD18E6",
+							"host": [
+								"{{URL}}Reports"
+							],
+							"path": [
+								"request_by_maintenance_staff"
+							],
+							"query": [
+								{
+									"key": "MaintenanceStaffID",
+									"value": "D6EC0533-59DE-4C13-B4A1-69D934DD18E6"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Building Importer",
+			"item": [
+				{
+					"name": "Import Building from JsonImporter.dll",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Construction Company Admin Id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"assemblyPath\": \"D:\\\\Ort\\\\DA2\\\\Obli 2\\\\BuildingManagement\\\\JsonImporter\\\\bin\\\\Debug\\\\net8.0\\\\JsonImporter.dll\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5154/api/ImportBuildings",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5154",
+							"path": [
+								"api",
+								"ImportBuildings"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Construction Company",
+			"item": [
+				{
+					"name": "Create Construction Company",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "9168F80B-7367-409D-2D24-08DC81C2677A"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"{{$randomCompanyName}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}ConstructionCompany",
+							"host": [
+								"{{URL}}ConstructionCompany"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://postman-rest-api-learner.glitch.me/"
+		},
+		{
+			"key": "URL",
+			"value": "http://localhost:5154/api/v2/"
+		},
+		{
+			"key": "adminId",
+			"value": "05A64B86-9067-47FE-32D7-08DC88D3CC54",
+			"type": "string"
+		},
+		{
+			"key": "Construction Company Admin Id",
+			"value": "2C309973-466A-4354-8797-08DC81121513",
+			"type": "string"
+		},
+		{
+			"key": "Construction Company Admin Role",
+			"value": "constructioncompanyadmin",
+			"type": "string"
+		},
+		{
+			"key": "Manager Role",
+			"value": "manager",
+			"type": "string"
+		},
+		{
+			"key": "Construction Company Email",
+			"value": "Deion85@yahoo.com",
+			"type": "string"
+		},
+		{
+			"key": "manager ID",
+			"value": "4F823018-2E9A-4C5E-08C7-08DC88D47852"
+		},
+		{
+			"key": "Manager Email",
+			"value": "Anastasia92@gmail.com",
+			"type": "string"
+		}
+	]
+}
