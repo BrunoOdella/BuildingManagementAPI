@@ -263,9 +263,6 @@ namespace BusinessLogicTest
         [ExpectedException(typeof(ConstructionCompanyAdminNotFoundException))]
         public void CreateConstructionCompanyName_AdminDoesNotExist_ShouldThrowException()
         {
-            // Arrange
-            string actualName = "Actual Construction Company";
-
             ConstructionCompany updatedCompany = new ConstructionCompany
             {
                 Name = "Updated Construction Company",

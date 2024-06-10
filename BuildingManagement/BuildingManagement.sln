@@ -31,7 +31,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonImporter", "JsonImporte
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImporterInterface", "ImporterInterface\ImporterInterface.csproj", "{00533C4D-63AE-434E-9994-EE70259A9287}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsvImporter", "CsvImporter\CsvImporter.csproj", "{B3544836-48E4-498A-876D-6667DD64B67C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CsvImporter", "CsvImporter\CsvImporter.csproj", "{B3544836-48E4-498A-876D-6667DD64B67C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -105,5 +105,8 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E97FF831-FCD8-46F6-B148-6607D1AA7B0D}
+	EndGlobalSection
+	GlobalSection(NDepend) = preSolution
+		Project = ".\BuildingManagement.ndproj"
 	EndGlobalSection
 EndGlobal

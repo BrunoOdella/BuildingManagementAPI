@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace BuildingManagementApi.Filters;
 
-//este filtro es para ver si el pibe existe
-
 public class AuthenticationFilter : Attribute, IAuthorizationFilter
 {
     private readonly IServiceProvider _provider;

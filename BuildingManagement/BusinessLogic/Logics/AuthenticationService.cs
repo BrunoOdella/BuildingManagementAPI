@@ -41,30 +41,20 @@ public class AuthenticationService : IAuthenticationService
         if (uri.ToLower().Contains("reports".ToLower()))
             return BuscarTokenReport(token, verbo);
         if (uri.ToLower().Contains("constructioncompany".ToLower()))
-            return BuscarTokenCCAdmin(token); //return BuscarTokenConstructionCompany(token, verbo);
+            return BuscarTokenCCAdmin(token);
         if (uri.ToLower().Contains("maintenancestaff".ToLower()))
-            return BuscarTokenManager(token); //return BuscarTokenMaintenanceStaff(token, verbo); //buscartokenStaff
+            return BuscarTokenManager(token);
         if (uri.ToLower().Contains("managers".ToLower()))
             return BuscarTokenCCAdmin(token);
         throw new NotImplementedException();
     }
-
-    /*private Guid BuscarTokenMaintenanceStaff(Guid token, string verbo)
-    {
-        if (verbo == "POST")
-            return BuscarTokenManager(token);
-        return BuscarTokenManager(token);
-    }*/
 
     private Guid BuscarTokenReport(Guid token, string verbo)
     {
         return BuscarTokenManager(token);
     }
 
-    /*private Guid BuscarTokenConstructionCompany(Guid token, string verbo)
-    {
-        return BuscarTokenConstructionCompanyAdmin(token);
-    }*/
+
 
     private Guid BuscarTokenBuilding(Guid token, string verbo)
     {
@@ -175,10 +165,6 @@ public class AuthenticationService : IAuthenticationService
         return _managerRepository.Get(token);
     }
 
-    /*private Guid BuscarTokenConstructionCompanyAdmin(Guid token)
-    {
-        return _constructionCompanyAdminRepository.Get(token);
-    }*/
 
     public AuthenticationResult Authenticate(string email, string password)
     {
